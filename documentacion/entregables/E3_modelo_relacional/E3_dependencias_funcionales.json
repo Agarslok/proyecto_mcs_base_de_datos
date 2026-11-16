@@ -1,0 +1,64 @@
+{
+  "nota": "Dependencias funcionales representativas (no exhaustivas). Catálogos siguen el patrón id → nombre.",
+  "grupos": [
+    {
+      "tabla": "ciudades",
+      "pk": ["ciudad_id"],
+      "df": [
+        { "determinante": ["ciudad_id"], "dependiente": "nombre" },
+        { "determinante": ["nombre"], "dependiente": "ciudad_id", "tipo": "candidata_UNIQUE" }
+      ]
+    },
+    {
+      "tabla": "personas",
+      "pk": ["persona_id"],
+      "df": [
+        { "determinante": ["persona_id"], "dependiente": "nombres" },
+        { "determinante": ["persona_id"], "dependiente": "email" },
+        { "determinante": ["email"], "dependiente": "persona_id", "tipo": "candidata_UNIQUE" },
+        { "determinante": ["ciudad_id"], "dependiente": "nombre_ciudad", "transitiva": true, "resolucion": "JOIN ciudades (3FN)" }
+      ]
+    },
+    {
+      "tabla": "propiedades",
+      "pk": ["propiedad_id"],
+      "df": [
+        { "determinante": ["propiedad_id"], "dependiente": "titulo" },
+        { "determinante": ["matricula_inmobiliaria"], "dependiente": "propiedad_id", "tipo": "UNIQUE negocio R1" },
+        { "determinante": ["ciudad_id"], "dependiente": "nombre_ciudad", "transitiva": true, "resolucion": "FK a ciudades" }
+      ]
+    },
+    {
+      "tabla": "solicitudes_propiedad",
+      "pk": ["solicitud_id"],
+      "df": [
+        { "determinante": ["solicitud_id"], "dependiente": "persona_id" },
+        { "determinante": ["solicitud_id"], "dependiente": "propiedad_id" },
+        { "determinante": ["campana_id"], "dependiente": "nombre_canal", "transitiva_via": "campanas→canales_marketing", "resolucion": "JOIN preguntas 4 y 6" }
+      ]
+    },
+    {
+      "tabla": "visitas",
+      "pk": ["visita_id"],
+      "df": [
+        { "determinante": ["visita_id"], "dependiente": "fecha_programada" },
+        { "determinante": ["solicitud_id"], "dependiente": "persona_id", "transitiva": true, "nota": "No copiar en visitas (R8, 3FN)" },
+        { "determinante": ["solicitud_id"], "dependiente": "propiedad_id", "transitiva": true, "nota": "No copiar en visitas (R8, 3FN)" }
+      ]
+    },
+    {
+      "tabla": "transacciones",
+      "pk": ["transaccion_id"],
+      "df": [
+        { "determinante": ["transaccion_id"], "dependiente": "valor_final" },
+        { "determinante": ["oferta_id"], "dependiente": "transaccion_id", "cardinalidad": "0..1 cierre por oferta R12" },
+        {
+          "determinante": ["valor_final", "comision_porcentaje"],
+          "dependiente": "comision_valor",
+          "tipo": "derivada_R16",
+          "implementacion": "GENERATED en DDL"
+        }
+      ]
+    }
+  ]
+}

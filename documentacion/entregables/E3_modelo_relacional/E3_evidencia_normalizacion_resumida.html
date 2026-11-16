@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Normalización: de 1FN a BCNF — MCS</title>
+<style>
+:root { --ink:#1a1a1a; --navy:#0b2545; --line:#d5dbe3; --paper:#ffffff; --soft:#f4f7fb; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--paper); color:var(--ink); font:16px/1.55 "Segoe UI", Calibri, sans-serif; }
+main { max-width:920px; margin:0 auto; padding:40px 28px 72px; }
+h1 { color:var(--navy); font-size:1.85rem; font-weight:650; border-bottom:3px solid var(--navy); padding-bottom:.35rem; margin:0 0 1.2rem; }
+h2 { color:var(--navy); font-size:1.28rem; margin:2rem 0 .6rem; border-bottom:1px solid var(--line); padding-bottom:.25rem; }
+h3 { color:var(--navy); font-size:1.05rem; margin:1.4rem 0 .4rem; }
+p { margin:.55rem 0 .85rem; }
+strong { color:#000; }
+a { color:var(--navy); }
+ul, ol { margin:.3rem 0 1rem; padding-left:1.3rem; }
+li { margin:.2rem 0; }
+hr { border:0; border-top:1px solid var(--line); margin:1.4rem 0; }
+table { width:100%; border-collapse:collapse; margin:0.8rem 0 1.2rem; font-size:.95rem; }
+th { background:var(--navy); color:#fff; text-align:left; padding:.45rem .55rem; font-weight:600; }
+td { border-bottom:1px solid var(--line); padding:.4rem .55rem; vertical-align:top; }
+tr:nth-child(even) td { background:var(--soft); }
+code { font-family:Consolas, "Courier New", monospace; font-size:.9em; background:var(--soft); padding:.05rem .28rem; }
+pre { background:#0b2545; color:#f4f7fb; padding:12px 14px; overflow:auto; font-size:.88rem; line-height:1.45; }
+pre code { background:transparent; color:inherit; padding:0; }
+figure { margin:1rem 0 1.4rem; }
+img { max-width:100%; height:auto; border:1px solid var(--line); }
+figcaption { color:#3d4c5c; font-size:.88rem; margin-top:.35rem; }
+</style>
+</head>
+<body>
+<main>
+<h1>Normalización: de 1FN a BCNF</h1>
+<p><strong>Equipo:</strong> Harold Burgos, Sofía Camelo, Juan Triana <strong>Esquema:</strong> BD_MCS v1.3 · 24 tablas · base <code>inmobiliaria_mcs</code></p>
+<figure><img src="f3_diagrama_relacional.png" alt="Modelo relacional"><figcaption>Modelo relacional</figcaption></figure>
+<p>Revisamos el esquema forma por forma. No partimos tablas que ya cumplían. Abajo está el diseño que descartamos, la decisión que tomamos y cómo quedó el modelo. El detalle de dependencias está en <code>E3_modelo_relacional_normalizacion.md</code>. Los archivos JSON de esta carpeta repiten las mismas claves y dependencias en formato de tabla.</p>
+<hr>
+<h2>1FN — Valores atómicos</h2>
+<table><thead><tr><th>Criterio</th><th>Cumplimiento</th></tr></thead><tbody><tr><td>Cada celda un solo valor atómico</td><td>✅ 24/24 tablas</td></tr><tr><td>N:M y listas → filas en tablas puente</td><td><code>propiedad_propietarios</code>, <code>publicacion_canales</code>, <code>campana_propiedades</code>, <code>persona_roles</code></td></tr></tbody></table>
+<p><strong>Contraejemplo evitado:</strong> una fila de propiedad con columna <code>propietarios = "Ana, Luis"</code> y <code>canales = "Meta; web"</code>. Eso viola 1FN y rompe consultas.</p>
+<p><strong>Decisión:</strong> muchos valores = muchas filas con FK, no texto concatenado.</p>
+<hr>
+<h2>2FN — Sin dependencias parciales de la PK</h2>
+<table><thead><tr><th>Criterio</th><th>Cumplimiento</th></tr></thead><tbody><tr><td>PK compuesta solo en <code>persona_roles</code></td><td>Sin atributos no llave → no hay parcial</td></tr><tr><td>Puentes con PK subrogada</td><td>Solo FKs + id; sin descriptores que dependan de una FK suelta</td></tr><tr><td>Dueños</td><td><code>nombres</code> solo en <code>personas</code>, no en <code>propiedad_propietarios</code></td></tr></tbody></table>
+<p><strong>Resultado:</strong> 24/24 en <strong>2FN</strong>.</p>
+<hr>
+<h2>3FN — Sin dependencias transitivas de no primos</h2>
+<table><thead><tr><th>Hecho de negocio</th><th>Dónde vive (no copiado)</th></tr></thead><tbody><tr><td>Nombre de ciudad</td><td><code>ciudades</code> vía <code>propiedades.ciudad_id</code></td></tr><tr><td>Canal de una solicitud</td><td><code>solicitud → campana → canal</code> (R10)</td></tr><tr><td>Propiedad de una visita</td><td>solo vía <code>solicitud_id</code> (R8)</td></tr><tr><td>Rol del empleado</td><td><code>rol_empleado</code> vía <code>empleados.rol_id</code></td></tr></tbody></table>
+<p><strong><code>comision_valor</code> (R16):</strong> depende de <code>valor_final</code> y <code>comision_porcentaje</code>. No se digita: columna <strong>GENERATED</strong> en PostgreSQL. Se documenta como derivada; no se descompone a otra tabla.</p>
+<p><strong>Resultado:</strong> 24/24 en <strong>3FN</strong> (con nota documentada de la columna generada).</p>
+<hr>
+<h2>BCNF — Todo determinante es superclave</h2>
+<p>En las dependencias funcionales del proyecto, el lado izquierdo es siempre PK, candidata (UNIQUE) o clave natural de un puente.</p>
+<p>No hay DF del tipo “atributo no llave → otro atributo no llave”, salvo la comisión derivada (no almacenada como hecho editable).</p>
+<p><strong>Resultado:</strong> 24/24 en <strong>BCNF</strong> sin descomposiciones innecesarias.</p>
+<hr>
+<h2>Recorrido del diseño</h2>
+<pre><code>Diseño con listas en celdas           → viola 1FN
+  ↓ puentes y columnas atómicas
+1FN (24 tablas)
+  ↓ sin descriptores en PK compuesta / puentes
+2FN
+  ↓ ciudad, canal, rol, título por JOIN; visitas sin copiar propiedad
+3FN
+  ↓ determinantes = superclaves; comision_valor generada
+BCNF — BD_MCS v1.3</code></pre>
+<hr>
+
+</main>
+</body>
+</html>

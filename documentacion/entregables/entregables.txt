@@ -1,0 +1,71 @@
+1. Formulación del problema
+
+Entregable 1
+• Documento con la formulación de 2 a 3 páginas.
+• Título, contexto, problema, propósito y alcance.
+• Reglas de negocio iniciales.
+• Preguntas de información que deberá responder el sistema.
+
+2. Diseño del modelo conceptual ER/EER
+
+Entregable 2
+• Diagrama ER/EER completo.
+• Listado de reglas de negocio actualizadas.
+• Diccionario preliminar de entidades y atributos.
+• Breve justificación de las cardinalidades y de las construcciones EER utilizadas.
+
+
+3. Diseño del modelo relacional y normalización
+
+
+Entregable 3
+• Diagrama del modelo relacional normalizado.
+• Tabla de claves primarias y foráneas.
+• Dependencias funcionales identificadas.
+• Evidencia resumida del proceso 1FN → 2FN → 3FN → BCNF.
+
+4. Implementación en PostgreSQL 
+
+Entregable 4
+• Script DDL completo.
+• Script de carga de datos.
+• Script de consultas SQL, vistas, función/procedimiento y trigger.
+• Backup de la base de datos.
+• Breve documento que relacione cada consulta con la pregunta de información que resuelve
+
+5. Optimización y transacciones
+
+Entregable 5
+• Evidencia de planes de ejecución antes y después de la optimización.
+• Hipótesis técnica, cambio aplicado y conclusión.
+• Script o evidencia de la transacción.
+• Descripción del escenario de concurrencia y justificación del nivel de aislamiento.
+
+
+
+6. Implementación NoSQL 
+
+Entregable 6
+• Exportación o script de creación/carga de la colección MongoDB.
+• Breve justificación de por qué el componente seleccionado se modeló en NoSQL.
+
+7. Entrega técnica final
+
+La entrega final debe integrar y actualizar los productos de todas las etapas. El informe técnico deberá contener,
+como mínimo:
+• Contexto, problema, propósito y alcance.
+• Requerimientos y reglas de negocio.
+• Modelo conceptual ER/EER.
+• Modelo relacional y normalización.
+• Diccionario de datos.
+• Implementación PostgreSQL y restricciones.
+• Consultas SQL y resultados relevantes.
+• Prueba de optimización y análisis de planes de ejecución.
+• Escenario transaccional y de concurrencia.
+• Componente MongoDB.
+• Conclusiones técnicas y limitaciones.
+• Declaración de uso de inteligencia artificial, si aplica.
+
+La carpeta o repositorio del proyecto debe incluir scripts SQL, datos o scripts de carga, backup, archivos
+MongoDB y el informe técnico final
+

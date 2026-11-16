@@ -18,6 +18,8 @@ documentacion/          Guía del curso, formulación, diccionario y entregables
   06_informe_final_base_f6.md
   07_mongodb_nosql_f6.md
   evidencia/              Capturas para el PDF final (ver README)
+  entregables/            Carpetas E1–E7 (empaquetar entregas; ver entregables/README.md)
+  entregables.txt         Lista de requisitos por fase (guía del curso)
 codigo/modelos/         Diagramas ER/EER y relacional (draw.io + JSON)
 codigo/sql/             ... 03_consultas_f4.sql, 04_optimizacion_f5.sql, 05_transacciones_f5.sql
 codigo/mongodb/         01–03 scripts f6 + seguimiento_eventos_seed.json (Entregable 6)
