@@ -1,5 +1,7 @@
 # Entregables del proyecto MCS
 
+**👉 Empiece por [`LEER_PARA_LA_PROFE.md`](LEER_PARA_LA_PROFE.md)** (ruta de lectura y diferencia entre entregables y resto del repo).
+
 **Equipo:** Harold Burgos, Sofía Camelo, Juan Triana  
 **Bases:** PostgreSQL `inmobiliaria_mcs` y MongoDB `inmobiliaria_mcs_mongo`
 
