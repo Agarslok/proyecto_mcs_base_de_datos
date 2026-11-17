@@ -47,15 +47,15 @@ LIMIT 5;
 -- Reemplace <oferta_id> y <empleado_id> en el bloque siguiente.
 
 -- Paso B: transacción explícita (todo o nada)
--- Sustituya 999 y 4 por valores del SELECT anterior si aplica.
+-- La oferta 61 está aceptada y su propiedad (22) todavía no tiene cierre.
 
 
 BEGIN;
 
 SELECT registrar_cierre(
-    p_oferta_id           => 16,          -- oferta aceptada sin transacción
+    p_oferta_id           => 61,          -- aceptada, propiedad 22, sin cierre previo
     p_empleado_id         => 4,
-    p_valor_final         => 250000000,
+    p_valor_final         => 1038000000,
     p_comision_porcentaje => 3.5,
     p_fecha_inicio        => CURRENT_DATE,
     p_fecha_fin           => NULL,
@@ -66,7 +66,7 @@ SELECT p.propiedad_id, p.titulo, p.estado_comercial, s.estado AS estado_solicitu
 FROM ofertas o
 JOIN solicitudes_propiedad s ON s.solicitud_id = o.solicitud_id
 JOIN propiedades p           ON p.propiedad_id = s.propiedad_id
-WHERE o.oferta_id = 16;
+WHERE o.oferta_id = 61;
 
 COMMIT;
 
@@ -100,6 +100,9 @@ BEGIN
   EXCEPTION
     WHEN OTHERS THEN
       GET STACKED DIAGNOSTICS v_err = MESSAGE_TEXT;
+      IF v_err NOT LIKE 'R12:%' THEN
+        RAISE;
+      END IF;
       RAISE NOTICE 'ROLLBACK implícito OK: %', v_err;
   END;
 
@@ -145,6 +148,22 @@ BEGIN
     END IF;
 
     PERFORM 1 FROM propiedades WHERE propiedad_id = v_propiedad_id FOR UPDATE;
+
+    IF EXISTS (
+        SELECT 1 FROM propiedades
+        WHERE propiedad_id = v_propiedad_id
+          AND estado_comercial = 'vendida'
+    ) OR EXISTS (
+        SELECT 1
+        FROM transacciones t
+        JOIN ofertas o ON o.oferta_id = t.oferta_id
+        JOIN solicitudes_propiedad s ON s.solicitud_id = o.solicitud_id
+        WHERE s.propiedad_id = v_propiedad_id
+          AND t.estado <> 'anulada'
+    ) THEN
+        RAISE EXCEPTION
+            'R12: la propiedad % ya tiene un cierre vigente', v_propiedad_id;
+    END IF;
 
     SELECT registrar_cierre(
         p_oferta_id, p_empleado_id, p_valor_final, p_comision_porcentaje,

@@ -244,5 +244,5 @@ Un hilo continuo: problema, modelo conceptual, 24 tablas en BCNF, base PostgreSQ
 - Regla R6 en el diagrama y en `solicitudes_propiedad`.
 - Consulta de inventario, de campañas o de antigüedad sin cierre.
 - Plan EXPLAIN de la consulta 7: Seq Scan, y por qué el índice igual se justifica.
-- COMMIT de la oferta 16 y rechazo de la oferta 1.
+- COMMIT de la oferta 61 (propiedad 22, sin cierre previo) y rechazo de la oferta 1.
 - Colección `seguimiento_eventos` y el conteo por canal.

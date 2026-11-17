@@ -136,10 +136,33 @@ BEGIN
       JOIN solicitudes_propiedad s ON s.solicitud_id = o.solicitud_id
      WHERE o.oferta_id = NEW.oferta_id;
 
+    IF NEW.estado = 'anulada' THEN
+        RETURN NEW;
+    END IF;
+
     IF v_estado_oferta IS DISTINCT FROM 'aceptada' THEN
         RAISE EXCEPTION
             'R12: la transacción exige oferta aceptada (oferta_id=%, estado=%)',
             NEW.oferta_id, v_estado_oferta;
+    END IF;
+
+    IF EXISTS (
+        SELECT 1
+        FROM transacciones t
+        JOIN ofertas o ON o.oferta_id = t.oferta_id
+        JOIN solicitudes_propiedad s ON s.solicitud_id = o.solicitud_id
+        WHERE s.propiedad_id = v_propiedad_id
+          AND t.estado <> 'anulada'
+          AND t.oferta_id <> NEW.oferta_id
+    ) OR EXISTS (
+        SELECT 1
+        FROM propiedades p
+        WHERE p.propiedad_id = v_propiedad_id
+          AND p.estado_comercial = 'vendida'
+    ) THEN
+        RAISE EXCEPTION
+            'R12: la propiedad % ya tiene un cierre vigente',
+            v_propiedad_id;
     END IF;
 
     UPDATE solicitudes_propiedad
@@ -152,8 +175,7 @@ BEGIN
       FROM publicaciones pub
       JOIN tipos_operacion t ON t.tipo_operacion_id = pub.tipo_operacion_id
      WHERE pub.propiedad_id = v_propiedad_id
-     ORDER BY CASE WHEN t.nombre = 'venta' THEN 0 ELSE 1 END,
-              pub.fecha_publicacion DESC
+     ORDER BY pub.publicada DESC, pub.fecha_publicacion DESC
      LIMIT 1;
 
     IF v_tipo = 'venta' THEN

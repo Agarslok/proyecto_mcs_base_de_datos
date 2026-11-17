@@ -16,7 +16,7 @@
 | Tiempos y planes en texto | ✅ `results/time.txt` |
 | EXPLAIN antes (consulta 7) | ✅ captura `f5_explain_7_antes.png` + bloque A1 |
 | EXPLAIN después (consulta 9 reescrita) | ✅ `f5_explain_9_despues.png` + bloque D |
-| Transacción COMMIT oferta 16 | ✅ `f5_transaccion_commit_16.png`, `_02.png` |
+| Transacción COMMIT oferta 61 | Falta volver a capturar. Las de la oferta 16 muestran un segundo cierre de la propiedad 3 |
 | ROLLBACK / atomicidad oferta 1 | ✅ `f5_transaccion_rollback_do.png` |
 | Concurrencia + aislamiento | ✅ comentarios en `05` §4–5; función `cerrar_venta_con_bloqueo` |
 

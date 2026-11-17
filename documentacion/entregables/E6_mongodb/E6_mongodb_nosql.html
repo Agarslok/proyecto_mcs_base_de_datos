@@ -38,8 +38,7 @@ figcaption { color:#3d4c5c; font-size:.88rem; margin-top:.35rem; }
 <h2>1. Por qué este fragmento va en NoSQL (y no en PostgreSQL)</h2>
 <p>En el modelo relacional las visitas son una actividad con fecha, duración y calificación. En la operación el asesor registra además:</p>
 <ul><li>mensajes de <strong>WhatsApp</strong> con texto libre y metadatos variables;</li><li><strong>llamadas</strong> sin visita presencial;</li><li><strong>notas internas</strong> con campos opcionales (sentimiento, URL de adjunto, duración).</li></ul>
-<p>El esquema cambia según el canal y el historial crece sin tocar la tabla <code>visitas</code>. Por eso este fragmento vive en MongoDB: documentos con <code>contenido</code> y <code>metadata</code> flexibles, y los mismos <code>solicitud_id</code>, <code>persona_id</code> y <code>propiedad_id</code> de PostgreSQL.</p>
-<p>No copiamos personas, propiedades ni campañas. Solo guardamos esos identificadores para cruzar después los dos sistemas.</p>
+<p>El esquema cambia según el canal y el historial crece sin tocar la tabla <code>visitas</code>. Por eso este fragmento vive en MongoDB: documentos con <code>contenido</code> y <code>metadata</code> flexibles. Cada evento usa el <code>solicitud_id</code> de PostgreSQL y, con él, el <code>persona_id</code> y el <code>propiedad_id</code> de esa misma solicitud. No copiamos nombres, precios ni el canal de la campaña.</p>
 <hr>
 <h2>2. Diseño del documento</h2>
 <pre><code>{
@@ -63,7 +62,7 @@ figcaption { color:#3d4c5c; font-size:.88rem; margin-top:.35rem; }
 <table><thead><tr><th>Campo</th><th>Obligatorio</th><th>Descripción</th></tr></thead><tbody><tr><td><code>solicitud_id</code></td><td>sí</td><td>FK lógica → <code>solicitudes_propiedad</code></td></tr><tr><td><code>persona_id</code></td><td>sí</td><td>Prospecto</td></tr><tr><td><code>propiedad_id</code></td><td>sí</td><td>Inmueble de la oportunidad</td></tr><tr><td><code>canal</code></td><td>sí</td><td><code>whatsapp</code>, <code>llamada</code>, <code>email</code>, <code>nota_interna</code>, <code>feria</code></td></tr><tr><td><code>direccion</code></td><td>sí</td><td><code>entrante</code> / <code>saliente</code> / <code>interno</code></td></tr><tr><td><code>empleado_id</code></td><td>no</td><td>Asesor que registró o atendió</td></tr><tr><td><code>ocurrio_en</code></td><td>sí</td><td>Fecha del hecho</td></tr><tr><td><code>contenido</code></td><td>sí</td><td>Subdocumento variable por canal</td></tr><tr><td><code>metadata</code></td><td>no</td><td>Extensión sin migración de esquema</td></tr></tbody></table>
 <hr>
 <h2>3. Índices</h2>
-<table><thead><tr><th>Índice</th><th>Campos</th><th>Uso</th></tr></thead><tbody><tr><td><code>idx_solicitud_fecha</code></td><td><code>{ solicitud_id: 1, ocurrio_en: -1 }</code></td><td>Timeline de una oportunidad (pregunta 4–5 ampliada)</td></tr><tr><td><code>idx_canal_fecha</code></td><td><code>{ canal: 1, ocurrio_en: -1 }</code></td><td>Agregación por canal (complemento pregunta 6)</td></tr></tbody></table>
+<table><thead><tr><th>Índice</th><th>Campos</th><th>Uso</th></tr></thead><tbody><tr><td><code>idx_solicitud_fecha</code></td><td><code>{ solicitud_id: 1, ocurrio_en: -1 }</code></td><td>Timeline de una oportunidad (pregunta 4–5 ampliada)</td></tr><tr><td><code>idx_canal_fecha</code></td><td><code>{ canal: 1, ocurrio_en: -1 }</code></td><td>Contar eventos de seguimiento por canal. No es el canal de marketing de PostgreSQL</td></tr></tbody></table>
 <hr>
 <h2>4. Cómo ejecutar en su máquina</h2>
 <h3>Opción A — mongosh</h3>
@@ -81,7 +80,7 @@ load("codigo/mongodb/03_agregaciones_f6.js")</code></pre>
 <hr>
 <h2>6. Dos agregaciones (archivo <code>03_agregaciones_f6.js</code>)</h2>
 <table><thead><tr><th>#</th><th>Pregunta de negocio</th><th>Pipeline</th></tr></thead><tbody><tr><td>A1</td><td>¿Qué <strong>canales</strong> concentran más <strong>eventos</strong> de seguimiento?</td><td><code>$group</code> por <code>canal</code> + <code>$sort</code></td></tr><tr><td>A2</td><td>¿Qué <strong>oportunidades</strong> (<code>solicitud_id</code>) tienen más interacciones registradas?</td><td><code>$group</code> + <code>$sort</code> + <code>$limit</code></td></tr></tbody></table>
-<p>Estas dos agregaciones complementan las preguntas de seguimiento y de campañas: las visitas siguen en PostgreSQL; aquí contamos el resto de contactos.</p>
+<p>Estas agregaciones cuentan el seguimiento que no es una visita. No responden la pregunta 6: allí el canal es Meta Ads, feria o referidos. Aquí el canal es WhatsApp, llamada, correo, nota interna o feria.</p>
 <hr>
 <h2>7. Lo que vimos al cargar la colección</h2>
 <p>Cargamos 36 eventos con <code>scripts/seguimiento_eventos_seed.json</code>. Las fechas quedaron como fecha de MongoDB, no como texto.</p>

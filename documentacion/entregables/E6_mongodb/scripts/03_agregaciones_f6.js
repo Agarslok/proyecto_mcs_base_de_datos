@@ -48,16 +48,15 @@ printjson(
     .toArray()
 );
 
-// Extra — eventos últimos 60 días por canal (muestra índice idx_canal_fecha)
-const desde = new Date();
-desde.setDate(desde.getDate() - 60);
-print('=== Extra: eventos por canal (últimos 60 días) ===');
+// Extra — mismos eventos del seed (marzo y abril de 2026), no "últimos 60 días"
+// desde hoy: esas fechas ya quedaron fuera de esa ventana.
+print('=== Extra: eventos por canal en el periodo del seed (desde 2026-03-01) ===');
 printjson(
   coll
     .aggregate([
-      { $match: { ocurrio_en: { $gte: desde } } },
+      { $match: { ocurrio_en: { $gte: new Date('2026-03-01T00:00:00Z') } } },
       { $group: { _id: '$canal', total: { $sum: 1 } } },
-      { $sort: { total: -1 } },
+      { $sort: { total: -1, _id: 1 } },
     ])
     .toArray()
 );

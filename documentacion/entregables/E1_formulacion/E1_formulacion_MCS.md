@@ -93,7 +93,7 @@ Reglas de apoyo (no sustituyen las 12; evitan ambigüedad al implementar):
 | R13 | Una persona puede ser a la vez propietario y prospecto; los roles viven en `persona_roles`. |
 | R14 | La publicación lleva tipo de operación (venta o arriendo) y el precio vigente. |
 | R15 | Según el tipo de inmueble, la propiedad puede tener detalle de construcción, de terreno, o ambos (casa sobre lote). |
-| R16 | El valor de comisión se deriva de `valor_final * comision_porcentaje`; no se digitá aparte. |
+| R16 | El valor de comisión se deriva de `valor_final * comision_porcentaje`; no se digita aparte. El motor la redondea a dos decimales. |
 
 ## 6. Preguntas de información
 

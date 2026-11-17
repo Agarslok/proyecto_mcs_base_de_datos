@@ -39,7 +39,7 @@
 | **2** | `02_modelo_conceptual.md` + `modelo_conceptual_2.1.drawio` | Figura ER/EER; cardinalidades; R6: la solicitud es prospecto + propiedad, el dueño va en `propiedad_propietarios`. | ✅ `f2_diagrama_conceptual.png` |
 | **3** | `03_modelo_relacional_normalizacion_f3.md` + `modelo_relacional_2.0.drawio` | Figura relacional v1.3 (24 tablas); PK/FK; 1FN→BCNF; `comision_valor` generada. | ✅ `f3_diagrama_relacional.png` |
 | **4** | `00–03` SQL + `04_consultas_vs_preguntas_f4.md` | Orden de ejecución; consultas 1, 6 y 9; conteos ≥50; backup `codigo/backup/inmobiliaria_mcs_f4.sql`. | ✅ `f4_*` y `Carga_03.png` |
-| **5** | `05_optimizacion_transacciones_f5.md` + `results/time.txt` + SQL `04–05` | EXPLAIN consulta 7 (antes) y 9 reescrita (después); COMMIT oferta 16; ROLLBACK oferta 1. | ✅ `f5_*` + `time.txt` |
+| **5** | `05_optimizacion_transacciones_f5.md` + `results/time.txt` + SQL `04–05` | EXPLAIN consulta 7 (antes) y 9 reescrita (después); COMMIT oferta 61; ROLLBACK oferta 1. Las capturas de la oferta 16 quedaron viejas. | ✅ `f5_*` + `time.txt` |
 | **6** | `07_mongodb_nosql_f6.md` + `codigo/mongodb/*.js` + `seguimiento_eventos_seed.json` | Justificación; **36** eventos; 2 índices; CRUD `02`; agregaciones A1/A2. | ✅ `f6_mongo_compass_coleccion.png`, `f6_agregacion_canales.png`, `f6_agregacion_top_solicitudes.png` |
 
 ---
@@ -58,7 +58,7 @@ Instrucciones completas en [`evidencia/README.md`](evidencia/README.md). Resumen
 | 4 | Consultas representativas | Al menos **pregunta 1**, **6** y **9** (JOIN/agregación/ventana). |
 | 5 | Backup E4 | Propiedades del archivo `inmobiliaria_mcs_f4.sql` o ventana Backup completada. |
 | 6 | Fase 5 optimización | Fragmento de `EXPLAIN ANALYZE` con **Planning Time** y **Execution Time** (consulta 7 u 9). |
-| 7 | Fase 5 transacciones | Bloque 2: `nueva_transaccion_id` + filas propiedad/solicitud tras COMMIT (oferta 16). |
+| 7 | Fase 5 transacciones | Bloque 2: `nueva_transaccion_id` + filas propiedad/solicitud tras COMMIT (oferta 61, propiedad 22). |
 | 8 | Fase 5 transacciones | Bloque 3: los dos `NOTICE` (R12 + atomicidad oferta 1). |
 
 ### MongoDB (Compass o mongosh)
@@ -81,14 +81,14 @@ Instrucciones completas en [`evidencia/README.md`](evidencia/README.md). Resumen
 | 7 antes | 0.298 ms | Seq Scan dominante |
 | 7 después índices | 0.428 ms | Sin mejora con N pequeño |
 | 9 antes | 0.352 ms | NOT IN |
-| 9 después índices | 0.264 ms | ~25 % mejor |
+| 9 después índices | 0.264 ms | décimas de ms; ruido a este volumen |
 | 9 reescrita NOT EXISTS | 0.422 ms | Hash Anti Join; mejor planificación |
 
 Texto listo para informe: ver §1 de `05_optimizacion_transacciones_f5.md`.
 
 ### Transacciones (ejecutadas por el equipo)
 
-**Bloque 2 — COMMIT correcto (oferta 16, propiedad 3):**
+**Bloque 2 — COMMIT correcto (oferta 61, solicitud 64, propiedad 22):**
 
 - `registrar_cierre(16, …)` con `valor_final` distinto de `valor_ofertado` es válido.
 - Antes del cierre, el listado de “aceptadas sin transacción” podía mostrar `estado_comercial = vendida` si **otra** oferta de la misma propiedad ya cerró (múltiples ofertas aceptadas en datos demo).
@@ -175,7 +175,7 @@ Hipótesis, índices `idx_*`, conclusión honesta sobre volumen académico vs pr
 - [x] Scripts en `codigo/sql/` y `codigo/mongodb/`  
 - [x] Backup `inmobiliaria_mcs_f4.sql`  
 - [x] Capturas MongoDB en `documentacion/evidencia/f6_*.png`  
-- [x] Capturas PostgreSQL `f0_*`, `f4_*`, `f5_*` (el cierre de la oferta 16 está en `f5_transaccion_commit_16.png` y `_02.png`)  
+- [ ] Volver a capturar el COMMIT de la oferta 61. `f5_transaccion_commit_16.png` y `_02.png` muestran un segundo cierre de la propiedad 3 y no van en el informe. Recortar el panel izquierdo de pgAdmin en las que muestren otras bases.  
 - [ ] Informe técnico en Word o PDF (ensamblar desde este archivo)  
 
 ---

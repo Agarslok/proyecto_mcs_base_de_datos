@@ -174,7 +174,9 @@ FROM inicio_comercial
 ORDER BY dias_en_comercializacion DESC, propiedad_id;
 
 -- -----------------------------------------------------------------------------
--- D. Reescritura semántica de la consulta 9 (anti-join en lugar de NOT IN)
+-- D. Otra forma de la consulta 9 (anti-join en lugar de NOT IN)
+-- No es la misma consulta: el MIN usa FILTER (WHERE publicada).
+-- La pregunta 9 oficial sigue en 03_consultas_f4.sql.
 -- Útil ante crecimiento del volumen: NOT IN + subconsulta correlacionada
 -- a menudo favorece Hash Anti Join con índices en la cadena oferta→transacción.
 -- -----------------------------------------------------------------------------

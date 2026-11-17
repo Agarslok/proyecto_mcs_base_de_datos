@@ -22,7 +22,7 @@ Mediciones tomadas en PostgreSQL sobre `inmobiliaria_mcs` (carga E4: ~52 propied
 | 7 | Antes (A1) | 2.540 ms | **0.298 ms** | `GroupAggregate` → cadena `Hash Right Join`; **Seq Scan** en `visitas`, `ofertas`, `solicitudes_propiedad`, `propiedades` |
 | 7 | Después índices (C1) | 1.175 ms | 0.428 ms | Misma estructura; el optimizador mantiene **Seq Scan** (tablas &lt; 1 página) |
 | 9 | Antes (A2) | 1.705 ms | **0.352 ms** | `Incremental Sort` → `WindowAgg` → `HashAggregate`; anti-filtro **NOT IN** vía **Hash Join** (SubPlan hashed) + **Seq Scan** |
-| 9 | Después índices (C2) | 1.929 ms | **0.264 ms** | Sigue **NOT IN** / SubPlan; coste estimado baja (≈ 52 → 32 en la raíz); ejecución **~25 % más rápida** que A2 |
+| 9 | Después índices (C2) | 1.929 ms | **0.264 ms** | Sigue **NOT IN**. La diferencia son décimas de milisegundo: con 50–90 filas es ruido, no una mejora de escala |
 | 9 reescrita NOT EXISTS (D) | Después | **0.642 ms** | 0.422 ms | **Hash Anti Join** + `HashAggregate` en CTE `cerradas`; **Index Scan** `pk_ciudades` con **Memoize**; `MIN` con `FILTER (WHERE publicada)` |
 
 **Lectura honesta para el informe:** con este volumen, todas las ejecuciones están por debajo de **0,5 ms**. No hay órdenes de magnitud de mejora: el valor de los índices es **selectividad y escala** (miles de filas en solicitudes/visitas), no microsegundos en la demo. La consulta 7 **no ganó** tiempo tras indexar porque el motor prefiere **Seq Scan** cuando cada tabla cabe en pocas páginas de buffer.
@@ -53,7 +53,7 @@ Identifica propiedades **sin cierre** y calcula antigüedad con `MIN(fecha_publi
 
 **Hipótesis:** el filtro `NOT IN (subconsulta de cierres)` obliga a materializar el conjunto de `propiedad_id` cerrados y comparar contra todas las propiedades. Índices en la cadena `ofertas(solicitud_id)` → `transacciones(oferta_id)` aceleran la subconsulta; el índice parcial `idx_publicaciones_propiedad_pub` favorece el `MIN(fecha_publicacion)` solo en avisos activos.
 
-**Cambio aplicado:** mismos índices + **reescritura** a `NOT EXISTS` / CTE `cerradas` (sección D del script 04), alineada al contrato de la pregunta 9 (solo publicaciones con `publicada = TRUE` en el `MIN` mediante `FILTER`).
+**Cambio aplicado:** mismos índices + **reescritura** a `NOT EXISTS` / CTE `cerradas` (sección D del script 04). Esa reescritura **no** es la pregunta 9: el `MIN` usa `FILTER (WHERE publicada)`. La consulta oficial sigue en `03_consultas_f4.sql`. Los tiempos de las capturas y de `time.txt` son dos ejecuciones; no se comparan milisegundo a milisegundo.
 
 **Conclusión medida:** con índices, la 9 original pasa de 0.352 ms a **0.264 ms**; la reescritura (D) mejora sobre todo **planificación** (0.642 ms vs 1.7 ms) y el tipo de join (**Hash Anti Join**). Adoptar la versión D como consulta oficial de la pregunta 9 en el informe final.
 

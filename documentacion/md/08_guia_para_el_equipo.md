@@ -90,7 +90,7 @@ Conteos de esa carga (captura `f4_conteos_tablas.png`), **antes** del cierre ext
 | ofertas | 61 |
 | transacciones | 18 |
 
-Después de cerrar la oferta 16, `transacciones` queda en **19**. Por eso el conteo y el cierre no tienen el mismo número: se tomaron en ese orden.
+El script de transacciones cierra ahora la oferta **61** (solicitud 64, propiedad 22), que no tenía cierre. Después de ese `COMMIT`, `transacciones` queda en **19**. El conteo de la fase 4 se tomó antes, con 18. La oferta 16 no se usa: la propiedad 3 ya estaba vendida con la oferta 14.
 
 ### `03_consultas_f4.sql`
 
@@ -129,9 +129,8 @@ La captura `f5_explain_7_antes.png` es el plan de la 7 **antes** de crear los í
 
 La operación que debe ser atómica es el **cierre**: insertar la transacción, marcar la solicitud como ganada y actualizar el estado de la propiedad. O pasan las tres cosas, o no pasa ninguna.
 
-- **COMMIT (oferta 16).** La oferta 16 ya estaba `aceptada` y no tenía fila en `transacciones`. `registrar_cierre(16, …)` con valor final 250.000.000 y comisión 3,5 % inserta el cierre. El trigger pone la solicitud en `ganada` y la propiedad **3** (“Local comercial en Teusaquillo…”) en `vendida`.  
-  - `f5_transaccion_commit_16.png` muestra el `COMMIT` en Messages.  
-  - `f5_transaccion_commit_16_02.png` muestra el `SELECT` de verificación: `estado_comercial = vendida` y `estado_solicitud = ganada`.  
+- **COMMIT (oferta 61).** La oferta 61 está `aceptada`, es la solicitud 64 y la propiedad 22, y no tenía fila en `transacciones`. `registrar_cierre(61, …)` con valor final 1.038.000.000 y comisión 3,5 % inserta el cierre. El valor es el de la oferta 61, pegado al precio de la casa en Manila. El trigger pone esa solicitud en `ganada` y la propiedad según el aviso vigente. La oferta 16 queda fuera: la propiedad 3 ya se cerró con la oferta 14.  
+  Esas capturas hay que tomarlas de nuevo: `f5_transaccion_commit_16.png` y `_02.png` son el cierre viejo de la oferta 16. El SELECT debe mostrar la propiedad 22, casa en Manila, `vendida` y la solicitud `ganada`.  
   No se vuelve a ejecutar el `BEGIN`. La oferta ya está cerrada.
 
 - **ROLLBACK (oferta 1).** La oferta 1 está `pendiente`. El bloque `DO` intenta cerrarla, el trigger lanza el error de la regla R12 y no queda fila en `transacciones`. En Messages se leen los dos avisos:  
@@ -144,7 +143,7 @@ La operación que debe ser atómica es el **cierre**: insertar la transacción, 
 - **Atomicidad:** el cierre inválido no deja una transacción a medias.
 - **Consistencia:** no se puede cerrar una oferta que no está aceptada, y un cierre válido deja solicitud y propiedad alineadas.
 - **Aislamiento:** la función `cerrar_venta_con_bloqueo` (mismo archivo, más abajo) hace `FOR UPDATE` sobre la solicitud y la propiedad para que dos sesiones no cierren a la vez dos ofertas de la misma propiedad y dejen el estado contradictorio. El nivel adecuado para ese caso es el de la transacción que toma el bloqueo de fila; el aislamiento por defecto de PostgreSQL es `READ COMMITTED`, y el `FOR UPDATE` es lo que evita la condición de carrera.
-- **Durabilidad:** después del `COMMIT`, el cierre de la oferta 16 permanece aunque se cierre pgAdmin.
+- **Durabilidad:** después del `COMMIT`, el cierre de la oferta 61 permanece aunque se cierre pgAdmin.
 
 ---
 
@@ -166,7 +165,7 @@ Todas están en `documentacion/evidencia/`.
 | `f4_backup_propiedades.png` | El respaldo `inmobiliaria_mcs_f4.sql` está en `codigo/backup/` (14/11/2026) |
 | `f5_explain_7_antes.png` | Plan de la consulta 7 antes de los índices: Seq Scan, con Planning Time y Execution Time |
 | `f5_explain_9_despues.png` | Plan de la consulta 9 reescrita (`NOT EXISTS`): Index Scan en `pk_ciudades` |
-| `f5_transaccion_commit_16.png` | El cierre de la oferta 16 hizo `COMMIT` |
+| `f5_transaccion_commit_16.png` | Corrida vieja. No usarla: cierra otra vez la propiedad 3. El script ahora usa la oferta 61 |
 | `f5_transaccion_commit_16_02.png` | Después de ese cierre, la propiedad 3 está `vendida` y la solicitud `ganada` |
 | `f5_transaccion_rollback_do.png` | La oferta 1 (pendiente) no se cerró y no dejó fila |
 | `f6_mongo_compass_coleccion.png` | 36 eventos en `seguimiento_eventos`, con fecha de tipo fecha |

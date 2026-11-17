@@ -5,7 +5,7 @@
 
 ![Modelo conceptual](f2_diagrama_conceptual.png)
 
-El diagrama está en `modelo_conceptual_2.1.drawio`. A partir de este modelo pasamos al relacional BD_MCS v1.3.
+El archivo del diagrama se llama `modelo_conceptual_2.1.drawio`. El contenido es la versión 2.3 del modelo. A partir de ahí pasamos al relacional, archivo `modelo_relacional_2.0.drawio`, versión BD_MCS v1.3. El número del archivo no es la versión del modelo.
 
 ## 1. Lectura del modelo
 

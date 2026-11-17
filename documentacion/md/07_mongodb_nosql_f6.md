@@ -16,7 +16,7 @@ En E2 se dejó explícito: el núcleo relacional modela **visitas** como activid
 
 Eso es **semiestructurado e histórico**: el esquema cambia por canal y el volumen de eventos crece sin alterar `visitas` ni romper 1FN con columnas JSON en Postgres (posible, pero el curso pide un componente documental **separado**).
 
-MongoDB almacena **eventos de seguimiento omnicanal** con documentos flexibles (`contenido`, `metadata`) y referencia `solicitud_id`, `persona_id`, `propiedad_id` alineados a la BD relacional.
+MongoDB almacena **eventos de seguimiento omnicanal** con documentos flexibles (`contenido`, `metadata`). Cada evento usa el `solicitud_id` de PostgreSQL y el `persona_id` y `propiedad_id` de esa misma solicitud. El canal del evento (WhatsApp, llamada, correo) no es el canal de marketing de la pregunta 6.
 
 **No se replica:** tablas `personas`, `propiedades`, `campanas`, etc. Solo se guardan IDs para cruzar en consultas híbridas (informe o BI futuro).
 
@@ -64,7 +64,7 @@ MongoDB almacena **eventos de seguimiento omnicanal** con documentos flexibles (
 | Índice | Campos | Uso |
 |--------|--------|-----|
 | `idx_solicitud_fecha` | `{ solicitud_id: 1, ocurrio_en: -1 }` | Timeline de una oportunidad (pregunta 4–5 ampliada) |
-| `idx_canal_fecha` | `{ canal: 1, ocurrio_en: -1 }` | Agregación por canal (complemento pregunta 6) |
+| `idx_canal_fecha` | `{ canal: 1, ocurrio_en: -1 }` | Eventos de seguimiento por canal. No es el canal de marketing de la pregunta 6 |
 
 ---
 

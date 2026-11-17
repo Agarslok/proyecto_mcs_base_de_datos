@@ -15,9 +15,9 @@ En el modelo relacional las visitas son una actividad con fecha, duración y cal
 - **llamadas** sin visita presencial;
 - **notas internas** con campos opcionales (sentimiento, URL de adjunto, duración).
 
-El esquema cambia según el canal y el historial crece sin tocar la tabla `visitas`. Por eso este fragmento vive en MongoDB: documentos con `contenido` y `metadata` flexibles, y los mismos `solicitud_id`, `persona_id` y `propiedad_id` de PostgreSQL.
+El esquema cambia según el canal y el historial crece sin tocar la tabla `visitas`. Por eso este fragmento vive en MongoDB: documentos con `contenido` y `metadata` flexibles.
 
-No copiamos personas, propiedades ni campañas. Solo guardamos esos identificadores para cruzar después los dos sistemas.
+Cada evento usa el `solicitud_id` de PostgreSQL y, con él, el `persona_id` y el `propiedad_id` de esa misma solicitud. No copiamos nombres, precios ni el canal de la campaña.
 
 ---
 
@@ -63,7 +63,7 @@ No copiamos personas, propiedades ni campañas. Solo guardamos esos identificado
 | Índice | Campos | Uso |
 |--------|--------|-----|
 | `idx_solicitud_fecha` | `{ solicitud_id: 1, ocurrio_en: -1 }` | Timeline de una oportunidad (pregunta 4–5 ampliada) |
-| `idx_canal_fecha` | `{ canal: 1, ocurrio_en: -1 }` | Agregación por canal (complemento pregunta 6) |
+| `idx_canal_fecha` | `{ canal: 1, ocurrio_en: -1 }` | Contar eventos de seguimiento por canal. No es el canal de marketing de PostgreSQL |
 
 ---
 
@@ -106,7 +106,7 @@ Demuestra **C**reate, **R**ead, **U**pdate, **D**elete sobre la misma colección
 | A1 | ¿Qué **canales** concentran más **eventos** de seguimiento? | `$group` por `canal` + `$sort` |
 | A2 | ¿Qué **oportunidades** (`solicitud_id`) tienen más interacciones registradas? | `$group` + `$sort` + `$limit` |
 
-Estas dos agregaciones complementan las preguntas de seguimiento y de campañas: las visitas siguen en PostgreSQL; aquí contamos el resto de contactos.
+Estas agregaciones cuentan el seguimiento que no es una visita. No responden la pregunta 6: allí el canal es Meta Ads, feria o referidos. Aquí el canal es WhatsApp, llamada, correo, nota interna o feria.
 
 ---
 

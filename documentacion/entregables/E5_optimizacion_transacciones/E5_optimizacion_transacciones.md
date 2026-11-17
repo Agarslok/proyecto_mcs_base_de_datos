@@ -14,7 +14,7 @@ La carga de la fase 4 tiene cerca de 52 propiedades, 65 solicitudes, 88 visitas 
 | 7 | Antes (A1) | 2.540 ms | 0.298 ms | GroupAggregate y Hash Join; Seq Scan en visitas, ofertas, solicitudes y propiedades |
 | 7 | Después de índices (C1) | 1.175 ms | 0.428 ms | La misma estructura; el optimizador mantiene Seq Scan |
 | 9 | Antes (A2) | 1.705 ms | 0.352 ms | Ventana RANK y anti-filtro NOT IN con Hash Join y Seq Scan |
-| 9 | Después de índices (C2) | 1.929 ms | 0.264 ms | Sigue NOT IN; la ejecución bajó cerca de un 25 % |
+| 9 | Después de índices (C2) | 1.929 ms | 0.264 ms | Sigue NOT IN. La diferencia son décimas de milisegundo: con este volumen es ruido de caché, no una mejora de escala |
 | 9 reescrita con NOT EXISTS (D) | Después | 0.642 ms | 0.422 ms | Hash Anti Join e Index Scan sobre pk_ciudades |
 
 ![Plan de la consulta 7 antes de los índices](evidencia/f5_explain_7_antes.png)
@@ -37,7 +37,9 @@ Lista propiedades sin cierre y calcula antigüedad con la fecha de publicación 
 
 El `NOT IN` materializa los `propiedad_id` ya cerrados. Los índices de la cadena oferta → transacción aceleran esa subconsulta. El índice parcial `idx_publicaciones_propiedad_pub` apoya el mínimo de `fecha_publicacion` solo en avisos activos.
 
-Además reescribimos el filtro como `NOT EXISTS` sobre una CTE `cerradas`, y el mínimo de fecha solo considera publicaciones vigentes. Con índices, la versión original bajó de 0.352 ms a 0.264 ms. La reescritura baja sobre todo el tiempo de planificación (0.642 ms frente a 1.7 ms) y el plan pasa a Hash Anti Join. Esa es la versión que dejamos para la pregunta 9.
+Reescribimos el filtro como `NOT EXISTS` sobre una CTE `cerradas`. Esa versión no es la misma consulta: el mínimo de fecha solo cuenta publicaciones vigentes (`FILTER (WHERE publicada)`). La pregunta 9, en el script de consultas, sigue usando la primera fecha de publicación, vigente o no. La reescritura sirve para ver otro plan (Hash Anti Join y menos tiempo de planificación). No la sustituimos como respuesta oficial de la pregunta 9.
+
+Los tiempos de las capturas no coinciden con esta tabla. Son otra ejecución en la misma máquina. Lo que se compara es el tipo de plan, no el milisegundo exacto.
 
 ## 3. Índices
 
@@ -64,11 +66,9 @@ Registrar un cierre no es un solo INSERT. Al insertar en `transacciones`, el tri
 
 `registrar_cierre` hace el INSERT. El trigger corre en la misma transacción que abre el cliente con `BEGIN` y cierra con `COMMIT`. Si la oferta no está aceptada, la operación falla y no queda fila en `transacciones`.
 
-Lo comprobamos con la oferta 16 (cierre correcto: propiedad 3 queda `vendida` y la solicitud `ganada`) y con la oferta 1, que está `pendiente`: el motor avisa que la regla R12 rechazó el cierre y que no quedó transacción.
+El ejemplo de cierre correcto es la oferta 61 (solicitud 64, propiedad 22). Esa propiedad todavía no tiene otro cierre. La oferta 16 no sirve: es de la propiedad 3, que ya quedó cerrada con la oferta 14. La oferta 1 está `pendiente`: el motor avisa que la regla R12 rechazó el cierre y que no quedó fila. El aviso solo cuenta si el mensaje empieza por R12.
 
-![Cierre de la oferta 16: COMMIT](evidencia/f5_transaccion_commit_16.png)
-
-![Estado de la propiedad 3 después del cierre](evidencia/f5_transaccion_commit_16_02.png)
+Las capturas `f5_transaccion_commit_16.png` y `_02.png` son de la corrida anterior. Muestran un segundo cierre de la propiedad 3. No van en el informe. Hay que volver a tomar el COMMIT de la oferta 61 y el SELECT de la propiedad 22.
 
 ![Intento de cerrar la oferta 1, que sigue pendiente](evidencia/f5_transaccion_rollback_do.png)
 
@@ -76,7 +76,7 @@ Lo comprobamos con la oferta 16 (cierre correcto: propiedad 3 queda `vendida` y 
 
 Si dos sesiones intentan cerrar dos ofertas distintas de la misma propiedad, sin bloqueo ambas pueden hacer COMMIT y el estado comercial queda con la última escritura.
 
-`cerrar_venta_con_bloqueo` toma `FOR UPDATE` sobre la solicitud y la propiedad antes de llamar a `registrar_cierre`. La segunda sesión espera. Cuando la primera confirma, la segunda ve el estado ya actualizado. Evitamos una condición de carrera sobre el estado del inmueble, del mismo tipo que dos ventas simultáneas sobre un inventario.
+`cerrar_venta_con_bloqueo` toma `FOR UPDATE` sobre la solicitud y la propiedad. Después del bloqueo revisa que esa propiedad no esté `vendida` y que no tenga otro cierre vigente. Si ya lo tiene, aborta con R12 y no llama a `registrar_cierre`. La segunda sesión espera a la primera; al continuar, ve el cierre y falla.
 
 ### Aislamiento
 

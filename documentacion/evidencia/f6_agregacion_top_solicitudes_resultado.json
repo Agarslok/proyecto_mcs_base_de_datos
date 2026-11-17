@@ -5,8 +5,8 @@
     "propiedad_id": 1,
     "n_canales": 2,
     "canales": [
-      "whatsapp",
-      "llamada"
+      "llamada",
+      "whatsapp"
     ]
   },
   {
@@ -15,8 +15,8 @@
     "propiedad_id": 1,
     "n_canales": 2,
     "canales": [
-      "whatsapp",
-      "nota_interna"
+      "nota_interna",
+      "whatsapp"
     ]
   },
   {
@@ -32,7 +32,7 @@
   {
     "interacciones": 2,
     "solicitud_id": 4,
-    "propiedad_id": 2,
+    "propiedad_id": 1,
     "n_canales": 2,
     "canales": [
       "feria",
@@ -52,7 +52,7 @@
   {
     "interacciones": 2,
     "solicitud_id": 6,
-    "propiedad_id": 6,
+    "propiedad_id": 2,
     "n_canales": 1,
     "canales": [
       "whatsapp"
@@ -61,7 +61,7 @@
   {
     "interacciones": 2,
     "solicitud_id": 8,
-    "propiedad_id": 7,
+    "propiedad_id": 2,
     "n_canales": 2,
     "canales": [
       "email",
@@ -71,7 +71,7 @@
   {
     "interacciones": 2,
     "solicitud_id": 10,
-    "propiedad_id": 8,
+    "propiedad_id": 3,
     "n_canales": 2,
     "canales": [
       "llamada",
@@ -81,21 +81,21 @@
   {
     "interacciones": 2,
     "solicitud_id": 11,
-    "propiedad_id": 11,
+    "propiedad_id": 3,
     "n_canales": 2,
     "canales": [
-      "whatsapp",
-      "llamada"
+      "llamada",
+      "whatsapp"
     ]
   },
   {
     "interacciones": 2,
     "solicitud_id": 18,
-    "propiedad_id": 15,
+    "propiedad_id": 23,
     "n_canales": 2,
     "canales": [
-      "whatsapp",
-      "email"
+      "email",
+      "whatsapp"
     ]
   }
 ]

@@ -194,7 +194,7 @@ Execution Time: 0.466 ms
 | 2 | Una cardinalidad + un fragmento 1FN; ejercicio 2 |
 | 3 | Modificar consulta 1 y 6 en pgAdmin; ejercicio 3 |
 | 4 | Leer un plan EXPLAIN de captura f5; ejercicio 4 |
-| 5 | Explicar COMMIT oferta 16 y NOTICE oferta 1; ejercicio 5 |
+| 5 | Explicar COMMIT oferta 61 y NOTICE oferta 1; ejercicio 5 |
 | 6 | Mongo: seed + A1; ejercicio 6 |
 
 **Repaso rápido:** `E1` reglas → `E3` normalización resumida → `E4` consulta 9 con `RANK` → `E5` transacción → `E6` justificación.

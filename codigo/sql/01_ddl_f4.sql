@@ -40,6 +40,7 @@ CASCADE;
 DROP FUNCTION IF EXISTS fn_set_actualizado_en() CASCADE;
 DROP FUNCTION IF EXISTS fn_solicitud_motivo_descarte() CASCADE;
 DROP FUNCTION IF EXISTS fn_solicitud_no_es_dueno() CASCADE;
+DROP FUNCTION IF EXISTS fn_dueno_no_es_prospecto() CASCADE;
 DROP FUNCTION IF EXISTS fn_oferta_aceptada_en_negociacion() CASCADE;
 DROP FUNCTION IF EXISTS fn_validar_y_aplicar_transaccion() CASCADE;
 DROP FUNCTION IF EXISTS registrar_cierre(integer, integer, numeric, numeric, date, date, varchar) CASCADE;
@@ -442,7 +443,7 @@ CREATE TABLE transacciones (
 COMMENT ON TABLE solicitudes_propiedad IS
     'Oportunidad comercial: prospecto + propiedad (R6). No usa propiedad_propietarios.';
 COMMENT ON COLUMN transacciones.comision_valor IS
-    'R16: derivado GENERATED ALWAYS. No se digitá.';
+    'R16: derivado GENERATED ALWAYS. No se digita.';
 COMMENT ON COLUMN solicitudes_propiedad.campana_id IS
     'R10: NULL si el origen no es una campaña.';
 
@@ -521,7 +522,33 @@ CREATE TRIGGER trg_solicitud_no_es_dueno
     FOR EACH ROW
     EXECUTE FUNCTION fn_solicitud_no_es_dueno();
 
+-- La misma regla al revés: no agregar dueño si esa persona ya es prospecto.
+CREATE OR REPLACE FUNCTION fn_dueno_no_es_prospecto()
+RETURNS trigger
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF EXISTS (
+        SELECT 1
+        FROM solicitudes_propiedad s
+        WHERE s.persona_id = NEW.persona_id
+          AND s.propiedad_id = NEW.propiedad_id
+    ) THEN
+        RAISE EXCEPTION
+            'R2/R6: persona_id=% ya es prospecto de propiedad_id=%; no puede registrarse como dueño',
+            NEW.persona_id, NEW.propiedad_id;
+    END IF;
+    RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER trg_dueno_no_es_prospecto
+    BEFORE INSERT OR UPDATE OF persona_id, propiedad_id ON propiedad_propietarios
+    FOR EACH ROW
+    EXECUTE FUNCTION fn_dueno_no_es_prospecto();
+
 -- R11: oferta aceptada pasa la propiedad de disponible a en_negociacion.
+-- Si deja de estar aceptada y nadie más tiene oferta aceptada, vuelve a disponible.
 CREATE OR REPLACE FUNCTION fn_oferta_aceptada_en_negociacion()
 RETURNS trigger
 LANGUAGE plpgsql
@@ -529,13 +556,13 @@ AS $$
 DECLARE
     v_propiedad_id integer;
 BEGIN
+    SELECT s.propiedad_id
+      INTO v_propiedad_id
+      FROM solicitudes_propiedad s
+     WHERE s.solicitud_id = NEW.solicitud_id;
+
     IF NEW.estado_oferta = 'aceptada'
        AND (TG_OP = 'INSERT' OR OLD.estado_oferta IS DISTINCT FROM 'aceptada') THEN
-        SELECT s.propiedad_id
-          INTO v_propiedad_id
-          FROM solicitudes_propiedad s
-         WHERE s.solicitud_id = NEW.solicitud_id;
-
         UPDATE propiedades
            SET estado_comercial = 'en_negociacion'
          WHERE propiedad_id = v_propiedad_id
@@ -545,6 +572,27 @@ BEGIN
            SET estado = 'en_negociacion'
          WHERE solicitud_id = NEW.solicitud_id
            AND estado IN ('nueva', 'en_seguimiento');
+    ELSIF TG_OP = 'UPDATE'
+          AND OLD.estado_oferta = 'aceptada'
+          AND NEW.estado_oferta IS DISTINCT FROM 'aceptada' THEN
+        UPDATE solicitudes_propiedad
+           SET estado = 'en_seguimiento'
+         WHERE solicitud_id = NEW.solicitud_id
+           AND estado = 'en_negociacion';
+
+        IF NOT EXISTS (
+            SELECT 1
+            FROM ofertas o
+            JOIN solicitudes_propiedad s ON s.solicitud_id = o.solicitud_id
+            WHERE s.propiedad_id = v_propiedad_id
+              AND o.estado_oferta = 'aceptada'
+              AND o.oferta_id <> NEW.oferta_id
+        ) THEN
+            UPDATE propiedades
+               SET estado_comercial = 'disponible'
+             WHERE propiedad_id = v_propiedad_id
+               AND estado_comercial = 'en_negociacion';
+        END IF;
     END IF;
     RETURN NEW;
 END;
@@ -555,8 +603,9 @@ CREATE TRIGGER trg_oferta_aceptada_en_negociacion
     FOR EACH ROW
     EXECUTE FUNCTION fn_oferta_aceptada_en_negociacion();
 
--- R12/R16: solo se cierra una oferta aceptada; al insertar transacción se marca
--- la solicitud ganada y el estado comercial de la propiedad.
+-- R12/R16: una transacción anulada no cambia el inmueble.
+-- Solo se cierra una oferta aceptada, y solo si la propiedad no tiene otro cierre.
+-- El aviso vigente más reciente define vendida o no_disponible.
 CREATE OR REPLACE FUNCTION fn_validar_y_aplicar_transaccion()
 RETURNS trigger
 LANGUAGE plpgsql
@@ -573,10 +622,33 @@ BEGIN
       JOIN solicitudes_propiedad s ON s.solicitud_id = o.solicitud_id
      WHERE o.oferta_id = NEW.oferta_id;
 
+    IF NEW.estado = 'anulada' THEN
+        RETURN NEW;
+    END IF;
+
     IF v_estado_oferta IS DISTINCT FROM 'aceptada' THEN
         RAISE EXCEPTION
             'R12: la transacción exige oferta aceptada (oferta_id=%, estado=%)',
             NEW.oferta_id, v_estado_oferta;
+    END IF;
+
+    IF EXISTS (
+        SELECT 1
+        FROM transacciones t
+        JOIN ofertas o ON o.oferta_id = t.oferta_id
+        JOIN solicitudes_propiedad s ON s.solicitud_id = o.solicitud_id
+        WHERE s.propiedad_id = v_propiedad_id
+          AND t.estado <> 'anulada'
+          AND t.oferta_id <> NEW.oferta_id
+    ) OR EXISTS (
+        SELECT 1
+        FROM propiedades p
+        WHERE p.propiedad_id = v_propiedad_id
+          AND p.estado_comercial = 'vendida'
+    ) THEN
+        RAISE EXCEPTION
+            'R12: la propiedad % ya tiene un cierre vigente',
+            v_propiedad_id;
     END IF;
 
     UPDATE solicitudes_propiedad
@@ -584,13 +656,13 @@ BEGIN
            fecha_cierre = COALESCE(fecha_cierre, now())
      WHERE solicitud_id = v_solicitud_id;
 
+    -- El aviso vigente más reciente define venta o arriendo. No se privilegia la venta.
     SELECT t.nombre
       INTO v_tipo
       FROM publicaciones pub
       JOIN tipos_operacion t ON t.tipo_operacion_id = pub.tipo_operacion_id
      WHERE pub.propiedad_id = v_propiedad_id
-     ORDER BY CASE WHEN t.nombre = 'venta' THEN 0 ELSE 1 END,
-              pub.fecha_publicacion DESC
+     ORDER BY pub.publicada DESC, pub.fecha_publicacion DESC
      LIMIT 1;
 
     IF v_tipo = 'venta' THEN

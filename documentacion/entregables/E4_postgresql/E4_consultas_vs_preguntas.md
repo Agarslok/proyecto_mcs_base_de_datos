@@ -54,6 +54,6 @@ Están definidos en `01_ddl_f4.sql`. El script de consultas vuelve a crear la fu
 
 ## Respaldo
 
-El respaldo de la base está en `backup/inmobiliaria_mcs_f4.sql`. Lo generamos desde pgAdmin (clic derecho sobre `inmobiliaria_mcs`, Backup, formato plano).
+El respaldo está en `backup/inmobiliaria_mcs_f4.sql`. Es SQL plano: se abre en el Query Tool o se restaura con `psql`. Es la foto de la fase 4, antes de las correcciones de los triggers. Esas correcciones viven en `01_ddl_f4.sql`.
 
 ![Archivo de respaldo](evidencia/f4_backup_propiedades.png)
