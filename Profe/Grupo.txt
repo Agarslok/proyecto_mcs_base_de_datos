@@ -1,6 +1,0 @@
-Grupo del proyecto — MCS Inmobiliaria
-Harold Burgos, Sofía Camelo y Juan Triana.
-
-El enunciado del curso (Proyecto final, Bases de Datos 2026-2) indica grupos de máximo dos estudiantes.
-Este equipo es de tres integrantes. La docente Martha Quevedo autorizó el grupo de tres.
-Esta constancia va en la carpeta de entregables, aparte del informe técnico.
