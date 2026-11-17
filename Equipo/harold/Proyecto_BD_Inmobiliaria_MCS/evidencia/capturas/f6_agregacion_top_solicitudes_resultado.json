@@ -1,0 +1,101 @@
+[
+  {
+    "interacciones": 3,
+    "solicitud_id": 2,
+    "propiedad_id": 1,
+    "n_canales": 2,
+    "canales": [
+      "whatsapp",
+      "llamada"
+    ]
+  },
+  {
+    "interacciones": 2,
+    "solicitud_id": 1,
+    "propiedad_id": 1,
+    "n_canales": 2,
+    "canales": [
+      "whatsapp",
+      "nota_interna"
+    ]
+  },
+  {
+    "interacciones": 2,
+    "solicitud_id": 3,
+    "propiedad_id": 1,
+    "n_canales": 2,
+    "canales": [
+      "email",
+      "llamada"
+    ]
+  },
+  {
+    "interacciones": 2,
+    "solicitud_id": 4,
+    "propiedad_id": 1,
+    "n_canales": 2,
+    "canales": [
+      "feria",
+      "whatsapp"
+    ]
+  },
+  {
+    "interacciones": 2,
+    "solicitud_id": 5,
+    "propiedad_id": 2,
+    "n_canales": 2,
+    "canales": [
+      "llamada",
+      "whatsapp"
+    ]
+  },
+  {
+    "interacciones": 2,
+    "solicitud_id": 6,
+    "propiedad_id": 2,
+    "n_canales": 1,
+    "canales": [
+      "whatsapp"
+    ]
+  },
+  {
+    "interacciones": 2,
+    "solicitud_id": 8,
+    "propiedad_id": 2,
+    "n_canales": 2,
+    "canales": [
+      "email",
+      "nota_interna"
+    ]
+  },
+  {
+    "interacciones": 2,
+    "solicitud_id": 10,
+    "propiedad_id": 3,
+    "n_canales": 2,
+    "canales": [
+      "llamada",
+      "nota_interna"
+    ]
+  },
+  {
+    "interacciones": 2,
+    "solicitud_id": 11,
+    "propiedad_id": 3,
+    "n_canales": 2,
+    "canales": [
+      "whatsapp",
+      "llamada"
+    ]
+  },
+  {
+    "interacciones": 2,
+    "solicitud_id": 18,
+    "propiedad_id": 23,
+    "n_canales": 2,
+    "canales": [
+      "whatsapp",
+      "email"
+    ]
+  }
+]

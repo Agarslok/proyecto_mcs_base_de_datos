@@ -1,0 +1,623 @@
+EVIDENCIA FASE 5 · Optimización a escala (sql/06_optimizacion_escala_f5.sql)
+Medianas de 7 ejecuciones con caché caliente (PostgreSQL 18.6), con los mismos datos del script (setseed 0.42).
+E1 ficha de la propiedad 4264 · E2 oportunidades activas de la propiedad 4264 · E3 consulta 7 original · E3b consulta 7 reescrita · E4 consulta 9 (NOT EXISTS).
+
+
+## Sin índices
+E1: 51.372 ms  índices usados: []
+E2: 4.772 ms  índices usados: []
+E3: 550.012 ms  índices usados: []
+E3b: 297.569 ms  índices usados: []
+E4: 192.246 ms  índices usados: []
+
+## Los 8 índices de 04
+E1: 0.068 ms  índices usados: ['idx_ofertas_solicitud_id', 'idx_sol_propiedad_id', 'idx_visitas_solicitud_id']
+E2: 0.009 ms  índices usados: ['idx_sol_estado_activo']
+E3: 511.126 ms  índices usados: []
+E3b: 308.097 ms  índices usados: []
+E4: 193.198 ms  índices usados: []
+
+## Solo los 3 conservados
+E1: 0.068 ms  índices usados: ['idx_ofertas_solicitud_id', 'idx_sol_propiedad_id', 'idx_visitas_solicitud_id']
+E2: 0.011 ms  índices usados: ['idx_sol_propiedad_id']
+E3: 565.0 ms  índices usados: []
+E3b: 297.124 ms  índices usados: []
+E4: 202.262 ms  índices usados: []
+
+## 3 + idx_sol_estado_activo
+E1: 0.069 ms  índices usados: ['idx_ofertas_solicitud_id', 'idx_sol_propiedad_id', 'idx_visitas_solicitud_id']
+E2: 0.006 ms  índices usados: ['idx_sol_estado_activo']
+E3: 531.46 ms  índices usados: []
+E3b: 297.878 ms  índices usados: []
+E4: 200.679 ms  índices usados: []
+
+## 3 + idx_publicaciones_propiedad_pub
+E1: 0.04 ms  índices usados: ['idx_ofertas_solicitud_id', 'idx_sol_propiedad_id', 'idx_visitas_solicitud_id']
+E2: 0.013 ms  índices usados: ['idx_sol_propiedad_id']
+E3: 514.625 ms  índices usados: []
+E3b: 301.82 ms  índices usados: []
+E4: 191.05 ms  índices usados: []
+
+Equivalencia y tiempo de la reescritura de la consulta 7 (una medición independiente):
+[public] filas 52 vs 52 · resultados idénticos: True
+[public] original 0.319 ms · reescrita 0.329 ms
+[escala] filas 71271 vs 71271 · resultados idénticos: True
+[escala] original 803.199 ms · reescrita 427.094 ms
+
+======================================================================
+Planes completos (una ejecución del script):
+SET
+ setseed 
+---------
+ 
+(1 fila)
+
+psql:sql/06_optimizacion_escala_f5.sql:18: NOTICE:  schema "escala" does not exist, skipping
+DROP SCHEMA
+CREATE SCHEMA
+SELECT 10
+ALTER TABLE
+SELECT 100000
+ALTER TABLE
+SELECT 115000
+ALTER TABLE
+SELECT 125000
+ALTER TABLE
+SELECT 170000
+ALTER TABLE
+SELECT 117000
+ALTER TABLE
+SELECT 29269
+ALTER TABLE
+ALTER TABLE
+ANALYZE
+         tabla         | count  
+-----------------------+--------
+ transacciones         |  29269
+ publicaciones         | 115000
+ propiedades           | 100000
+ ofertas               | 117000
+ solicitudes_propiedad | 125000
+ visitas               | 170000
+(6 filas)
+
+SET
+                                                        QUERY PLAN                                                         
+---------------------------------------------------------------------------------------------------------------------------
+ Seq Scan on solicitudes_propiedad s  (cost=0.00..12641.56 rows=2 width=31) (actual time=10.928..54.578 rows=5.00 loops=1)
+   Filter: (propiedad_id = 4264)
+   Rows Removed by Filter: 124995
+   Buffers: shared hit=8512
+   SubPlan 1
+     ->  Aggregate  (cost=2893.01..2893.02 rows=1 width=8) (actual time=5.816..5.817 rows=1.00 loops=5)
+           Buffers: shared hit=3840
+           ->  Seq Scan on visitas v  (cost=0.00..2893.00 rows=2 width=0) (actual time=0.921..5.802 rows=2.20 loops=5)
+                 Filter: (solicitud_id = s.solicitud_id)
+                 Rows Removed by Filter: 169998
+                 Buffers: shared hit=3840
+   SubPlan 2
+     ->  Aggregate  (cost=2230.51..2230.52 rows=1 width=8) (actual time=4.121..4.121 rows=1.00 loops=5)
+           Buffers: shared hit=3840
+           ->  Seq Scan on ofertas o  (cost=0.00..2230.50 rows=2 width=0) (actual time=2.627..4.108 rows=1.20 loops=5)
+                 Filter: (solicitud_id = s.solicitud_id)
+                 Rows Removed by Filter: 116999
+                 Buffers: shared hit=3840
+ Planning:
+   Buffers: shared hit=12
+ Planning Time: 0.116 ms
+ Execution Time: 54.607 ms
+(22 filas)
+
+                                                       QUERY PLAN                                                       
+------------------------------------------------------------------------------------------------------------------------
+ Seq Scan on solicitudes_propiedad s  (cost=0.00..2863.25 rows=1 width=15) (actual time=1.920..5.186 rows=4.00 loops=1)
+   Filter: ((propiedad_id = 4264) AND (estado = ANY ('{nueva,en_seguimiento,en_negociacion}'::text[])))
+   Rows Removed by Filter: 124996
+   Buffers: shared hit=832
+ Planning:
+   Buffers: shared hit=3
+ Planning Time: 0.089 ms
+ Execution Time: 5.197 ms
+(8 filas)
+
+                                                                                   QUERY PLAN                                                                                    
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=40632.39..40715.73 rows=33333 width=43) (actual time=583.108..592.470 rows=71271.00 loops=1)
+   Sort Key: (count(DISTINCT s.solicitud_id)) DESC, (count(DISTINCT v.visita_id)) DESC, (count(DISTINCT o.oferta_id)) DESC
+   Sort Method: external merge  Disk: 4056kB
+   Buffers: shared hit=3331, temp read=2539 written=2545
+   ->  GroupAggregate  (cost=34753.31..38128.31 rows=33333 width=43) (actual time=372.485..539.328 rows=71271.00 loops=1)
+         Group Key: p.propiedad_id
+         Filter: (count(DISTINCT s.solicitud_id) > 0)
+         Rows Removed by Filter: 28729
+         Buffers: shared hit=3328, temp read=2032 written=2037
+         ->  Sort  (cost=34753.31..35178.31 rows=170000 width=31) (actual time=372.460..409.324 rows=297299.00 loops=1)
+               Sort Key: p.propiedad_id, s.solicitud_id
+               Sort Method: external merge  Disk: 11432kB
+               Buffers: shared hit=3328, temp read=2032 written=2037
+               ->  Hash Right Join  (cost=10662.14..15913.91 rows=170000 width=31) (actual time=102.936..289.320 rows=297299.00 loops=1)
+                     Hash Cond: (s.propiedad_id = p.propiedad_id)
+                     Buffers: shared hit=3328, temp read=603 written=603
+                     ->  Hash Right Join  (cost=7452.14..12257.64 rows=170000 width=16) (actual time=86.948..199.839 rows=268570.00 loops=1)
+                           Hash Cond: (v.solicitud_id = s.solicitud_id)
+                           Buffers: shared hit=2368, temp read=603 written=603
+                           ->  Seq Scan on visitas v  (cost=0.00..2468.00 rows=170000 width=8) (actual time=0.025..6.387 rows=170000.00 loops=1)
+                                 Buffers: shared hit=768
+                           ->  Hash  (cost=5889.64..5889.64 rows=125000 width=12) (actual time=86.264..86.267 rows=166169.00 loops=1)
+                                 Buckets: 262144 (originally 131072)  Batches: 2 (originally 1)  Memory Usage: 6145kB
+                                 Buffers: shared hit=1600, temp written=312
+                                 ->  Hash Right Join  (cost=3644.50..5889.64 rows=125000 width=12) (actual time=17.637..62.220 rows=166169.00 loops=1)
+                                       Hash Cond: (o.solicitud_id = s.solicitud_id)
+                                       Buffers: shared hit=1600
+                                       ->  Seq Scan on ofertas o  (cost=0.00..1938.00 rows=117000 width=8) (actual time=0.019..4.636 rows=117000.00 loops=1)
+                                             Buffers: shared hit=768
+                                       ->  Hash  (cost=2082.00..2082.00 rows=125000 width=8) (actual time=17.390..17.391 rows=125000.00 loops=1)
+                                             Buckets: 131072  Batches: 1  Memory Usage: 5907kB
+                                             Buffers: shared hit=832
+                                             ->  Seq Scan on solicitudes_propiedad s  (cost=0.00..2082.00 rows=125000 width=8) (actual time=0.017..7.656 rows=125000.00 loops=1)
+                                                   Buffers: shared hit=832
+                     ->  Hash  (cost=1960.00..1960.00 rows=100000 width=19) (actual time=15.729..15.729 rows=100000.00 loops=1)
+                           Buckets: 131072  Batches: 1  Memory Usage: 6092kB
+                           Buffers: shared hit=960
+                           ->  Seq Scan on propiedades p  (cost=0.00..1960.00 rows=100000 width=19) (actual time=0.016..6.284 rows=100000.00 loops=1)
+                                 Buffers: shared hit=960
+ Planning:
+   Buffers: shared hit=58 read=8
+ Planning Time: 0.451 ms
+ Execution Time: 614.961 ms
+(43 filas)
+
+                                                                                   QUERY PLAN                                                                                    
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=31421.65..31569.78 rows=59252 width=43) (actual time=343.721..351.815 rows=71271.00 loops=1)
+   Sort Key: sol.n_prospectos DESC, (COALESCE(vis.n_visitas, '0'::bigint)) DESC, (COALESCE(ofe.n_ofertas, '0'::bigint)) DESC
+   Sort Method: external merge  Disk: 4056kB
+   Buffers: shared hit=4992, temp read=507 written=508
+   ->  Hash Left Join  (cost=22367.47..24901.07 rows=59252 width=43) (actual time=243.846..310.945 rows=71271.00 loops=1)
+         Hash Cond: (p.propiedad_id = ofe.propiedad_id)
+         Buffers: shared hit=4992
+         ->  Hash Left Join  (cost=13967.14..16345.20 rows=59252 width=35) (actual time=161.350..210.210 rows=71271.00 loops=1)
+               Hash Cond: (p.propiedad_id = vis.propiedad_id)
+               Buffers: shared hit=3392
+               ->  Hash Join  (cost=4632.69..6855.20 rows=59252 width=27) (actual time=48.714..78.234 rows=71271.00 loops=1)
+                     Hash Cond: (p.propiedad_id = sol.propiedad_id)
+                     Buffers: shared hit=1792
+                     ->  Seq Scan on propiedades p  (cost=0.00..1960.00 rows=100000 width=19) (actual time=0.055..4.372 rows=100000.00 loops=1)
+                           Buffers: shared hit=960
+                     ->  Hash  (cost=3892.04..3892.04 rows=59252 width=12) (actual time=48.491..48.493 rows=71271.00 loops=1)
+                           Buckets: 131072 (originally 65536)  Batches: 1 (originally 1)  Memory Usage: 4087kB
+                           Buffers: shared hit=832
+                           ->  Subquery Scan on sol  (cost=2707.00..3892.04 rows=59252 width=12) (actual time=27.754..41.034 rows=71271.00 loops=1)
+                                 Buffers: shared hit=832
+                                 ->  HashAggregate  (cost=2707.00..3299.52 rows=59252 width=12) (actual time=27.753..37.254 rows=71271.00 loops=1)
+                                       Group Key: solicitudes_propiedad.propiedad_id
+                                       Batches: 1  Memory Usage: 4889kB
+                                       Buffers: shared hit=832
+                                       ->  Seq Scan on solicitudes_propiedad  (cost=0.00..2082.00 rows=125000 width=4) (actual time=0.009..4.874 rows=125000.00 loops=1)
+                                             Buffers: shared hit=832
+               ->  Hash  (cost=8593.80..8593.80 rows=59252 width=12) (actual time=112.600..112.602 rows=60515.00 loops=1)
+                     Buckets: 65536  Batches: 1  Memory Usage: 3113kB
+                     Buffers: shared hit=1600
+                     ->  Subquery Scan on vis  (cost=7408.76..8593.80 rows=59252 width=12) (actual time=97.660..107.382 rows=60515.00 loops=1)
+                           Buffers: shared hit=1600
+                           ->  HashAggregate  (cost=7408.76..8001.28 rows=59252 width=12) (actual time=97.658..104.308 rows=60515.00 loops=1)
+                                 Group Key: s.propiedad_id
+                                 Batches: 1  Memory Usage: 4633kB
+                                 Buffers: shared hit=1600
+                                 ->  Hash Join  (cost=3644.50..6558.76 rows=170000 width=4) (actual time=18.743..66.168 rows=170000.00 loops=1)
+                                       Hash Cond: (v.solicitud_id = s.solicitud_id)
+                                       Buffers: shared hit=1600
+                                       ->  Seq Scan on visitas v  (cost=0.00..2468.00 rows=170000 width=4) (actual time=0.034..6.219 rows=170000.00 loops=1)
+                                             Buffers: shared hit=768
+                                       ->  Hash  (cost=2082.00..2082.00 rows=125000 width=8) (actual time=18.443..18.443 rows=125000.00 loops=1)
+                                             Buckets: 131072  Batches: 1  Memory Usage: 5907kB
+                                             Buffers: shared hit=832
+                                             ->  Seq Scan on solicitudes_propiedad s  (cost=0.00..2082.00 rows=125000 width=8) (actual time=0.013..7.724 rows=125000.00 loops=1)
+                                                   Buffers: shared hit=832
+         ->  Hash  (cost=7659.68..7659.68 rows=59252 width=12) (actual time=82.384..82.388 rows=53173.00 loops=1)
+               Buckets: 65536  Batches: 1  Memory Usage: 2797kB
+               Buffers: shared hit=1600
+               ->  Subquery Scan on ofe  (cost=6474.64..7659.68 rows=59252 width=12) (actual time=70.282..78.043 rows=53173.00 loops=1)
+                     Buffers: shared hit=1600
+                     ->  HashAggregate  (cost=6474.64..7067.16 rows=59252 width=12) (actual time=70.281..75.377 rows=53173.00 loops=1)
+                           Group Key: s_1.propiedad_id
+                           Batches: 1  Memory Usage: 4377kB
+                           Buffers: shared hit=1600
+                           ->  Hash Join  (cost=3644.50..5889.64 rows=117000 width=4) (actual time=18.387..50.133 rows=117000.00 loops=1)
+                                 Hash Cond: (o.solicitud_id = s_1.solicitud_id)
+                                 Buffers: shared hit=1600
+                                 ->  Seq Scan on ofertas o  (cost=0.00..1938.00 rows=117000 width=4) (actual time=0.029..4.758 rows=117000.00 loops=1)
+                                       Buffers: shared hit=768
+                                 ->  Hash  (cost=2082.00..2082.00 rows=125000 width=8) (actual time=18.118..18.120 rows=125000.00 loops=1)
+                                       Buckets: 131072  Batches: 1  Memory Usage: 5907kB
+                                       Buffers: shared hit=832
+                                       ->  Seq Scan on solicitudes_propiedad s_1  (cost=0.00..2082.00 rows=125000 width=8) (actual time=0.011..7.770 rows=125000.00 loops=1)
+                                             Buffers: shared hit=832
+ Planning:
+   Buffers: shared hit=16
+ Planning Time: 0.340 ms
+ Execution Time: 410.182 ms
+(68 filas)
+
+                                                                                                     QUERY PLAN                                                                                                      
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=36827.67..36828.89 rows=20 width=55) (actual time=212.301..212.310 rows=20.00 loops=1)
+   Buffers: shared hit=3393, temp read=545 written=702
+   ->  Incremental Sort  (cost=36827.67..41923.82 rows=82983 width=55) (actual time=212.300..212.308 rows=20.00 loops=1)
+         Sort Key: ((CURRENT_DATE - inicio_comercial.fecha_inicio)) DESC, inicio_comercial.propiedad_id
+         Presorted Key: ((CURRENT_DATE - inicio_comercial.fecha_inicio))
+         Full-sort Groups: 1  Sort Method: top-N heapsort  Average Memory: 29kB  Peak Memory: 29kB
+         Pre-sorted Groups: 1  Sort Method: top-N heapsort  Average Memory: 28kB  Peak Memory: 28kB
+         Buffers: shared hit=3393, temp read=545 written=702
+         ->  WindowAgg  (cost=36807.29..38674.39 rows=82983 width=55) (actual time=212.211..212.267 rows=150.00 loops=1)
+               Window: w1 AS (ORDER BY ((CURRENT_DATE - inicio_comercial.fecha_inicio)) ROWS UNBOUNDED PRECEDING)
+               Storage: Memory  Maximum Storage: 17kB
+               Buffers: shared hit=3393, temp read=545 written=702
+               ->  Sort  (cost=36807.27..37014.73 rows=82983 width=47) (actual time=212.201..212.217 rows=150.00 loops=1)
+                     Sort Key: ((CURRENT_DATE - inicio_comercial.fecha_inicio)) DESC
+                     Sort Method: external merge  Disk: 4584kB
+                     Buffers: shared hit=3393, temp read=545 written=702
+                     ->  Subquery Scan on inicio_comercial  (cost=23569.55..27472.34 rows=82983 width=47) (actual time=167.635..188.635 rows=77847.00 loops=1)
+                           Buffers: shared hit=3393, temp read=59 written=128
+                           ->  HashAggregate  (cost=23569.55..26227.60 rows=82983 width=51) (actual time=167.631..183.411 rows=77847.00 loops=1)
+                                 Group Key: p.propiedad_id, c.nombre
+                                 Planned Partitions: 4  Batches: 5  Memory Usage: 8249kB  Disk Usage: 688kB
+                                 Buffers: shared hit=3393, temp read=59 written=128
+                                 ->  Hash Join  (cost=11443.24..14804.47 rows=82983 width=52) (actual time=82.670..136.891 rows=114106.00 loops=1)
+                                       Hash Cond: (p.ciudad_id = c.ciudad_id)
+                                       Buffers: shared hit=3393
+                                       ->  Hash Right Join  (cost=11442.02..14493.10 rows=82983 width=47) (actual time=82.645..124.609 rows=114106.00 loops=1)
+                                             Hash Cond: (pub.propiedad_id = p.propiedad_id)
+                                             Buffers: shared hit=3392
+                                             ->  Seq Scan on publicaciones pub  (cost=0.00..1790.00 rows=115000 width=9) (actual time=0.028..4.410 rows=115000.00 loops=1)
+                                                   Buffers: shared hit=640
+                                             ->  Hash  (cost=10540.03..10540.03 rows=72159 width=42) (actual time=82.401..82.406 rows=77847.00 loops=1)
+                                                   Buckets: 131072  Batches: 1  Memory Usage: 7004kB
+                                                   Buffers: shared hit=2752
+                                                   ->  Hash Anti Join  (cost=7564.62..10540.03 rows=72159 width=42) (actual time=54.146..71.047 rows=77847.00 loops=1)
+                                                         Hash Cond: (p.propiedad_id = s.propiedad_id)
+                                                         Buffers: shared hit=2752
+                                                         ->  Seq Scan on propiedades p  (cost=0.00..1960.00 rows=100000 width=42) (actual time=0.009..4.090 rows=100000.00 loops=1)
+                                                               Buffers: shared hit=960
+                                                         ->  Hash  (cost=7216.61..7216.61 rows=27841 width=4) (actual time=54.070..54.073 rows=22153.00 loops=1)
+                                                               Buckets: 32768  Batches: 1  Memory Usage: 1035kB
+                                                               Buffers: shared hit=1792
+                                                               ->  HashAggregate  (cost=6938.20..7216.61 rows=27841 width=4) (actual time=50.988..52.370 rows=22153.00 loops=1)
+                                                                     Group Key: s.propiedad_id
+                                                                     Batches: 1  Memory Usage: 1305kB
+                                                                     Buffers: shared hit=1792
+                                                                     ->  Hash Join  (cost=4550.38..6868.59 rows=27841 width=4) (actual time=23.244..46.919 rows=27841.00 loops=1)
+                                                                           Hash Cond: (o.solicitud_id = s.solicitud_id)
+                                                                           Buffers: shared hit=1792
+                                                                           ->  Hash Join  (cost=905.88..3151.01 rows=27841 width=4) (actual time=3.961..20.341 rows=27841.00 loops=1)
+                                                                                 Hash Cond: (o.oferta_id = t.oferta_id)
+                                                                                 Buffers: shared hit=960
+                                                                                 ->  Seq Scan on ofertas o  (cost=0.00..1938.00 rows=117000 width=8) (actual time=0.006..4.701 rows=117000.00 loops=1)
+                                                                                       Buffers: shared hit=768
+                                                                                 ->  Hash  (cost=557.86..557.86 rows=27841 width=4) (actual time=3.884..3.885 rows=27841.00 loops=1)
+                                                                                       Buckets: 32768  Batches: 1  Memory Usage: 1235kB
+                                                                                       Buffers: shared hit=192
+                                                                                       ->  Seq Scan on transacciones t  (cost=0.00..557.86 rows=27841 width=4) (actual time=0.009..2.097 rows=27841.00 loops=1)
+                                                                                             Filter: (estado <> 'anulada'::text)
+                                                                                             Rows Removed by Filter: 1428
+                                                                                             Buffers: shared hit=192
+                                                                           ->  Hash  (cost=2082.00..2082.00 rows=125000 width=8) (actual time=19.076..19.076 rows=125000.00 loops=1)
+                                                                                 Buckets: 131072  Batches: 1  Memory Usage: 5907kB
+                                                                                 Buffers: shared hit=832
+                                                                                 ->  Seq Scan on solicitudes_propiedad s  (cost=0.00..2082.00 rows=125000 width=8) (actual time=0.012..7.929 rows=125000.00 loops=1)
+                                                                                       Buffers: shared hit=832
+                                       ->  Hash  (cost=1.10..1.10 rows=10 width=13) (actual time=0.020..0.021 rows=10.00 loops=1)
+                                             Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                             Buffers: shared hit=1
+                                             ->  Seq Scan on ciudades c  (cost=0.00..1.10 rows=10 width=13) (actual time=0.015..0.016 rows=10.00 loops=1)
+                                                   Buffers: shared hit=1
+ Planning:
+   Buffers: shared hit=75 read=10
+ Planning Time: 0.598 ms
+ Execution Time: 233.120 ms
+(74 filas)
+
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+ANALYZE
+ pg_stat_reset 
+---------------
+ 
+(1 fila)
+
+                                                                    QUERY PLAN                                                                    
+--------------------------------------------------------------------------------------------------------------------------------------------------
+ Bitmap Heap Scan on solicitudes_propiedad s  (cost=4.43..60.59 rows=2 width=31) (actual time=0.126..0.247 rows=5.00 loops=1)
+   Recheck Cond: (propiedad_id = 4264)
+   Heap Blocks: exact=5
+   Buffers: shared hit=33 read=17
+   ->  Bitmap Index Scan on idx_sol_propiedad_id  (cost=0.00..4.43 rows=2 width=0) (actual time=0.038..0.038 rows=5.00 loops=1)
+         Index Cond: (propiedad_id = 4264)
+         Index Searches: 1
+         Buffers: shared read=3
+   SubPlan 1
+     ->  Aggregate  (cost=12.16..12.17 rows=1 width=8) (actual time=0.022..0.022 rows=1.00 loops=5)
+           Buffers: shared hit=18 read=8
+           ->  Bitmap Heap Scan on visitas v  (cost=4.44..12.15 rows=2 width=0) (actual time=0.019..0.019 rows=2.20 loops=5)
+                 Recheck Cond: (solicitud_id = s.solicitud_id)
+                 Heap Blocks: exact=11
+                 Buffers: shared hit=18 read=8
+                 ->  Bitmap Index Scan on idx_visitas_solicitud_id  (cost=0.00..4.43 rows=2 width=0) (actual time=0.016..0.016 rows=2.20 loops=5)
+                       Index Cond: (solicitud_id = s.solicitud_id)
+                       Index Searches: 5
+                       Buffers: shared hit=7 read=8
+   SubPlan 2
+     ->  Aggregate  (cost=12.03..12.04 rows=1 width=8) (actual time=0.015..0.015 rows=1.00 loops=5)
+           Buffers: shared hit=10 read=6
+           ->  Bitmap Heap Scan on ofertas o  (cost=4.31..12.03 rows=2 width=0) (actual time=0.013..0.014 rows=1.20 loops=5)
+                 Recheck Cond: (solicitud_id = s.solicitud_id)
+                 Heap Blocks: exact=6
+                 Buffers: shared hit=10 read=6
+                 ->  Bitmap Index Scan on idx_ofertas_solicitud_id  (cost=0.00..4.31 rows=2 width=0) (actual time=0.011..0.011 rows=1.20 loops=5)
+                       Index Cond: (solicitud_id = s.solicitud_id)
+                       Index Searches: 5
+                       Buffers: shared hit=4 read=6
+ Planning:
+   Buffers: shared hit=41 read=6
+ Planning Time: 1.598 ms
+ Execution Time: 0.295 ms
+(34 filas)
+
+                                                                    QUERY PLAN                                                                     
+---------------------------------------------------------------------------------------------------------------------------------------------------
+ Index Scan using idx_sol_estado_activo on solicitudes_propiedad s  (cost=0.42..8.44 rows=1 width=15) (actual time=0.036..0.039 rows=4.00 loops=1)
+   Index Cond: (propiedad_id = 4264)
+   Index Searches: 1
+   Buffers: shared hit=4 read=3
+ Planning Time: 0.082 ms
+ Execution Time: 0.045 ms
+(6 filas)
+
+                                                                                   QUERY PLAN                                                                                    
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=40632.39..40715.73 rows=33333 width=43) (actual time=608.066..616.415 rows=71271.00 loops=1)
+   Sort Key: (count(DISTINCT s.solicitud_id)) DESC, (count(DISTINCT v.visita_id)) DESC, (count(DISTINCT o.oferta_id)) DESC
+   Sort Method: external merge  Disk: 4056kB
+   Buffers: shared hit=3328, temp read=2539 written=2545
+   ->  GroupAggregate  (cost=34753.31..38128.31 rows=33333 width=43) (actual time=405.138..570.676 rows=71271.00 loops=1)
+         Group Key: p.propiedad_id
+         Filter: (count(DISTINCT s.solicitud_id) > 0)
+         Rows Removed by Filter: 28729
+         Buffers: shared hit=3328, temp read=2032 written=2037
+         ->  Sort  (cost=34753.31..35178.31 rows=170000 width=31) (actual time=405.112..441.256 rows=297299.00 loops=1)
+               Sort Key: p.propiedad_id, s.solicitud_id
+               Sort Method: external merge  Disk: 11432kB
+               Buffers: shared hit=3328, temp read=2032 written=2037
+               ->  Hash Right Join  (cost=10662.14..15913.91 rows=170000 width=31) (actual time=105.018..316.891 rows=297299.00 loops=1)
+                     Hash Cond: (s.propiedad_id = p.propiedad_id)
+                     Buffers: shared hit=3328, temp read=603 written=603
+                     ->  Hash Right Join  (cost=7452.14..12257.64 rows=170000 width=16) (actual time=89.488..223.499 rows=268570.00 loops=1)
+                           Hash Cond: (v.solicitud_id = s.solicitud_id)
+                           Buffers: shared hit=2368, temp read=603 written=603
+                           ->  Seq Scan on visitas v  (cost=0.00..2468.00 rows=170000 width=8) (actual time=0.029..10.440 rows=170000.00 loops=1)
+                                 Buffers: shared hit=768
+                           ->  Hash  (cost=5889.64..5889.64 rows=125000 width=12) (actual time=88.639..88.642 rows=166169.00 loops=1)
+                                 Buckets: 262144 (originally 131072)  Batches: 2 (originally 1)  Memory Usage: 6145kB
+                                 Buffers: shared hit=1600, temp written=312
+                                 ->  Hash Right Join  (cost=3644.50..5889.64 rows=125000 width=12) (actual time=19.688..63.209 rows=166169.00 loops=1)
+                                       Hash Cond: (o.solicitud_id = s.solicitud_id)
+                                       Buffers: shared hit=1600
+                                       ->  Seq Scan on ofertas o  (cost=0.00..1938.00 rows=117000 width=8) (actual time=0.024..4.785 rows=117000.00 loops=1)
+                                             Buffers: shared hit=768
+                                       ->  Hash  (cost=2082.00..2082.00 rows=125000 width=8) (actual time=19.253..19.254 rows=125000.00 loops=1)
+                                             Buckets: 131072  Batches: 1  Memory Usage: 5907kB
+                                             Buffers: shared hit=832
+                                             ->  Seq Scan on solicitudes_propiedad s  (cost=0.00..2082.00 rows=125000 width=8) (actual time=0.026..7.927 rows=125000.00 loops=1)
+                                                   Buffers: shared hit=832
+                     ->  Hash  (cost=1960.00..1960.00 rows=100000 width=19) (actual time=15.246..15.246 rows=100000.00 loops=1)
+                           Buckets: 131072  Batches: 1  Memory Usage: 6092kB
+                           Buffers: shared hit=960
+                           ->  Seq Scan on propiedades p  (cost=0.00..1960.00 rows=100000 width=19) (actual time=0.015..6.217 rows=100000.00 loops=1)
+                                 Buffers: shared hit=960
+ Planning:
+   Buffers: shared hit=69 read=10
+ Planning Time: 0.466 ms
+ Execution Time: 661.709 ms
+(43 filas)
+
+                                                                                   QUERY PLAN                                                                                    
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=31519.49..31668.73 rows=59695 width=43) (actual time=405.730..416.081 rows=71271.00 loops=1)
+   Sort Key: sol.n_prospectos DESC, (COALESCE(vis.n_visitas, '0'::bigint)) DESC, (COALESCE(ofe.n_ofertas, '0'::bigint)) DESC
+   Sort Method: external merge  Disk: 4056kB
+   Buffers: shared hit=4992, temp read=507 written=508
+   ->  Hash Left Join  (cost=22410.66..24946.59 rows=59695 width=43) (actual time=286.410..365.063 rows=71271.00 loops=1)
+         Hash Cond: (p.propiedad_id = ofe.propiedad_id)
+         Buffers: shared hit=4992
+         ->  Hash Left Join  (cost=13995.94..16375.16 rows=59695 width=35) (actual time=184.456..241.581 rows=71271.00 loops=1)
+               Hash Cond: (p.propiedad_id = vis.propiedad_id)
+               Buffers: shared hit=3392
+               ->  Hash Join  (cost=4647.09..6869.60 rows=59695 width=27) (actual time=45.583..80.508 rows=71271.00 loops=1)
+                     Hash Cond: (p.propiedad_id = sol.propiedad_id)
+                     Buffers: shared hit=1792
+                     ->  Seq Scan on propiedades p  (cost=0.00..1960.00 rows=100000 width=19) (actual time=0.017..4.722 rows=100000.00 loops=1)
+                           Buffers: shared hit=960
+                     ->  Hash  (cost=3900.90..3900.90 rows=59695 width=12) (actual time=45.412..45.414 rows=71271.00 loops=1)
+                           Buckets: 131072 (originally 65536)  Batches: 1 (originally 1)  Memory Usage: 4087kB
+                           Buffers: shared hit=832
+                           ->  Subquery Scan on sol  (cost=2707.00..3900.90 rows=59695 width=12) (actual time=25.200..38.197 rows=71271.00 loops=1)
+                                 Buffers: shared hit=832
+                                 ->  HashAggregate  (cost=2707.00..3303.95 rows=59695 width=12) (actual time=25.197..34.582 rows=71271.00 loops=1)
+                                       Group Key: solicitudes_propiedad.propiedad_id
+                                       Batches: 1  Memory Usage: 4889kB
+                                       Buffers: shared hit=832
+                                       ->  Seq Scan on solicitudes_propiedad  (cost=0.00..2082.00 rows=125000 width=4) (actual time=0.007..4.839 rows=125000.00 loops=1)
+                                             Buffers: shared hit=832
+               ->  Hash  (cost=8602.66..8602.66 rows=59695 width=12) (actual time=138.849..138.852 rows=60515.00 loops=1)
+                     Buckets: 65536  Batches: 1  Memory Usage: 3113kB
+                     Buffers: shared hit=1600
+                     ->  Subquery Scan on vis  (cost=7408.76..8602.66 rows=59695 width=12) (actual time=119.070..131.854 rows=60515.00 loops=1)
+                           Buffers: shared hit=1600
+                           ->  HashAggregate  (cost=7408.76..8005.71 rows=59695 width=12) (actual time=119.068..128.498 rows=60515.00 loops=1)
+                                 Group Key: s.propiedad_id
+                                 Batches: 1  Memory Usage: 4633kB
+                                 Buffers: shared hit=1600
+                                 ->  Hash Join  (cost=3644.50..6558.76 rows=170000 width=4) (actual time=21.649..79.088 rows=170000.00 loops=1)
+                                       Hash Cond: (v.solicitud_id = s.solicitud_id)
+                                       Buffers: shared hit=1600
+                                       ->  Seq Scan on visitas v  (cost=0.00..2468.00 rows=170000 width=4) (actual time=0.034..6.699 rows=170000.00 loops=1)
+                                             Buffers: shared hit=768
+                                       ->  Hash  (cost=2082.00..2082.00 rows=125000 width=8) (actual time=21.326..21.327 rows=125000.00 loops=1)
+                                             Buckets: 131072  Batches: 1  Memory Usage: 5907kB
+                                             Buffers: shared hit=832
+                                             ->  Seq Scan on solicitudes_propiedad s  (cost=0.00..2082.00 rows=125000 width=8) (actual time=0.013..7.865 rows=125000.00 loops=1)
+                                                   Buffers: shared hit=832
+         ->  Hash  (cost=7668.54..7668.54 rows=59695 width=12) (actual time=101.798..101.800 rows=53173.00 loops=1)
+               Buckets: 65536  Batches: 1  Memory Usage: 2797kB
+               Buffers: shared hit=1600
+               ->  Subquery Scan on ofe  (cost=6474.64..7668.54 rows=59695 width=12) (actual time=85.923..96.150 rows=53173.00 loops=1)
+                     Buffers: shared hit=1600
+                     ->  HashAggregate  (cost=6474.64..7071.59 rows=59695 width=12) (actual time=85.922..93.182 rows=53173.00 loops=1)
+                           Group Key: s_1.propiedad_id
+                           Batches: 1  Memory Usage: 4377kB
+                           Buffers: shared hit=1600
+                           ->  Hash Join  (cost=3644.50..5889.64 rows=117000 width=4) (actual time=22.198..61.001 rows=117000.00 loops=1)
+                                 Hash Cond: (o.solicitud_id = s_1.solicitud_id)
+                                 Buffers: shared hit=1600
+                                 ->  Seq Scan on ofertas o  (cost=0.00..1938.00 rows=117000 width=4) (actual time=0.030..4.690 rows=117000.00 loops=1)
+                                       Buffers: shared hit=768
+                                 ->  Hash  (cost=2082.00..2082.00 rows=125000 width=8) (actual time=21.841..21.842 rows=125000.00 loops=1)
+                                       Buckets: 131072  Batches: 1  Memory Usage: 5907kB
+                                       Buffers: shared hit=832
+                                       ->  Seq Scan on solicitudes_propiedad s_1  (cost=0.00..2082.00 rows=125000 width=8) (actual time=0.025..7.885 rows=125000.00 loops=1)
+                                             Buffers: shared hit=832
+ Planning:
+   Buffers: shared hit=32
+ Planning Time: 0.369 ms
+ Execution Time: 429.549 ms
+(68 filas)
+
+                                                                                                      QUERY PLAN                                                                                                      
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=36827.67..36828.89 rows=20 width=55) (actual time=281.004..281.015 rows=20.00 loops=1)
+   Buffers: shared hit=3393, temp read=545 written=702
+   ->  Incremental Sort  (cost=36827.67..41923.82 rows=82983 width=55) (actual time=281.003..281.013 rows=20.00 loops=1)
+         Sort Key: ((CURRENT_DATE - inicio_comercial.fecha_inicio)) DESC, inicio_comercial.propiedad_id
+         Presorted Key: ((CURRENT_DATE - inicio_comercial.fecha_inicio))
+         Full-sort Groups: 1  Sort Method: top-N heapsort  Average Memory: 29kB  Peak Memory: 29kB
+         Pre-sorted Groups: 1  Sort Method: top-N heapsort  Average Memory: 28kB  Peak Memory: 28kB
+         Buffers: shared hit=3393, temp read=545 written=702
+         ->  WindowAgg  (cost=36807.29..38674.39 rows=82983 width=55) (actual time=280.906..280.963 rows=150.00 loops=1)
+               Window: w1 AS (ORDER BY ((CURRENT_DATE - inicio_comercial.fecha_inicio)) ROWS UNBOUNDED PRECEDING)
+               Storage: Memory  Maximum Storage: 17kB
+               Buffers: shared hit=3393, temp read=545 written=702
+               ->  Sort  (cost=36807.27..37014.73 rows=82983 width=47) (actual time=280.893..280.908 rows=150.00 loops=1)
+                     Sort Key: ((CURRENT_DATE - inicio_comercial.fecha_inicio)) DESC
+                     Sort Method: external merge  Disk: 4584kB
+                     Buffers: shared hit=3393, temp read=545 written=702
+                     ->  Subquery Scan on inicio_comercial  (cost=23569.55..27472.34 rows=82983 width=47) (actual time=221.980..249.473 rows=77847.00 loops=1)
+                           Buffers: shared hit=3393, temp read=59 written=128
+                           ->  HashAggregate  (cost=23569.55..26227.60 rows=82983 width=51) (actual time=221.975..243.109 rows=77847.00 loops=1)
+                                 Group Key: p.propiedad_id, c.nombre
+                                 Planned Partitions: 4  Batches: 5  Memory Usage: 8249kB  Disk Usage: 688kB
+                                 Buffers: shared hit=3393, temp read=59 written=128
+                                 ->  Hash Join  (cost=11443.24..14804.47 rows=82983 width=52) (actual time=104.821..179.797 rows=114106.00 loops=1)
+                                       Hash Cond: (p.ciudad_id = c.ciudad_id)
+                                       Buffers: shared hit=3393
+                                       ->  Hash Right Join  (cost=11442.02..14493.10 rows=82983 width=47) (actual time=104.779..164.259 rows=114106.00 loops=1)
+                                             Hash Cond: (pub.propiedad_id = p.propiedad_id)
+                                             Buffers: shared hit=3392
+                                             ->  Seq Scan on publicaciones pub  (cost=0.00..1790.00 rows=115000 width=9) (actual time=0.029..5.686 rows=115000.00 loops=1)
+                                                   Buffers: shared hit=640
+                                             ->  Hash  (cost=10540.03..10540.03 rows=72159 width=42) (actual time=104.426..104.432 rows=77847.00 loops=1)
+                                                   Buckets: 131072  Batches: 1  Memory Usage: 7004kB
+                                                   Buffers: shared hit=2752
+                                                   ->  Hash Anti Join  (cost=7564.62..10540.03 rows=72159 width=42) (actual time=70.690..91.287 rows=77847.00 loops=1)
+                                                         Hash Cond: (p.propiedad_id = s.propiedad_id)
+                                                         Buffers: shared hit=2752
+                                                         ->  Seq Scan on propiedades p  (cost=0.00..1960.00 rows=100000 width=42) (actual time=0.014..4.596 rows=100000.00 loops=1)
+                                                               Buffers: shared hit=960
+                                                         ->  Hash  (cost=7216.61..7216.61 rows=27841 width=4) (actual time=70.572..70.576 rows=22153.00 loops=1)
+                                                               Buckets: 32768  Batches: 1  Memory Usage: 1035kB
+                                                               Buffers: shared hit=1792
+                                                               ->  HashAggregate  (cost=6938.20..7216.61 rows=27841 width=4) (actual time=66.911..68.590 rows=22153.00 loops=1)
+                                                                     Group Key: s.propiedad_id
+                                                                     Batches: 1  Memory Usage: 1305kB
+                                                                     Buffers: shared hit=1792
+                                                                     ->  Hash Join  (cost=4550.38..6868.59 rows=27841 width=4) (actual time=31.508..61.558 rows=27841.00 loops=1)
+                                                                           Hash Cond: (o.solicitud_id = s.solicitud_id)
+                                                                           Buffers: shared hit=1792
+                                                                           ->  Hash Join  (cost=905.88..3151.01 rows=27841 width=4) (actual time=4.565..25.315 rows=27841.00 loops=1)
+                                                                                 Hash Cond: (o.oferta_id = t.oferta_id)
+                                                                                 Buffers: shared hit=960
+                                                                                 ->  Seq Scan on ofertas o  (cost=0.00..1938.00 rows=117000 width=8) (actual time=0.010..4.854 rows=117000.00 loops=1)
+                                                                                       Buffers: shared hit=768
+                                                                                 ->  Hash  (cost=557.86..557.86 rows=27841 width=4) (actual time=4.457..4.457 rows=27841.00 loops=1)
+                                                                                       Buckets: 32768  Batches: 1  Memory Usage: 1235kB
+                                                                                       Buffers: shared hit=192
+                                                                                       ->  Seq Scan on transacciones t  (cost=0.00..557.86 rows=27841 width=4) (actual time=0.015..2.236 rows=27841.00 loops=1)
+                                                                                             Filter: (estado <> 'anulada'::text)
+                                                                                             Rows Removed by Filter: 1428
+                                                                                             Buffers: shared hit=192
+                                                                           ->  Hash  (cost=2082.00..2082.00 rows=125000 width=8) (actual time=26.620..26.621 rows=125000.00 loops=1)
+                                                                                 Buckets: 131072  Batches: 1  Memory Usage: 5907kB
+                                                                                 Buffers: shared hit=832
+                                                                                 ->  Seq Scan on solicitudes_propiedad s  (cost=0.00..2082.00 rows=125000 width=8) (actual time=0.026..10.021 rows=125000.00 loops=1)
+                                                                                       Buffers: shared hit=832
+                                       ->  Hash  (cost=1.10..1.10 rows=10 width=13) (actual time=0.033..0.034 rows=10.00 loops=1)
+                                             Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                             Buffers: shared hit=1
+                                             ->  Seq Scan on ciudades c  (cost=0.00..1.10 rows=10 width=13) (actual time=0.027..0.028 rows=10.00 loops=1)
+                                                   Buffers: shared hit=1
+ Planning:
+   Buffers: shared hit=68 read=5
+ Planning Time: 1.487 ms
+ Execution Time: 299.707 ms
+(74 filas)
+
+             indice              | veces_usado | tamano  
+---------------------------------+-------------+---------
+ idx_visitas_solicitud_id        |           9 | 3120 kB
+ idx_ofertas_solicitud_id        |           5 | 2280 kB
+ idx_ofertas_estado              |           4 | 3448 kB
+ idx_sol_propiedad_id            |           3 | 2344 kB
+ idx_sol_estado_activo           |           1 | 2512 kB
+ idx_publicaciones_propiedad_pub |           0 | 2024 kB
+ idx_sol_campana_id              |           0 | 608 kB
+ idx_transacciones_oferta_id     |           0 | 656 kB
+(8 filas)
+
+psql:sql/06_optimizacion_escala_f5.sql:271: NOTICE:  index "idx_transacciones_oferta_id" does not exist, skipping
+DROP INDEX
+psql:sql/06_optimizacion_escala_f5.sql:272: NOTICE:  index "idx_ofertas_estado" does not exist, skipping
+DROP INDEX
+psql:sql/06_optimizacion_escala_f5.sql:273: NOTICE:  index "idx_sol_estado_activo" does not exist, skipping
+DROP INDEX
+psql:sql/06_optimizacion_escala_f5.sql:274: NOTICE:  index "idx_sol_campana_id" does not exist, skipping
+DROP INDEX
+psql:sql/06_optimizacion_escala_f5.sql:275: NOTICE:  index "idx_publicaciones_propiedad_pub" does not exist, skipping
+DROP INDEX
+psql:sql/06_optimizacion_escala_f5.sql:276: NOTICE:  relation "idx_sol_propiedad_id" already exists, skipping
+CREATE INDEX
+psql:sql/06_optimizacion_escala_f5.sql:277: NOTICE:  relation "idx_visitas_solicitud_id" already exists, skipping
+CREATE INDEX
+psql:sql/06_optimizacion_escala_f5.sql:278: NOTICE:  relation "idx_ofertas_solicitud_id" already exists, skipping
+CREATE INDEX
+RESET
+psql:sql/06_optimizacion_escala_f5.sql:281: NOTICE:  drop cascades to 7 other objects
+DETALLE:  drop cascades to table escala.ciudades
+drop cascades to table escala.propiedades
+drop cascades to table escala.publicaciones
+drop cascades to table escala.solicitudes_propiedad
+drop cascades to table escala.visitas
+drop cascades to table escala.ofertas
+drop cascades to table escala.transacciones
+DROP SCHEMA
+       tablename       |        indexname         |                                           indexdef                                           
+-----------------------+--------------------------+----------------------------------------------------------------------------------------------
+ ofertas               | idx_ofertas_solicitud_id | CREATE INDEX idx_ofertas_solicitud_id ON public.ofertas USING btree (solicitud_id)
+ solicitudes_propiedad | idx_sol_propiedad_id     | CREATE INDEX idx_sol_propiedad_id ON public.solicitudes_propiedad USING btree (propiedad_id)
+ visitas               | idx_visitas_solicitud_id | CREATE INDEX idx_visitas_solicitud_id ON public.visitas USING btree (solicitud_id)
+(3 filas)
+

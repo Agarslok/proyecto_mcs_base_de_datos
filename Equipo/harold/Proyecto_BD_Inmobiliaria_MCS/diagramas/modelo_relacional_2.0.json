@@ -1,0 +1,2685 @@
+{
+  "version": "32.7.3",
+  "pages": [
+    {
+      "id": "mcs",
+      "name": "BD_MCS v1.3",
+      "cells": [
+        {
+          "id": "1",
+          "type": "layer"
+        },
+        {
+          "id": "t0",
+          "type": "node",
+          "parent": "1",
+          "label": "ciudades"
+        },
+        {
+          "id": "t0_0_k",
+          "type": "node",
+          "parent": "t0",
+          "label": "PK",
+          "html": "<font color=\"#c0392b\">PK</font>"
+        },
+        {
+          "id": "t0_0_n",
+          "type": "node",
+          "parent": "t0",
+          "label": "ciudad_id"
+        },
+        {
+          "id": "t0_0_t",
+          "type": "node",
+          "parent": "t0",
+          "label": "int4"
+        },
+        {
+          "id": "t0_1_k",
+          "type": "node",
+          "parent": "t0"
+        },
+        {
+          "id": "t0_1_n",
+          "type": "node",
+          "parent": "t0",
+          "label": "nombre"
+        },
+        {
+          "id": "t0_1_t",
+          "type": "node",
+          "parent": "t0",
+          "label": "varchar(100)"
+        },
+        {
+          "id": "t1",
+          "type": "node",
+          "parent": "1",
+          "label": "personas"
+        },
+        {
+          "id": "t1_0_k",
+          "type": "node",
+          "parent": "t1",
+          "label": "PK",
+          "html": "<font color=\"#c0392b\">PK</font>"
+        },
+        {
+          "id": "t1_0_n",
+          "type": "node",
+          "parent": "t1",
+          "label": "persona_id"
+        },
+        {
+          "id": "t1_0_t",
+          "type": "node",
+          "parent": "t1",
+          "label": "int4"
+        },
+        {
+          "id": "t1_1_k",
+          "type": "node",
+          "parent": "t1"
+        },
+        {
+          "id": "t1_1_n",
+          "type": "node",
+          "parent": "t1",
+          "label": "nombres"
+        },
+        {
+          "id": "t1_1_t",
+          "type": "node",
+          "parent": "t1",
+          "label": "varchar(100)"
+        },
+        {
+          "id": "t1_2_k",
+          "type": "node",
+          "parent": "t1"
+        },
+        {
+          "id": "t1_2_n",
+          "type": "node",
+          "parent": "t1",
+          "label": "apellidos"
+        },
+        {
+          "id": "t1_2_t",
+          "type": "node",
+          "parent": "t1",
+          "label": "varchar(100)"
+        },
+        {
+          "id": "t1_3_k",
+          "type": "node",
+          "parent": "t1"
+        },
+        {
+          "id": "t1_3_n",
+          "type": "node",
+          "parent": "t1",
+          "label": "telefono"
+        },
+        {
+          "id": "t1_3_t",
+          "type": "node",
+          "parent": "t1",
+          "label": "varchar(30)"
+        },
+        {
+          "id": "t1_4_k",
+          "type": "node",
+          "parent": "t1"
+        },
+        {
+          "id": "t1_4_n",
+          "type": "node",
+          "parent": "t1",
+          "label": "email"
+        },
+        {
+          "id": "t1_4_t",
+          "type": "node",
+          "parent": "t1",
+          "label": "varchar(150)"
+        },
+        {
+          "id": "t1_5_k",
+          "type": "node",
+          "parent": "t1",
+          "label": "FK",
+          "html": "<font color=\"#2e6fb5\">FK</font>"
+        },
+        {
+          "id": "t1_5_n",
+          "type": "node",
+          "parent": "t1",
+          "label": "ciudad_id"
+        },
+        {
+          "id": "t1_5_t",
+          "type": "node",
+          "parent": "t1",
+          "label": "int4"
+        },
+        {
+          "id": "t2",
+          "type": "node",
+          "parent": "1",
+          "label": "persona_roles"
+        },
+        {
+          "id": "t2_0_k",
+          "type": "node",
+          "parent": "t2",
+          "label": "PK, FK",
+          "html": "<font color=\"#c0392b\">PK</font>, <font color=\"#2e6fb5\">FK</font>"
+        },
+        {
+          "id": "t2_0_n",
+          "type": "node",
+          "parent": "t2",
+          "label": "persona_id"
+        },
+        {
+          "id": "t2_0_t",
+          "type": "node",
+          "parent": "t2",
+          "label": "int4"
+        },
+        {
+          "id": "t2_1_k",
+          "type": "node",
+          "parent": "t2",
+          "label": "PK, FK",
+          "html": "<font color=\"#c0392b\">PK</font>, <font color=\"#2e6fb5\">FK</font>"
+        },
+        {
+          "id": "t2_1_n",
+          "type": "node",
+          "parent": "t2",
+          "label": "tipo_persona_id"
+        },
+        {
+          "id": "t2_1_t",
+          "type": "node",
+          "parent": "t2",
+          "label": "int4"
+        },
+        {
+          "id": "t3",
+          "type": "node",
+          "parent": "1",
+          "label": "propiedades"
+        },
+        {
+          "id": "t3_0_k",
+          "type": "node",
+          "parent": "t3",
+          "label": "PK",
+          "html": "<font color=\"#c0392b\">PK</font>"
+        },
+        {
+          "id": "t3_0_n",
+          "type": "node",
+          "parent": "t3",
+          "label": "propiedad_id"
+        },
+        {
+          "id": "t3_0_t",
+          "type": "node",
+          "parent": "t3",
+          "label": "int4"
+        },
+        {
+          "id": "t3_1_k",
+          "type": "node",
+          "parent": "t3",
+          "label": "FK",
+          "html": "<font color=\"#2e6fb5\">FK</font>"
+        },
+        {
+          "id": "t3_1_n",
+          "type": "node",
+          "parent": "t3",
+          "label": "tipo_inmueble_id"
+        },
+        {
+          "id": "t3_1_t",
+          "type": "node",
+          "parent": "t3",
+          "label": "int4"
+        },
+        {
+          "id": "t3_2_k",
+          "type": "node",
+          "parent": "t3",
+          "label": "FK",
+          "html": "<font color=\"#2e6fb5\">FK</font>"
+        },
+        {
+          "id": "t3_2_n",
+          "type": "node",
+          "parent": "t3",
+          "label": "ciudad_id"
+        },
+        {
+          "id": "t3_2_t",
+          "type": "node",
+          "parent": "t3",
+          "label": "int4"
+        },
+        {
+          "id": "t3_3_k",
+          "type": "node",
+          "parent": "t3",
+          "label": "FK",
+          "html": "<font color=\"#2e6fb5\">FK</font>"
+        },
+        {
+          "id": "t3_3_n",
+          "type": "node",
+          "parent": "t3",
+          "label": "responsable_id"
+        },
+        {
+          "id": "t3_3_t",
+          "type": "node",
+          "parent": "t3",
+          "label": "int4"
+        },
+        {
+          "id": "t3_4_k",
+          "type": "node",
+          "parent": "t3"
+        },
+        {
+          "id": "t3_4_n",
+          "type": "node",
+          "parent": "t3",
+          "label": "matricula_inmobiliaria"
+        },
+        {
+          "id": "t3_4_t",
+          "type": "node",
+          "parent": "t3",
+          "label": "varchar(50)"
+        },
+        {
+          "id": "t3_5_k",
+          "type": "node",
+          "parent": "t3"
+        },
+        {
+          "id": "t3_5_n",
+          "type": "node",
+          "parent": "t3",
+          "label": "titulo"
+        },
+        {
+          "id": "t3_5_t",
+          "type": "node",
+          "parent": "t3",
+          "label": "varchar(200)"
+        },
+        {
+          "id": "t3_6_k",
+          "type": "node",
+          "parent": "t3"
+        },
+        {
+          "id": "t3_6_n",
+          "type": "node",
+          "parent": "t3",
+          "label": "descripcion"
+        },
+        {
+          "id": "t3_6_t",
+          "type": "node",
+          "parent": "t3",
+          "label": "text"
+        },
+        {
+          "id": "t3_7_k",
+          "type": "node",
+          "parent": "t3"
+        },
+        {
+          "id": "t3_7_n",
+          "type": "node",
+          "parent": "t3",
+          "label": "direccion"
+        },
+        {
+          "id": "t3_7_t",
+          "type": "node",
+          "parent": "t3",
+          "label": "varchar(150)"
+        },
+        {
+          "id": "t3_8_k",
+          "type": "node",
+          "parent": "t3"
+        },
+        {
+          "id": "t3_8_n",
+          "type": "node",
+          "parent": "t3",
+          "label": "area_total_m2"
+        },
+        {
+          "id": "t3_8_t",
+          "type": "node",
+          "parent": "t3",
+          "label": "numeric(10,2)"
+        },
+        {
+          "id": "t3_9_k",
+          "type": "node",
+          "parent": "t3"
+        },
+        {
+          "id": "t3_9_n",
+          "type": "node",
+          "parent": "t3",
+          "label": "creado_en"
+        },
+        {
+          "id": "t3_9_t",
+          "type": "node",
+          "parent": "t3",
+          "label": "timestamptz"
+        },
+        {
+          "id": "t3_10_k",
+          "type": "node",
+          "parent": "t3"
+        },
+        {
+          "id": "t3_10_n",
+          "type": "node",
+          "parent": "t3",
+          "label": "actualizado_en"
+        },
+        {
+          "id": "t3_10_t",
+          "type": "node",
+          "parent": "t3",
+          "label": "timestamptz"
+        },
+        {
+          "id": "t3_11_k",
+          "type": "node",
+          "parent": "t3"
+        },
+        {
+          "id": "t3_11_n",
+          "type": "node",
+          "parent": "t3",
+          "label": "estado_comercial"
+        },
+        {
+          "id": "t3_11_t",
+          "type": "node",
+          "parent": "t3",
+          "label": "varchar(20)"
+        },
+        {
+          "id": "t4",
+          "type": "node",
+          "parent": "1",
+          "label": "propiedad_propietarios"
+        },
+        {
+          "id": "t4_0_k",
+          "type": "node",
+          "parent": "t4",
+          "label": "PK",
+          "html": "<font color=\"#c0392b\">PK</font>"
+        },
+        {
+          "id": "t4_0_n",
+          "type": "node",
+          "parent": "t4",
+          "label": "propiedad_propietario_id"
+        },
+        {
+          "id": "t4_0_t",
+          "type": "node",
+          "parent": "t4",
+          "label": "int4"
+        },
+        {
+          "id": "t4_1_k",
+          "type": "node",
+          "parent": "t4",
+          "label": "FK",
+          "html": "<font color=\"#2e6fb5\">FK</font>"
+        },
+        {
+          "id": "t4_1_n",
+          "type": "node",
+          "parent": "t4",
+          "label": "persona_id"
+        },
+        {
+          "id": "t4_1_t",
+          "type": "node",
+          "parent": "t4",
+          "label": "int4"
+        },
+        {
+          "id": "t4_2_k",
+          "type": "node",
+          "parent": "t4",
+          "label": "FK",
+          "html": "<font color=\"#2e6fb5\">FK</font>"
+        },
+        {
+          "id": "t4_2_n",
+          "type": "node",
+          "parent": "t4",
+          "label": "propiedad_id"
+        },
+        {
+          "id": "t4_2_t",
+          "type": "node",
+          "parent": "t4",
+          "label": "int4"
+        },
+        {
+          "id": "t5",
+          "type": "node",
+          "parent": "1",
+          "label": "detalle_construcciones"
+        },
+        {
+          "id": "t5_0_k",
+          "type": "node",
+          "parent": "t5",
+          "label": "PK",
+          "html": "<font color=\"#c0392b\">PK</font>"
+        },
+        {
+          "id": "t5_0_n",
+          "type": "node",
+          "parent": "t5",
+          "label": "detalle_construccion_id"
+        },
+        {
+          "id": "t5_0_t",
+          "type": "node",
+          "parent": "t5",
+          "label": "int4"
+        },
+        {
+          "id": "t5_1_k",
+          "type": "node",
+          "parent": "t5",
+          "label": "FK",
+          "html": "<font color=\"#2e6fb5\">FK</font>"
+        },
+        {
+          "id": "t5_1_n",
+          "type": "node",
+          "parent": "t5",
+          "label": "propiedad_id"
+        },
+        {
+          "id": "t5_1_t",
+          "type": "node",
+          "parent": "t5",
+          "label": "int4"
+        },
+        {
+          "id": "t5_2_k",
+          "type": "node",
+          "parent": "t5",
+          "label": "FK",
+          "html": "<font color=\"#2e6fb5\">FK</font>"
+        },
+        {
+          "id": "t5_2_n",
+          "type": "node",
+          "parent": "t5",
+          "label": "estado_conservacion_id"
+        },
+        {
+          "id": "t5_2_t",
+          "type": "node",
+          "parent": "t5",
+          "label": "int4"
+        },
+        {
+          "id": "t5_3_k",
+          "type": "node",
+          "parent": "t5"
+        },
+        {
+          "id": "t5_3_n",
+          "type": "node",
+          "parent": "t5",
+          "label": "area_construida_m2"
+        },
+        {
+          "id": "t5_3_t",
+          "type": "node",
+          "parent": "t5",
+          "label": "numeric(10,2)"
+        },
+        {
+          "id": "t5_4_k",
+          "type": "node",
+          "parent": "t5"
+        },
+        {
+          "id": "t5_4_n",
+          "type": "node",
+          "parent": "t5",
+          "label": "habitaciones"
+        },
+        {
+          "id": "t5_4_t",
+          "type": "node",
+          "parent": "t5",
+          "label": "int4"
+        },
+        {
+          "id": "t5_5_k",
+          "type": "node",
+          "parent": "t5"
+        },
+        {
+          "id": "t5_5_n",
+          "type": "node",
+          "parent": "t5",
+          "label": "banos"
+        },
+        {
+          "id": "t5_5_t",
+          "type": "node",
+          "parent": "t5",
+          "label": "int4"
+        },
+        {
+          "id": "t5_6_k",
+          "type": "node",
+          "parent": "t5"
+        },
+        {
+          "id": "t5_6_n",
+          "type": "node",
+          "parent": "t5",
+          "label": "parqueaderos"
+        },
+        {
+          "id": "t5_6_t",
+          "type": "node",
+          "parent": "t5",
+          "label": "int4"
+        },
+        {
+          "id": "t5_7_k",
+          "type": "node",
+          "parent": "t5"
+        },
+        {
+          "id": "t5_7_n",
+          "type": "node",
+          "parent": "t5",
+          "label": "pisos_totales"
+        },
+        {
+          "id": "t5_7_t",
+          "type": "node",
+          "parent": "t5",
+          "label": "int4"
+        },
+        {
+          "id": "t5_8_k",
+          "type": "node",
+          "parent": "t5"
+        },
+        {
+          "id": "t5_8_n",
+          "type": "node",
+          "parent": "t5",
+          "label": "piso_ubicacion"
+        },
+        {
+          "id": "t5_8_t",
+          "type": "node",
+          "parent": "t5",
+          "label": "int4"
+        },
+        {
+          "id": "t5_9_k",
+          "type": "node",
+          "parent": "t5"
+        },
+        {
+          "id": "t5_9_n",
+          "type": "node",
+          "parent": "t5",
+          "label": "anio_construccion"
+        },
+        {
+          "id": "t5_9_t",
+          "type": "node",
+          "parent": "t5",
+          "label": "int4"
+        },
+        {
+          "id": "t5_10_k",
+          "type": "node",
+          "parent": "t5"
+        },
+        {
+          "id": "t5_10_n",
+          "type": "node",
+          "parent": "t5",
+          "label": "amoblado"
+        },
+        {
+          "id": "t5_10_t",
+          "type": "node",
+          "parent": "t5",
+          "label": "bool"
+        },
+        {
+          "id": "t5_11_k",
+          "type": "node",
+          "parent": "t5"
+        },
+        {
+          "id": "t5_11_n",
+          "type": "node",
+          "parent": "t5",
+          "label": "ascensor"
+        },
+        {
+          "id": "t5_11_t",
+          "type": "node",
+          "parent": "t5",
+          "label": "bool"
+        },
+        {
+          "id": "t5_12_k",
+          "type": "node",
+          "parent": "t5"
+        },
+        {
+          "id": "t5_12_n",
+          "type": "node",
+          "parent": "t5",
+          "label": "deposito"
+        },
+        {
+          "id": "t5_12_t",
+          "type": "node",
+          "parent": "t5",
+          "label": "bool"
+        },
+        {
+          "id": "t6",
+          "type": "node",
+          "parent": "1",
+          "label": "detalle_terrenos"
+        },
+        {
+          "id": "t6_0_k",
+          "type": "node",
+          "parent": "t6",
+          "label": "PK",
+          "html": "<font color=\"#c0392b\">PK</font>"
+        },
+        {
+          "id": "t6_0_n",
+          "type": "node",
+          "parent": "t6",
+          "label": "detalle_terreno_id"
+        },
+        {
+          "id": "t6_0_t",
+          "type": "node",
+          "parent": "t6",
+          "label": "int4"
+        },
+        {
+          "id": "t6_1_k",
+          "type": "node",
+          "parent": "t6",
+          "label": "FK",
+          "html": "<font color=\"#c0392b\">FK</font>"
+        },
+        {
+          "id": "t6_1_n",
+          "type": "node",
+          "parent": "t6",
+          "label": "propiedad_id"
+        },
+        {
+          "id": "t6_1_t",
+          "type": "node",
+          "parent": "t6",
+          "label": "int4"
+        },
+        {
+          "id": "t6_2_k",
+          "type": "node",
+          "parent": "t6",
+          "label": "FK",
+          "html": "<font color=\"#2e6fb5\">FK</font>"
+        },
+        {
+          "id": "t6_2_n",
+          "type": "node",
+          "parent": "t6",
+          "label": "uso_suelo_id"
+        },
+        {
+          "id": "t6_2_t",
+          "type": "node",
+          "parent": "t6",
+          "label": "int4"
+        },
+        {
+          "id": "t6_3_k",
+          "type": "node",
+          "parent": "t6",
+          "label": "FK",
+          "html": "<font color=\"#2e6fb5\">FK</font>"
+        },
+        {
+          "id": "t6_3_n",
+          "type": "node",
+          "parent": "t6",
+          "label": "acceso_via_id"
+        },
+        {
+          "id": "t6_3_t",
+          "type": "node",
+          "parent": "t6",
+          "label": "int4"
+        },
+        {
+          "id": "t6_4_k",
+          "type": "node",
+          "parent": "t6"
+        },
+        {
+          "id": "t6_4_n",
+          "type": "node",
+          "parent": "t6",
+          "label": "frente_m"
+        },
+        {
+          "id": "t6_4_t",
+          "type": "node",
+          "parent": "t6",
+          "label": "numeric(8,2)"
+        },
+        {
+          "id": "t6_5_k",
+          "type": "node",
+          "parent": "t6"
+        },
+        {
+          "id": "t6_5_n",
+          "type": "node",
+          "parent": "t6",
+          "label": "fondo_m"
+        },
+        {
+          "id": "t6_5_t",
+          "type": "node",
+          "parent": "t6",
+          "label": "numeric(8,2)"
+        },
+        {
+          "id": "t6_6_k",
+          "type": "node",
+          "parent": "t6"
+        },
+        {
+          "id": "t6_6_n",
+          "type": "node",
+          "parent": "t6",
+          "label": "topografia"
+        },
+        {
+          "id": "t6_6_t",
+          "type": "node",
+          "parent": "t6",
+          "label": "varchar(20)"
+        },
+        {
+          "id": "t6_7_k",
+          "type": "node",
+          "parent": "t6"
+        },
+        {
+          "id": "t6_7_n",
+          "type": "node",
+          "parent": "t6",
+          "label": "zona"
+        },
+        {
+          "id": "t6_7_t",
+          "type": "node",
+          "parent": "t6",
+          "label": "varchar(10)"
+        },
+        {
+          "id": "t6_8_k",
+          "type": "node",
+          "parent": "t6"
+        },
+        {
+          "id": "t6_8_n",
+          "type": "node",
+          "parent": "t6",
+          "label": "es_esquinero"
+        },
+        {
+          "id": "t6_8_t",
+          "type": "node",
+          "parent": "t6",
+          "label": "bool"
+        },
+        {
+          "id": "t7",
+          "type": "node",
+          "parent": "1",
+          "label": "publicaciones"
+        },
+        {
+          "id": "t7_0_k",
+          "type": "node",
+          "parent": "t7",
+          "label": "PK",
+          "html": "<font color=\"#c0392b\">PK</font>"
+        },
+        {
+          "id": "t7_0_n",
+          "type": "node",
+          "parent": "t7",
+          "label": "publicacion_id"
+        },
+        {
+          "id": "t7_0_t",
+          "type": "node",
+          "parent": "t7",
+          "label": "int4"
+        },
+        {
+          "id": "t7_1_k",
+          "type": "node",
+          "parent": "t7",
+          "label": "FK",
+          "html": "<font color=\"#2e6fb5\">FK</font>"
+        },
+        {
+          "id": "t7_1_n",
+          "type": "node",
+          "parent": "t7",
+          "label": "propiedad_id"
+        },
+        {
+          "id": "t7_1_t",
+          "type": "node",
+          "parent": "t7",
+          "label": "int4"
+        },
+        {
+          "id": "t7_2_k",
+          "type": "node",
+          "parent": "t7"
+        },
+        {
+          "id": "t7_2_n",
+          "type": "node",
+          "parent": "t7",
+          "label": "precio"
+        },
+        {
+          "id": "t7_2_t",
+          "type": "node",
+          "parent": "t7",
+          "label": "numeric(14,2)"
+        },
+        {
+          "id": "t7_3_k",
+          "type": "node",
+          "parent": "t7"
+        },
+        {
+          "id": "t7_3_n",
+          "type": "node",
+          "parent": "t7",
+          "label": "valor_administracion"
+        },
+        {
+          "id": "t7_3_t",
+          "type": "node",
+          "parent": "t7",
+          "label": "numeric(14,2)"
+        },
+        {
+          "id": "t7_4_k",
+          "type": "node",
+          "parent": "t7"
+        },
+        {
+          "id": "t7_4_n",
+          "type": "node",
+          "parent": "t7",
+          "label": "publicada"
+        },
+        {
+          "id": "t7_4_t",
+          "type": "node",
+          "parent": "t7",
+          "label": "bool"
+        },
+        {
+          "id": "t7_5_k",
+          "type": "node",
+          "parent": "t7"
+        },
+        {
+          "id": "t7_5_n",
+          "type": "node",
+          "parent": "t7",
+          "label": "fecha_publicacion"
+        },
+        {
+          "id": "t7_5_t",
+          "type": "node",
+          "parent": "t7",
+          "label": "date"
+        },
+        {
+          "id": "t7_6_k",
+          "type": "node",
+          "parent": "t7"
+        },
+        {
+          "id": "t7_6_n",
+          "type": "node",
+          "parent": "t7",
+          "label": "fecha_retiro"
+        },
+        {
+          "id": "t7_6_t",
+          "type": "node",
+          "parent": "t7",
+          "label": "date"
+        },
+        {
+          "id": "t7_7_k",
+          "type": "node",
+          "parent": "t7"
+        },
+        {
+          "id": "t7_7_n",
+          "type": "node",
+          "parent": "t7",
+          "label": "creado_en"
+        },
+        {
+          "id": "t7_7_t",
+          "type": "node",
+          "parent": "t7",
+          "label": "timestamptz"
+        },
+        {
+          "id": "t7_8_k",
+          "type": "node",
+          "parent": "t7"
+        },
+        {
+          "id": "t7_8_n",
+          "type": "node",
+          "parent": "t7",
+          "label": "actualizado_en"
+        },
+        {
+          "id": "t7_8_t",
+          "type": "node",
+          "parent": "t7",
+          "label": "timestamptz"
+        },
+        {
+          "id": "t7_9_k",
+          "type": "node",
+          "parent": "t7",
+          "label": "FK",
+          "html": "<font color=\"#2e6fb5\">FK</font>"
+        },
+        {
+          "id": "t7_9_n",
+          "type": "node",
+          "parent": "t7",
+          "label": "tipo_operacion_id"
+        },
+        {
+          "id": "t7_9_t",
+          "type": "node",
+          "parent": "t7",
+          "label": "int4"
+        },
+        {
+          "id": "t8",
+          "type": "node",
+          "parent": "1",
+          "label": "publicacion_canales"
+        },
+        {
+          "id": "t8_0_k",
+          "type": "node",
+          "parent": "t8",
+          "label": "PK",
+          "html": "<font color=\"#c0392b\">PK</font>"
+        },
+        {
+          "id": "t8_0_n",
+          "type": "node",
+          "parent": "t8",
+          "label": "publicacion_canal_id"
+        },
+        {
+          "id": "t8_0_t",
+          "type": "node",
+          "parent": "t8",
+          "label": "int4"
+        },
+        {
+          "id": "t8_1_k",
+          "type": "node",
+          "parent": "t8",
+          "label": "FK",
+          "html": "<font color=\"#2e6fb5\">FK</font>"
+        },
+        {
+          "id": "t8_1_n",
+          "type": "node",
+          "parent": "t8",
+          "label": "canal_id"
+        },
+        {
+          "id": "t8_1_t",
+          "type": "node",
+          "parent": "t8",
+          "label": "int4"
+        },
+        {
+          "id": "t8_2_k",
+          "type": "node",
+          "parent": "t8",
+          "label": "FK",
+          "html": "<font color=\"#2e6fb5\">FK</font>"
+        },
+        {
+          "id": "t8_2_n",
+          "type": "node",
+          "parent": "t8",
+          "label": "publicacion_id"
+        },
+        {
+          "id": "t8_2_t",
+          "type": "node",
+          "parent": "t8",
+          "label": "int4"
+        },
+        {
+          "id": "t9",
+          "type": "node",
+          "parent": "1",
+          "label": "canales_marketing"
+        },
+        {
+          "id": "t9_0_k",
+          "type": "node",
+          "parent": "t9",
+          "label": "PK",
+          "html": "<font color=\"#c0392b\">PK</font>"
+        },
+        {
+          "id": "t9_0_n",
+          "type": "node",
+          "parent": "t9",
+          "label": "canal_id"
+        },
+        {
+          "id": "t9_0_t",
+          "type": "node",
+          "parent": "t9",
+          "label": "int4"
+        },
+        {
+          "id": "t9_1_k",
+          "type": "node",
+          "parent": "t9"
+        },
+        {
+          "id": "t9_1_n",
+          "type": "node",
+          "parent": "t9",
+          "label": "nombre"
+        },
+        {
+          "id": "t9_1_t",
+          "type": "node",
+          "parent": "t9",
+          "label": "varchar(100)"
+        },
+        {
+          "id": "t9_2_k",
+          "type": "node",
+          "parent": "t9"
+        },
+        {
+          "id": "t9_2_n",
+          "type": "node",
+          "parent": "t9",
+          "label": "activo"
+        },
+        {
+          "id": "t9_2_t",
+          "type": "node",
+          "parent": "t9",
+          "label": "bool"
+        },
+        {
+          "id": "t10",
+          "type": "node",
+          "parent": "1",
+          "label": "campanas"
+        },
+        {
+          "id": "t10_0_k",
+          "type": "node",
+          "parent": "t10",
+          "label": "PK",
+          "html": "<font color=\"#c0392b\">PK</font>"
+        },
+        {
+          "id": "t10_0_n",
+          "type": "node",
+          "parent": "t10",
+          "label": "campana_id"
+        },
+        {
+          "id": "t10_0_t",
+          "type": "node",
+          "parent": "t10",
+          "label": "int4"
+        },
+        {
+          "id": "t10_1_k",
+          "type": "node",
+          "parent": "t10",
+          "label": "FK",
+          "html": "<font color=\"#2e6fb5\">FK</font>"
+        },
+        {
+          "id": "t10_1_n",
+          "type": "node",
+          "parent": "t10",
+          "label": "canal_id"
+        },
+        {
+          "id": "t10_1_t",
+          "type": "node",
+          "parent": "t10",
+          "label": "int4"
+        },
+        {
+          "id": "t10_2_k",
+          "type": "node",
+          "parent": "t10"
+        },
+        {
+          "id": "t10_2_n",
+          "type": "node",
+          "parent": "t10",
+          "label": "nombre_campana"
+        },
+        {
+          "id": "t10_2_t",
+          "type": "node",
+          "parent": "t10",
+          "label": "varchar(150)"
+        },
+        {
+          "id": "t10_3_k",
+          "type": "node",
+          "parent": "t10"
+        },
+        {
+          "id": "t10_3_n",
+          "type": "node",
+          "parent": "t10",
+          "label": "presupuesto_planeado"
+        },
+        {
+          "id": "t10_3_t",
+          "type": "node",
+          "parent": "t10",
+          "label": "numeric(14,2)"
+        },
+        {
+          "id": "t10_4_k",
+          "type": "node",
+          "parent": "t10"
+        },
+        {
+          "id": "t10_4_n",
+          "type": "node",
+          "parent": "t10",
+          "label": "presupuesto_invertido"
+        },
+        {
+          "id": "t10_4_t",
+          "type": "node",
+          "parent": "t10",
+          "label": "numeric(14,2)"
+        },
+        {
+          "id": "t10_5_k",
+          "type": "node",
+          "parent": "t10"
+        },
+        {
+          "id": "t10_5_n",
+          "type": "node",
+          "parent": "t10",
+          "label": "fecha_inicio"
+        },
+        {
+          "id": "t10_5_t",
+          "type": "node",
+          "parent": "t10",
+          "label": "date"
+        },
+        {
+          "id": "t10_6_k",
+          "type": "node",
+          "parent": "t10"
+        },
+        {
+          "id": "t10_6_n",
+          "type": "node",
+          "parent": "t10",
+          "label": "fecha_fin"
+        },
+        {
+          "id": "t10_6_t",
+          "type": "node",
+          "parent": "t10",
+          "label": "date"
+        },
+        {
+          "id": "t10_7_k",
+          "type": "node",
+          "parent": "t10"
+        },
+        {
+          "id": "t10_7_n",
+          "type": "node",
+          "parent": "t10",
+          "label": "estado"
+        },
+        {
+          "id": "t10_7_t",
+          "type": "node",
+          "parent": "t10",
+          "label": "varchar(20)"
+        },
+        {
+          "id": "t11",
+          "type": "node",
+          "parent": "1",
+          "label": "campana_propiedades"
+        },
+        {
+          "id": "t11_0_k",
+          "type": "node",
+          "parent": "t11",
+          "label": "PK",
+          "html": "<font color=\"#c0392b\">PK</font>"
+        },
+        {
+          "id": "t11_0_n",
+          "type": "node",
+          "parent": "t11",
+          "label": "campana_propiedad_id"
+        },
+        {
+          "id": "t11_0_t",
+          "type": "node",
+          "parent": "t11",
+          "label": "int4"
+        },
+        {
+          "id": "t11_1_k",
+          "type": "node",
+          "parent": "t11",
+          "label": "FK",
+          "html": "<font color=\"#c0392b\">FK</font>"
+        },
+        {
+          "id": "t11_1_n",
+          "type": "node",
+          "parent": "t11",
+          "label": "campana_id"
+        },
+        {
+          "id": "t11_1_t",
+          "type": "node",
+          "parent": "t11",
+          "label": "int4"
+        },
+        {
+          "id": "t11_2_k",
+          "type": "node",
+          "parent": "t11",
+          "label": "FK",
+          "html": "<font color=\"#c0392b\">FK</font>"
+        },
+        {
+          "id": "t11_2_n",
+          "type": "node",
+          "parent": "t11",
+          "label": "propiedad_id"
+        },
+        {
+          "id": "t11_2_t",
+          "type": "node",
+          "parent": "t11",
+          "label": "int4"
+        },
+        {
+          "id": "t12",
+          "type": "node",
+          "parent": "1",
+          "label": "solicitudes_propiedad"
+        },
+        {
+          "id": "t12_0_k",
+          "type": "node",
+          "parent": "t12",
+          "label": "PK",
+          "html": "<font color=\"#c0392b\">PK</font>"
+        },
+        {
+          "id": "t12_0_n",
+          "type": "node",
+          "parent": "t12",
+          "label": "solicitud_id"
+        },
+        {
+          "id": "t12_0_t",
+          "type": "node",
+          "parent": "t12",
+          "label": "int4"
+        },
+        {
+          "id": "t12_1_k",
+          "type": "node",
+          "parent": "t12",
+          "label": "FK",
+          "html": "<font color=\"#2e6fb5\">FK</font>"
+        },
+        {
+          "id": "t12_1_n",
+          "type": "node",
+          "parent": "t12",
+          "label": "persona_id"
+        },
+        {
+          "id": "t12_1_t",
+          "type": "node",
+          "parent": "t12",
+          "label": "int4"
+        },
+        {
+          "id": "t12_1a_k",
+          "type": "node",
+          "parent": "t12",
+          "label": "FK",
+          "html": "<font color=\"#2e6fb5\">FK</font>"
+        },
+        {
+          "id": "t12_1a_n",
+          "type": "node",
+          "parent": "t12",
+          "label": "propiedad_id"
+        },
+        {
+          "id": "t12_1a_t",
+          "type": "node",
+          "parent": "t12",
+          "label": "int4"
+        },
+        {
+          "id": "t12_2_k",
+          "type": "node",
+          "parent": "t12",
+          "label": "FK",
+          "html": "<font color=\"#2e6fb5\">FK</font>"
+        },
+        {
+          "id": "t12_2_n",
+          "type": "node",
+          "parent": "t12",
+          "label": "empleado_id"
+        },
+        {
+          "id": "t12_2_t",
+          "type": "node",
+          "parent": "t12",
+          "label": "int4"
+        },
+        {
+          "id": "t12_3_k",
+          "type": "node",
+          "parent": "t12",
+          "label": "FK",
+          "html": "<font color=\"#2e6fb5\">FK</font>"
+        },
+        {
+          "id": "t12_3_n",
+          "type": "node",
+          "parent": "t12",
+          "label": "campana_id"
+        },
+        {
+          "id": "t12_3_t",
+          "type": "node",
+          "parent": "t12",
+          "label": "int4"
+        },
+        {
+          "id": "t12_4_k",
+          "type": "node",
+          "parent": "t12"
+        },
+        {
+          "id": "t12_4_n",
+          "type": "node",
+          "parent": "t12",
+          "label": "motivo_descarte"
+        },
+        {
+          "id": "t12_4_t",
+          "type": "node",
+          "parent": "t12",
+          "label": "varchar(200)"
+        },
+        {
+          "id": "t12_5_k",
+          "type": "node",
+          "parent": "t12"
+        },
+        {
+          "id": "t12_5_n",
+          "type": "node",
+          "parent": "t12",
+          "label": "presupuesto_cliente"
+        },
+        {
+          "id": "t12_5_t",
+          "type": "node",
+          "parent": "t12",
+          "label": "numeric(14,2)"
+        },
+        {
+          "id": "t12_6_k",
+          "type": "node",
+          "parent": "t12"
+        },
+        {
+          "id": "t12_6_n",
+          "type": "node",
+          "parent": "t12",
+          "label": "requiere_financiacion"
+        },
+        {
+          "id": "t12_6_t",
+          "type": "node",
+          "parent": "t12",
+          "label": "bool"
+        },
+        {
+          "id": "t12_7_k",
+          "type": "node",
+          "parent": "t12"
+        },
+        {
+          "id": "t12_7_n",
+          "type": "node",
+          "parent": "t12",
+          "label": "fecha_cierre"
+        },
+        {
+          "id": "t12_7_t",
+          "type": "node",
+          "parent": "t12",
+          "label": "timestamptz"
+        },
+        {
+          "id": "t12_8_k",
+          "type": "node",
+          "parent": "t12"
+        },
+        {
+          "id": "t12_8_n",
+          "type": "node",
+          "parent": "t12",
+          "label": "creado_en"
+        },
+        {
+          "id": "t12_8_t",
+          "type": "node",
+          "parent": "t12",
+          "label": "timestamptz"
+        },
+        {
+          "id": "t12_9_k",
+          "type": "node",
+          "parent": "t12"
+        },
+        {
+          "id": "t12_9_n",
+          "type": "node",
+          "parent": "t12",
+          "label": "actualizado_en"
+        },
+        {
+          "id": "t12_9_t",
+          "type": "node",
+          "parent": "t12",
+          "label": "timestamptz"
+        },
+        {
+          "id": "t12_10_k",
+          "type": "node",
+          "parent": "t12"
+        },
+        {
+          "id": "t12_10_n",
+          "type": "node",
+          "parent": "t12",
+          "label": "estado"
+        },
+        {
+          "id": "t12_10_t",
+          "type": "node",
+          "parent": "t12",
+          "label": "varchar(20)"
+        },
+        {
+          "id": "t13",
+          "type": "node",
+          "parent": "1",
+          "label": "visitas"
+        },
+        {
+          "id": "t13_0_k",
+          "type": "node",
+          "parent": "t13",
+          "label": "PK",
+          "html": "<font color=\"#c0392b\">PK</font>"
+        },
+        {
+          "id": "t13_0_n",
+          "type": "node",
+          "parent": "t13",
+          "label": "visita_id"
+        },
+        {
+          "id": "t13_0_t",
+          "type": "node",
+          "parent": "t13",
+          "label": "int4"
+        },
+        {
+          "id": "t13_1_k",
+          "type": "node",
+          "parent": "t13",
+          "label": "FK",
+          "html": "<font color=\"#2e6fb5\">FK</font>"
+        },
+        {
+          "id": "t13_1_n",
+          "type": "node",
+          "parent": "t13",
+          "label": "solicitud_id"
+        },
+        {
+          "id": "t13_1_t",
+          "type": "node",
+          "parent": "t13",
+          "label": "int4"
+        },
+        {
+          "id": "t13_2_k",
+          "type": "node",
+          "parent": "t13",
+          "label": "FK",
+          "html": "<font color=\"#2e6fb5\">FK</font>"
+        },
+        {
+          "id": "t13_2_n",
+          "type": "node",
+          "parent": "t13",
+          "label": "empleado_id"
+        },
+        {
+          "id": "t13_2_t",
+          "type": "node",
+          "parent": "t13",
+          "label": "int4"
+        },
+        {
+          "id": "t13_3_k",
+          "type": "node",
+          "parent": "t13"
+        },
+        {
+          "id": "t13_3_n",
+          "type": "node",
+          "parent": "t13",
+          "label": "fecha_programada"
+        },
+        {
+          "id": "t13_3_t",
+          "type": "node",
+          "parent": "t13",
+          "label": "timestamptz"
+        },
+        {
+          "id": "t13_4_k",
+          "type": "node",
+          "parent": "t13"
+        },
+        {
+          "id": "t13_4_n",
+          "type": "node",
+          "parent": "t13",
+          "label": "fecha_realizada"
+        },
+        {
+          "id": "t13_4_t",
+          "type": "node",
+          "parent": "t13",
+          "label": "timestamptz"
+        },
+        {
+          "id": "t13_5_k",
+          "type": "node",
+          "parent": "t13"
+        },
+        {
+          "id": "t13_5_n",
+          "type": "node",
+          "parent": "t13",
+          "label": "duracion_min"
+        },
+        {
+          "id": "t13_5_t",
+          "type": "node",
+          "parent": "t13",
+          "label": "int4"
+        },
+        {
+          "id": "t13_6_k",
+          "type": "node",
+          "parent": "t13"
+        },
+        {
+          "id": "t13_6_n",
+          "type": "node",
+          "parent": "t13",
+          "label": "motivo_cancelacion"
+        },
+        {
+          "id": "t13_6_t",
+          "type": "node",
+          "parent": "t13",
+          "label": "varchar(200)"
+        },
+        {
+          "id": "t13_7_k",
+          "type": "node",
+          "parent": "t13"
+        },
+        {
+          "id": "t13_7_n",
+          "type": "node",
+          "parent": "t13",
+          "label": "feedback_cliente"
+        },
+        {
+          "id": "t13_7_t",
+          "type": "node",
+          "parent": "t13",
+          "label": "text"
+        },
+        {
+          "id": "t13_8_k",
+          "type": "node",
+          "parent": "t13"
+        },
+        {
+          "id": "t13_8_n",
+          "type": "node",
+          "parent": "t13",
+          "label": "calificacion_interes"
+        },
+        {
+          "id": "t13_8_t",
+          "type": "node",
+          "parent": "t13",
+          "label": "int4"
+        },
+        {
+          "id": "t13_9_k",
+          "type": "node",
+          "parent": "t13"
+        },
+        {
+          "id": "t13_9_n",
+          "type": "node",
+          "parent": "t13",
+          "label": "observaciones_empleado"
+        },
+        {
+          "id": "t13_9_t",
+          "type": "node",
+          "parent": "t13",
+          "label": "text"
+        },
+        {
+          "id": "t14",
+          "type": "node",
+          "parent": "1",
+          "label": "ofertas"
+        },
+        {
+          "id": "t14_0_k",
+          "type": "node",
+          "parent": "t14",
+          "label": "PK",
+          "html": "<font color=\"#c0392b\">PK</font>"
+        },
+        {
+          "id": "t14_0_n",
+          "type": "node",
+          "parent": "t14",
+          "label": "oferta_id"
+        },
+        {
+          "id": "t14_0_t",
+          "type": "node",
+          "parent": "t14",
+          "label": "int4"
+        },
+        {
+          "id": "t14_1_k",
+          "type": "node",
+          "parent": "t14",
+          "label": "FK",
+          "html": "<font color=\"#2e6fb5\">FK</font>"
+        },
+        {
+          "id": "t14_1_n",
+          "type": "node",
+          "parent": "t14",
+          "label": "solicitud_id"
+        },
+        {
+          "id": "t14_1_t",
+          "type": "node",
+          "parent": "t14",
+          "label": "int4"
+        },
+        {
+          "id": "t14_2_k",
+          "type": "node",
+          "parent": "t14"
+        },
+        {
+          "id": "t14_2_n",
+          "type": "node",
+          "parent": "t14",
+          "label": "estado_oferta"
+        },
+        {
+          "id": "t14_2_t",
+          "type": "node",
+          "parent": "t14",
+          "label": "varchar(20)"
+        },
+        {
+          "id": "t14_3_k",
+          "type": "node",
+          "parent": "t14"
+        },
+        {
+          "id": "t14_3_n",
+          "type": "node",
+          "parent": "t14",
+          "label": "valor_ofertado"
+        },
+        {
+          "id": "t14_3_t",
+          "type": "node",
+          "parent": "t14",
+          "label": "numeric(14,2)"
+        },
+        {
+          "id": "t14_4_k",
+          "type": "node",
+          "parent": "t14"
+        },
+        {
+          "id": "t14_4_n",
+          "type": "node",
+          "parent": "t14",
+          "label": "fecha_oferta"
+        },
+        {
+          "id": "t14_4_t",
+          "type": "node",
+          "parent": "t14",
+          "label": "timestamptz"
+        },
+        {
+          "id": "t15",
+          "type": "node",
+          "parent": "1",
+          "label": "transacciones"
+        },
+        {
+          "id": "t15_0_k",
+          "type": "node",
+          "parent": "t15",
+          "label": "PK",
+          "html": "<font color=\"#c0392b\">PK</font>"
+        },
+        {
+          "id": "t15_0_n",
+          "type": "node",
+          "parent": "t15",
+          "label": "transaccion_id"
+        },
+        {
+          "id": "t15_0_t",
+          "type": "node",
+          "parent": "t15",
+          "label": "int4"
+        },
+        {
+          "id": "t15_1_k",
+          "type": "node",
+          "parent": "t15",
+          "label": "FK",
+          "html": "<font color=\"#8a6d00\">FK</font>"
+        },
+        {
+          "id": "t15_1_n",
+          "type": "node",
+          "parent": "t15",
+          "label": "oferta_id"
+        },
+        {
+          "id": "t15_1_t",
+          "type": "node",
+          "parent": "t15",
+          "label": "int4"
+        },
+        {
+          "id": "t15_2_k",
+          "type": "node",
+          "parent": "t15",
+          "label": "FK",
+          "html": "<font color=\"#2e6fb5\">FK</font>"
+        },
+        {
+          "id": "t15_2_n",
+          "type": "node",
+          "parent": "t15",
+          "label": "empleado_id"
+        },
+        {
+          "id": "t15_2_t",
+          "type": "node",
+          "parent": "t15",
+          "label": "int4"
+        },
+        {
+          "id": "t15_3_k",
+          "type": "node",
+          "parent": "t15"
+        },
+        {
+          "id": "t15_3_n",
+          "type": "node",
+          "parent": "t15",
+          "label": "valor_final"
+        },
+        {
+          "id": "t15_3_t",
+          "type": "node",
+          "parent": "t15",
+          "label": "numeric(14,2)"
+        },
+        {
+          "id": "t15_4_k",
+          "type": "node",
+          "parent": "t15"
+        },
+        {
+          "id": "t15_4_n",
+          "type": "node",
+          "parent": "t15",
+          "label": "comision_porcentaje"
+        },
+        {
+          "id": "t15_4_t",
+          "type": "node",
+          "parent": "t15",
+          "label": "numeric(5,2)"
+        },
+        {
+          "id": "t15_5_k",
+          "type": "node",
+          "parent": "t15"
+        },
+        {
+          "id": "t15_5_n",
+          "type": "node",
+          "parent": "t15",
+          "label": "comision_valor (generado)"
+        },
+        {
+          "id": "t15_5_t",
+          "type": "node",
+          "parent": "t15",
+          "label": "numeric(14,2)"
+        },
+        {
+          "id": "t15_6_k",
+          "type": "node",
+          "parent": "t15"
+        },
+        {
+          "id": "t15_6_n",
+          "type": "node",
+          "parent": "t15",
+          "label": "fecha_inicio_contrato"
+        },
+        {
+          "id": "t15_6_t",
+          "type": "node",
+          "parent": "t15",
+          "label": "date"
+        },
+        {
+          "id": "t15_7_k",
+          "type": "node",
+          "parent": "t15"
+        },
+        {
+          "id": "t15_7_n",
+          "type": "node",
+          "parent": "t15",
+          "label": "fecha_fin_contrato"
+        },
+        {
+          "id": "t15_7_t",
+          "type": "node",
+          "parent": "t15",
+          "label": "date"
+        },
+        {
+          "id": "t15_8_k",
+          "type": "node",
+          "parent": "t15"
+        },
+        {
+          "id": "t15_8_n",
+          "type": "node",
+          "parent": "t15",
+          "label": "estado"
+        },
+        {
+          "id": "t15_8_t",
+          "type": "node",
+          "parent": "t15",
+          "label": "varchar(15)"
+        },
+        {
+          "id": "t16",
+          "type": "node",
+          "parent": "1",
+          "label": "empleados"
+        },
+        {
+          "id": "t16_0_k",
+          "type": "node",
+          "parent": "t16",
+          "label": "PK",
+          "html": "<font color=\"#c0392b\">PK</font>"
+        },
+        {
+          "id": "t16_0_n",
+          "type": "node",
+          "parent": "t16",
+          "label": "empleado_id"
+        },
+        {
+          "id": "t16_0_t",
+          "type": "node",
+          "parent": "t16",
+          "label": "int4"
+        },
+        {
+          "id": "t16_1_k",
+          "type": "node",
+          "parent": "t16",
+          "label": "FK",
+          "html": "<font color=\"#2e6fb5\">FK</font>"
+        },
+        {
+          "id": "t16_1_n",
+          "type": "node",
+          "parent": "t16",
+          "label": "rol_id"
+        },
+        {
+          "id": "t16_1_t",
+          "type": "node",
+          "parent": "t16",
+          "label": "int4"
+        },
+        {
+          "id": "t16_2_k",
+          "type": "node",
+          "parent": "t16"
+        },
+        {
+          "id": "t16_2_n",
+          "type": "node",
+          "parent": "t16",
+          "label": "nombre"
+        },
+        {
+          "id": "t16_2_t",
+          "type": "node",
+          "parent": "t16",
+          "label": "varchar(150)"
+        },
+        {
+          "id": "t16_3_k",
+          "type": "node",
+          "parent": "t16"
+        },
+        {
+          "id": "t16_3_n",
+          "type": "node",
+          "parent": "t16",
+          "label": "email"
+        },
+        {
+          "id": "t16_3_t",
+          "type": "node",
+          "parent": "t16",
+          "label": "varchar(150)"
+        },
+        {
+          "id": "t16_4_k",
+          "type": "node",
+          "parent": "t16"
+        },
+        {
+          "id": "t16_4_n",
+          "type": "node",
+          "parent": "t16",
+          "label": "telefono"
+        },
+        {
+          "id": "t16_4_t",
+          "type": "node",
+          "parent": "t16",
+          "label": "varchar(30)"
+        },
+        {
+          "id": "t16_5_k",
+          "type": "node",
+          "parent": "t16"
+        },
+        {
+          "id": "t16_5_n",
+          "type": "node",
+          "parent": "t16",
+          "label": "fecha_ingreso"
+        },
+        {
+          "id": "t16_5_t",
+          "type": "node",
+          "parent": "t16",
+          "label": "date"
+        },
+        {
+          "id": "PLVVmDWEV0EnDxu7QfIz-36",
+          "type": "node",
+          "parent": "1",
+          "label": "uso_suelo"
+        },
+        {
+          "id": "PLVVmDWEV0EnDxu7QfIz-36_0_k",
+          "type": "node",
+          "parent": "PLVVmDWEV0EnDxu7QfIz-36",
+          "label": "PK",
+          "html": "<font color=\"#c0392b\">PK</font>"
+        },
+        {
+          "id": "PLVVmDWEV0EnDxu7QfIz-36_0_n",
+          "type": "node",
+          "parent": "PLVVmDWEV0EnDxu7QfIz-36",
+          "label": "uso_suelo_id"
+        },
+        {
+          "id": "PLVVmDWEV0EnDxu7QfIz-36_0_t",
+          "type": "node",
+          "parent": "PLVVmDWEV0EnDxu7QfIz-36",
+          "label": "int4"
+        },
+        {
+          "id": "PLVVmDWEV0EnDxu7QfIz-36_1_k",
+          "type": "node",
+          "parent": "PLVVmDWEV0EnDxu7QfIz-36"
+        },
+        {
+          "id": "PLVVmDWEV0EnDxu7QfIz-36_1_n",
+          "type": "node",
+          "parent": "PLVVmDWEV0EnDxu7QfIz-36",
+          "label": "nombre"
+        },
+        {
+          "id": "PLVVmDWEV0EnDxu7QfIz-36_1_t",
+          "type": "node",
+          "parent": "PLVVmDWEV0EnDxu7QfIz-36",
+          "label": "varchar(40)"
+        },
+        {
+          "id": "PLVVmDWEV0EnDxu7QfIz-46",
+          "type": "node",
+          "parent": "1",
+          "label": "acceso_via"
+        },
+        {
+          "id": "PLVVmDWEV0EnDxu7QfIz-46_0_k",
+          "type": "node",
+          "parent": "PLVVmDWEV0EnDxu7QfIz-46",
+          "label": "PK",
+          "html": "<font color=\"#c0392b\">PK</font>"
+        },
+        {
+          "id": "PLVVmDWEV0EnDxu7QfIz-46_0_n",
+          "type": "node",
+          "parent": "PLVVmDWEV0EnDxu7QfIz-46",
+          "label": "acceso_via_id"
+        },
+        {
+          "id": "PLVVmDWEV0EnDxu7QfIz-46_0_t",
+          "type": "node",
+          "parent": "PLVVmDWEV0EnDxu7QfIz-46",
+          "label": "int4"
+        },
+        {
+          "id": "PLVVmDWEV0EnDxu7QfIz-46_1_k",
+          "type": "node",
+          "parent": "PLVVmDWEV0EnDxu7QfIz-46"
+        },
+        {
+          "id": "PLVVmDWEV0EnDxu7QfIz-46_1_n",
+          "type": "node",
+          "parent": "PLVVmDWEV0EnDxu7QfIz-46",
+          "label": "nombre"
+        },
+        {
+          "id": "PLVVmDWEV0EnDxu7QfIz-46_1_t",
+          "type": "node",
+          "parent": "PLVVmDWEV0EnDxu7QfIz-46",
+          "label": "varchar(40)"
+        },
+        {
+          "id": "PLVVmDWEV0EnDxu7QfIz-56",
+          "type": "node",
+          "parent": "1",
+          "label": "estado_conservacion"
+        },
+        {
+          "id": "PLVVmDWEV0EnDxu7QfIz-56_0_k",
+          "type": "node",
+          "parent": "PLVVmDWEV0EnDxu7QfIz-56",
+          "label": "PK",
+          "html": "<font color=\"#c0392b\">PK</font>"
+        },
+        {
+          "id": "PLVVmDWEV0EnDxu7QfIz-56_0_n",
+          "type": "node",
+          "parent": "PLVVmDWEV0EnDxu7QfIz-56",
+          "label": "estado_conservacion_id"
+        },
+        {
+          "id": "PLVVmDWEV0EnDxu7QfIz-56_0_t",
+          "type": "node",
+          "parent": "PLVVmDWEV0EnDxu7QfIz-56",
+          "label": "int4"
+        },
+        {
+          "id": "PLVVmDWEV0EnDxu7QfIz-56_1_k",
+          "type": "node",
+          "parent": "PLVVmDWEV0EnDxu7QfIz-56"
+        },
+        {
+          "id": "PLVVmDWEV0EnDxu7QfIz-56_1_n",
+          "type": "node",
+          "parent": "PLVVmDWEV0EnDxu7QfIz-56",
+          "label": "nombre"
+        },
+        {
+          "id": "PLVVmDWEV0EnDxu7QfIz-56_1_t",
+          "type": "node",
+          "parent": "PLVVmDWEV0EnDxu7QfIz-56",
+          "label": "varchar(40)"
+        },
+        {
+          "id": "_ZLD5VNVapE8nLFyFfiH-1",
+          "type": "node",
+          "parent": "1",
+          "label": "rol_empleado"
+        },
+        {
+          "id": "_ZLD5VNVapE8nLFyFfiH-1_0_k",
+          "type": "node",
+          "parent": "_ZLD5VNVapE8nLFyFfiH-1",
+          "label": "PK",
+          "html": "<font color=\"#c0392b\">PK</font>"
+        },
+        {
+          "id": "_ZLD5VNVapE8nLFyFfiH-1_0_n",
+          "type": "node",
+          "parent": "_ZLD5VNVapE8nLFyFfiH-1",
+          "label": "rol_id"
+        },
+        {
+          "id": "_ZLD5VNVapE8nLFyFfiH-1_0_t",
+          "type": "node",
+          "parent": "_ZLD5VNVapE8nLFyFfiH-1",
+          "label": "int4"
+        },
+        {
+          "id": "_ZLD5VNVapE8nLFyFfiH-1_1_k",
+          "type": "node",
+          "parent": "_ZLD5VNVapE8nLFyFfiH-1"
+        },
+        {
+          "id": "_ZLD5VNVapE8nLFyFfiH-1_1_n",
+          "type": "node",
+          "parent": "_ZLD5VNVapE8nLFyFfiH-1",
+          "label": "nombre_rol"
+        },
+        {
+          "id": "_ZLD5VNVapE8nLFyFfiH-1_1_t",
+          "type": "node",
+          "parent": "_ZLD5VNVapE8nLFyFfiH-1",
+          "label": "varchar(30)"
+        },
+        {
+          "id": "t_tp",
+          "type": "node",
+          "parent": "1",
+          "label": "tipos_persona"
+        },
+        {
+          "id": "t_tp_0_k",
+          "type": "node",
+          "parent": "t_tp",
+          "label": "PK",
+          "html": "<font color=\"#c0392b\">PK</font>"
+        },
+        {
+          "id": "t_tp_0_n",
+          "type": "node",
+          "parent": "t_tp",
+          "label": "tipo_persona_id"
+        },
+        {
+          "id": "t_tp_0_t",
+          "type": "node",
+          "parent": "t_tp",
+          "label": "int4"
+        },
+        {
+          "id": "t_tp_1_k",
+          "type": "node",
+          "parent": "t_tp"
+        },
+        {
+          "id": "t_tp_1_n",
+          "type": "node",
+          "parent": "t_tp",
+          "label": "nombre"
+        },
+        {
+          "id": "t_tp_1_t",
+          "type": "node",
+          "parent": "t_tp",
+          "label": "varchar(20)"
+        },
+        {
+          "id": "t_ti",
+          "type": "node",
+          "parent": "1",
+          "label": "tipos_inmueble"
+        },
+        {
+          "id": "t_ti_0_k",
+          "type": "node",
+          "parent": "t_ti",
+          "label": "PK",
+          "html": "<font color=\"#c0392b\">PK</font>"
+        },
+        {
+          "id": "t_ti_0_n",
+          "type": "node",
+          "parent": "t_ti",
+          "label": "tipo_inmueble_id"
+        },
+        {
+          "id": "t_ti_0_t",
+          "type": "node",
+          "parent": "t_ti",
+          "label": "int4"
+        },
+        {
+          "id": "t_ti_1_k",
+          "type": "node",
+          "parent": "t_ti"
+        },
+        {
+          "id": "t_ti_1_n",
+          "type": "node",
+          "parent": "t_ti",
+          "label": "nombre"
+        },
+        {
+          "id": "t_ti_1_t",
+          "type": "node",
+          "parent": "t_ti",
+          "label": "varchar(40)"
+        },
+        {
+          "id": "e0",
+          "type": "edge",
+          "parent": "1",
+          "source": "t0_0_n",
+          "target": "t1_5_n"
+        },
+        {
+          "id": "e1",
+          "type": "edge",
+          "parent": "1",
+          "source": "t0_0_n",
+          "target": "t3_2_n"
+        },
+        {
+          "id": "e2",
+          "type": "edge",
+          "parent": "1",
+          "source": "t1_0_n",
+          "target": "t2_0_n"
+        },
+        {
+          "id": "e3",
+          "type": "edge",
+          "parent": "1",
+          "source": "t1_0_n",
+          "target": "t4_1_n"
+        },
+        {
+          "id": "e5",
+          "type": "edge",
+          "parent": "1",
+          "source": "t3_0_n",
+          "target": "t4_2_n"
+        },
+        {
+          "id": "e6",
+          "type": "edge",
+          "parent": "1",
+          "source": "t3_0_n",
+          "target": "t5_1_n"
+        },
+        {
+          "id": "e7",
+          "type": "edge",
+          "parent": "1",
+          "source": "t3_0_n",
+          "target": "t6_1_n"
+        },
+        {
+          "id": "e8",
+          "type": "edge",
+          "parent": "1",
+          "source": "t3_0_n",
+          "target": "t7_1_n"
+        },
+        {
+          "id": "e9",
+          "type": "edge",
+          "parent": "1",
+          "source": "t3_0_n",
+          "target": "t11_2_n"
+        },
+        {
+          "id": "e10",
+          "type": "edge",
+          "parent": "1",
+          "source": "t7_0_n",
+          "target": "t8_2_n"
+        },
+        {
+          "id": "e12",
+          "type": "edge",
+          "parent": "1",
+          "source": "t9_0_n",
+          "target": "t8_1_n"
+        },
+        {
+          "id": "e13",
+          "type": "edge",
+          "parent": "1",
+          "source": "t9_0_n",
+          "target": "t10_1_n"
+        },
+        {
+          "id": "e14",
+          "type": "edge",
+          "parent": "1",
+          "source": "t10_0_n",
+          "target": "t11_1_n"
+        },
+        {
+          "id": "e15",
+          "type": "edge",
+          "parent": "1",
+          "source": "t10_0_n",
+          "target": "t12_3_n"
+        },
+        {
+          "id": "e16",
+          "type": "edge",
+          "parent": "1",
+          "source": "t12_0_n",
+          "target": "t13_1_n"
+        },
+        {
+          "id": "e17",
+          "type": "edge",
+          "parent": "1",
+          "source": "t12_0_n",
+          "target": "t14_1_n"
+        },
+        {
+          "id": "e18",
+          "type": "edge",
+          "parent": "1",
+          "source": "t14_0_n",
+          "target": "t15_1_n"
+        },
+        {
+          "id": "e19",
+          "type": "edge",
+          "parent": "1",
+          "source": "t16_0_n",
+          "target": "t3_3_n"
+        },
+        {
+          "id": "e20",
+          "type": "edge",
+          "parent": "1",
+          "source": "t16_0_n",
+          "target": "t12_2_n"
+        },
+        {
+          "id": "e21",
+          "type": "edge",
+          "parent": "1",
+          "source": "t16_0_n",
+          "target": "t13_2_n"
+        },
+        {
+          "id": "e22",
+          "type": "edge",
+          "parent": "1",
+          "source": "t16_0_n",
+          "target": "t15_2_n"
+        },
+        {
+          "id": "e23",
+          "type": "edge",
+          "parent": "1",
+          "source": "PLVVmDWEV0EnDxu7QfIz-36_0_n",
+          "target": "t6_2_n"
+        },
+        {
+          "id": "e24",
+          "type": "edge",
+          "parent": "1",
+          "source": "PLVVmDWEV0EnDxu7QfIz-46_0_n",
+          "target": "t6_3_n"
+        },
+        {
+          "id": "e25",
+          "type": "edge",
+          "parent": "1",
+          "source": "PLVVmDWEV0EnDxu7QfIz-56_0_n",
+          "target": "t5_2_n"
+        },
+        {
+          "id": "_ZLD5VNVapE8nLFyFfiH-13",
+          "type": "edge",
+          "parent": "1",
+          "source": "_ZLD5VNVapE8nLFyFfiH-1_0_n",
+          "target": "t16_1_n"
+        },
+        {
+          "id": "e_tp_roles",
+          "type": "edge",
+          "parent": "1",
+          "source": "t_tp_0_n",
+          "target": "t2_1_n"
+        },
+        {
+          "id": "e_ti_prop",
+          "type": "edge",
+          "parent": "1",
+          "source": "t_ti_0_n",
+          "target": "t3_1_n"
+        },
+        {
+          "id": "t_to",
+          "type": "node",
+          "parent": "1",
+          "label": "tipos_operacion"
+        },
+        {
+          "id": "t_to_0_k",
+          "type": "node",
+          "parent": "t_to",
+          "label": "PK",
+          "html": "<font color=\"#c0392b\">PK</font>"
+        },
+        {
+          "id": "t_to_0_n",
+          "type": "node",
+          "parent": "t_to",
+          "label": "tipo_operacion_id"
+        },
+        {
+          "id": "t_to_0_t",
+          "type": "node",
+          "parent": "t_to",
+          "label": "int4"
+        },
+        {
+          "id": "t_to_1_k",
+          "type": "node",
+          "parent": "t_to"
+        },
+        {
+          "id": "t_to_1_n",
+          "type": "node",
+          "parent": "t_to",
+          "label": "nombre"
+        },
+        {
+          "id": "t_to_1_t",
+          "type": "node",
+          "parent": "t_to",
+          "label": "varchar(20)"
+        },
+        {
+          "id": "e_to_pub",
+          "type": "edge",
+          "parent": "1",
+          "source": "t_to_0_n",
+          "target": "t7_9_n"
+        },
+        {
+          "id": "e_sol_persona",
+          "type": "edge",
+          "parent": "1",
+          "source": "t1_0_n",
+          "target": "t12_1_n"
+        },
+        {
+          "id": "e_sol_propiedad",
+          "type": "edge",
+          "parent": "1",
+          "source": "t3_0_n",
+          "target": "t12_1a_n"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+EVIDENCIA FASE 5 Â· Escenario de concurrencia con dos sesiones (python sql/07_concurrencia_demo.py)
+
+
+=== A. Sin bloqueo · READ COMMITTED ===
+Propiedad 8: ofertas aceptadas sin cierre 62 y 63
+Sesión 1: registrar_cierre(oferta 62) -> ejecutado, sin confirmar (bloquea la fila de la propiedad)
+Sesión 2: registrar_cierre(oferta 63) -> en espera del bloqueo...
+Sesión 1: COMMIT -> confirmado
+Sesión 2: COMMIT -> confirmado (esperó 1.5 s)
+Cierres registrados para la propiedad 8: 2 (estado vendida) -> ANOMALÍA: doble venta
+
+=== B. Con bloqueo y relectura del estado · READ COMMITTED ===
+Propiedad 8: ofertas aceptadas sin cierre 62 y 63
+Sesión 1: cerrar_venta_con_bloqueo(oferta 62) -> ejecutado, sin confirmar (bloquea la fila de la propiedad)
+Sesión 2: cerrar_venta_con_bloqueo(oferta 63) -> en espera del bloqueo...
+Sesión 1: COMMIT -> confirmado
+Sesión 2: rechazado tras esperar 1.5 s: R12: la propiedad 8 ya tiene un cierre (estado vendida); no se registra un segundo cierre
+Cierres registrados para la propiedad 8: 1 (estado vendida) -> correcto: un solo cierre
+
+=== C. Sin bloqueo, aislamiento estricto · SERIALIZABLE ===
+Propiedad 8: ofertas aceptadas sin cierre 62 y 63
+Sesión 1: registrar_cierre(oferta 62) -> ejecutado, sin confirmar (bloquea la fila de la propiedad)
+Sesión 2: registrar_cierre(oferta 63) -> en espera del bloqueo...
+Sesión 1: COMMIT -> confirmado
+Sesión 2: 40001 serialización tras esperar 1.5 s: could not serialize access due to concurrent update
+Cierres registrados para la propiedad 8: 1 (estado vendida) -> correcto: un solo cierre
+
+Copia temporal eliminada; inmobiliaria_mcs no se modificó.

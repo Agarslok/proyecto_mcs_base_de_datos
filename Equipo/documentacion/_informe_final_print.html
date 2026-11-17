@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Informe técnico MCS</title>
+<style>
+  @page { size: A4; margin: 16mm 16mm 18mm 16mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", Calibri, sans-serif;
+    font-size: 11pt;
+    line-height: 1.45;
+    color: #1c1c1c;
+    margin: 0;
+  }
+  h1 { font-size: 18pt; line-height: 1.25; margin: 0 0 8px; }
+  h2 { font-size: 14pt; margin: 22px 0 8px; page-break-after: avoid; }
+  h3 { font-size: 12pt; margin: 16px 0 6px; page-break-after: avoid; }
+  p { margin: 0 0 8px; }
+  .cover { page-break-after: always; padding-top: 28mm; }
+  .uni { letter-spacing: .04em; font-size: 11pt; margin-bottom: 18px; }
+  .sub { font-size: 12.5pt; margin: 10px 0 22px; }
+  .meta { margin-top: 28px; }
+  table { width: 100%; border-collapse: collapse; margin: 8px 0 12px; font-size: 10pt; page-break-inside: avoid; }
+  th, td { border: 1px solid #c8c8c8; padding: 4px 6px; vertical-align: top; text-align: left; }
+  th { background: #f3f1ea; }
+  caption { caption-side: top; text-align: left; font-weight: 600; margin-bottom: 4px; }
+  .note { font-size: 9.5pt; color: #444; margin-top: -6px; margin-bottom: 12px; }
+  img.fig { width: 100%; height: auto; border: 1px solid #ddd; margin: 6px 0 4px; }
+  .figcap { font-size: 10pt; margin: 0 0 12px; }
+  ul { margin: 4px 0 10px; }
+  code { font-family: Consolas, monospace; font-size: 9.5pt; }
+  .small { font-size: 10pt; }
+</style>
+</head>
+<body>
+
+<section class="cover">
+  <p class="uni">UNIVERSIDAD EXTERNADO DE COLOMBIA<br>Bases de Datos · 2026-2</p>
+  <h1>Sistema de gestión y trazabilidad comercial para una inmobiliaria (MCS)</h1>
+  <p class="sub">Diseño e implementación de una base de datos relacional y documental para integrar propiedades, prospectos, campañas y seguimiento comercial.</p>
+  <p><strong>Informe técnico final</strong></p>
+  <p class="meta">
+    Harold Burgos<br>
+    Sofía Camelo<br>
+    Juan Triana<br><br>
+    Docente: Martha Quevedo<br>
+    Bogotá D.C., noviembre de 2026
+  </p>
+</section>
+
+<h2>Resumen</h2>
+<p>En este informe contamos cómo diseñamos, implementamos y medimos una base de datos para el proceso comercial de una inmobiliaria de intermediación. Antes del proyecto, propiedades, prospectos, campañas, visitas, ofertas y cierres vivían en archivos sueltos. No se podía seguir el hilo de qué inmueble le interesó a cada persona, de qué campaña venía y qué pasó después.</p>
+<p>Partimos de doce reglas de negocio y de diez preguntas de información. Con eso armamos un modelo ER/EER, lo pasamos a un esquema de 24 tablas en BCNF y lo creamos en PostgreSQL 18, en la base <code>inmobiliaria_mcs</code>. El script <code>E4_postgresql/sql/01_ddl_f4.sql</code> deja 30 claves foráneas, 30 restricciones CHECK, una columna generada para la comisión, siete funciones y ocho triggers. Las tres vistas de consulta están en <code>E4_postgresql/sql/03_consultas_f4.sql</code>.</p>
+<p>La carga que entregamos, la misma del respaldo <code>E4_postgresql/backup/inmobiliaria_mcs_f4.sql</code> y de la captura <code>E4_postgresql/evidencia/f4_conteos_tablas.png</code>, tiene 52 propiedades, 65 solicitudes y 18 transacciones. Medimos las consultas 7 y 9 con <code>EXPLAIN ANALYZE</code> en <code>E5_optimizacion_transacciones/sql/04_optimizacion_f5.sql</code>. Los tiempos quedaron en <code>E5_optimizacion_transacciones/time.txt</code>: por debajo de medio milisegundo y con Seq Scan. Con este volumen no vimos una mejora que se distinga del ruido.</p>
+<p>El cierre lo mostramos en <code>E5_optimizacion_transacciones/sql/05_transacciones_f5.sql</code>. Hicimos COMMIT de la oferta 61 (propiedad 22, Casa en Manila 22) y el intento de cerrar la oferta 1, que está pendiente, no dejó fila. El aislamiento que justificamos es READ COMMITTED más <code>FOR UPDATE</code> en <code>cerrar_venta_con_bloqueo</code>. El seguimiento omnicanal lo guardamos en MongoDB, base <code>inmobiliaria_mcs_mongo</code>, colección <code>seguimiento_eventos</code>, con los scripts de <code>E6_mongodb/scripts</code>.</p>
+<p><strong>Palabras clave:</strong> bases de datos relacionales, normalización, PostgreSQL, optimización, transacciones, MongoDB, gestión comercial inmobiliaria.</p>
+
+<h2>Contenido</h2>
+<ol>
+  <li>Introducción</li>
+  <li>Formulación del problema</li>
+  <li>Requerimientos</li>
+  <li>Decisiones que tomamos al armar el diseño</li>
+  <li>Modelo conceptual ER/EER</li>
+  <li>Modelo relacional y normalización</li>
+  <li>Diccionario de datos</li>
+  <li>Implementación en PostgreSQL</li>
+  <li>Consultas SQL y lo que nos devolvieron</li>
+  <li>Optimización y transacciones</li>
+  <li>Componente MongoDB</li>
+  <li>Conclusiones</li>
+  <li>Declaración de uso de inteligencia artificial</li>
+</ol>
+<p class="small">Al final van las referencias, la verificación de la rúbrica y una nota sobre dónde está el SQL de las diez preguntas y la función de cierre.</p>
+
+<h2>1. Introducción</h2>
+<p>El resultado comercial de una inmobiliaria depende de captar propiedades, promocionarlas y convertir el interés de un tercero en una venta o un arriendo. En ese recorrido participan Marketing, Ventas y, de refilón, Finanzas. Cada área venía anotando su parte por su lado. Nosotros diseñamos la base que junta ese recorrido: la publicación del inmueble, la campaña que lo promociona, el prospecto, las visitas, las ofertas y el cierre con su comisión.</p>
+<p>El documento sigue el orden en que lo construimos. La guía del curso pide grupos de máximo dos estudiantes. La docente autorizó este equipo de tres. La constancia está en <code>Grupo.txt</code>, en la carpeta Profe.</p>
+
+<h2>2. Formulación del problema</h2>
+<h3>2.1 Contexto</h3>
+<p>La empresa del proyecto es una inmobiliaria de intermediación. El núcleo de su información es la relación entre los inmuebles disponibles, las campañas y los canales con que se promocionan, las personas que muestran interés y el seguimiento que termina, o no, en una operación. Una misma persona puede interesarse en varias propiedades y una propiedad puede atraer prospectos de campañas distintas. Precio, estado comercial, gasto publicitario y comisión importan para el análisis. La contabilidad y la gestión jurídica completa no entran en este proyecto.</p>
+<h3>2.2 Problema</h3>
+<p>Cuando la información está regada, al llegar un interesado no siempre se sabe qué propiedad le llamó la atención, de qué campaña viene ni qué se hizo después. De ahí salen prospectos duplicados, historial incompleto, campañas desconectadas de los contactos que generan y la imposibilidad de comparar canales. La pregunta que nos guió fue: ¿cómo integrar y dar trazabilidad al proceso comercial, de modo que después se pueda consultar y usar para análisis?</p>
+<h3>2.3 Propósito</h3>
+<p>Quisimos centralizar propiedades, prospectos, campañas, canales, visitas, negociaciones y resultados, para poder consultar el estado de las oportunidades y el desempeño de inmuebles y campañas. Dejamos la estructura lista para integraciones futuras (WhatsApp, anuncios, formularios). Esas integraciones no las construimos aquí.</p>
+<h3>2.4 Alcance</h3>
+<table>
+  <caption>Tabla 1. Alcance del proyecto</caption>
+  <thead><tr><th>Frente</th><th>Qué incluye</th></tr></thead>
+  <tbody>
+    <tr><td>Propiedades</td><td>Identificación, datos del inmueble, ubicación, precio de publicación, estado comercial y resultado cuando exista.</td></tr>
+    <tr><td>Prospectos</td><td>Identificación, contacto, interés por una o más propiedades y estado de la oportunidad.</td></tr>
+    <tr><td>Marketing</td><td>Campañas, canales, inmuebles promocionados, prospectos atribuibles y costos básicos.</td></tr>
+    <tr><td>Seguimiento</td><td>Visitas, responsable, fechas y retroalimentación en PostgreSQL. Historial omnicanal en MongoDB.</td></tr>
+    <tr><td>Resultados</td><td>Cierre, valor de la operación y comisión para análisis.</td></tr>
+  </tbody>
+</table>
+<p class="note">Nota. Elaboración del equipo.</p>
+<p>Quedó por fuera: sistema contable, nómina, gestión jurídica completa, automatización de WhatsApp, Meta Ads, un CRM como producto, bodega de datos y modelos predictivos.</p>
+
+<h2>3. Requerimientos</h2>
+<h3>3.1 Reglas de negocio</h3>
+<p>Las doce reglas del planteamiento las precisamos al revisar el modelo, sobre todo R2, R6, R10 y R11. R13 a R16 las agregamos nosotros para no dejar ambigüedad al implementar.</p>
+<table>
+  <caption>Tabla 2. Reglas y dónde quedaron</caption>
+  <thead><tr><th>Id</th><th>Regla</th><th>Dónde quedó</th></tr></thead>
+  <tbody>
+    <tr><td>R1</td><td>Toda propiedad tiene identificador único. La matrícula inmobiliaria también es única.</td><td><code>propiedades.propiedad_id</code> y <code>matricula_inmobiliaria</code> UNIQUE.</td></tr>
+    <tr><td>R2</td><td>Una propiedad tiene uno o más propietarios. El dueño no es la oportunidad comercial.</td><td><code>propiedad_propietarios</code>.</td></tr>
+    <tr><td>R3</td><td>Una propiedad puede promocionarse en varias campañas o publicaciones.</td><td><code>campana_propiedades</code> y <code>publicaciones</code>.</td></tr>
+    <tr><td>R4</td><td>Una campaña puede asociarse a varias propiedades.</td><td><code>campana_propiedades</code>.</td></tr>
+    <tr><td>R5</td><td>Una persona puede interesarse por varias propiedades.</td><td>Varias filas en <code>solicitudes_propiedad</code>.</td></tr>
+    <tr><td>R6</td><td>Cada solicitud une un prospecto con una propiedad. No usa el vínculo de propietario.</td><td><code>solicitudes_propiedad</code> y el trigger <code>trg_solicitud_no_es_dueno</code>.</td></tr>
+    <tr><td>R7</td><td>Una oportunidad puede tener varias actividades, con fecha y responsable.</td><td><code>visitas</code> y los eventos en MongoDB.</td></tr>
+    <tr><td>R8</td><td>Toda visita pertenece a una oportunidad. Por ella se conoce propiedad y prospecto.</td><td><code>visitas.solicitud_id</code>.</td></tr>
+    <tr><td>R9</td><td>Toda oferta nace de una oportunidad previa.</td><td><code>ofertas.solicitud_id</code>.</td></tr>
+    <tr><td>R10</td><td>Si se conoce el origen, la solicitud se asocia a la campaña. Si no, <code>campana_id</code> queda vacío.</td><td>FK opcional.</td></tr>
+    <tr><td>R11</td><td>La propiedad está disponible, en negociación, vendida o no disponible.</td><td>CHECK de <code>estado_comercial</code> y triggers.</td></tr>
+    <tr><td>R12</td><td>Si la oportunidad cierra, registramos valor final, comisión y fechas de contrato.</td><td><code>transacciones</code>, <code>registrar_cierre</code> y el trigger de validación.</td></tr>
+    <tr><td>R13</td><td>Una persona puede ser a la vez propietario y prospecto.</td><td><code>persona_roles</code>.</td></tr>
+    <tr><td>R14</td><td>La publicación lleva tipo de operación (venta o arriendo) y el precio vigente.</td><td><code>publicaciones</code>.</td></tr>
+    <tr><td>R15</td><td>Según el tipo de inmueble hay detalle de construcción, de terreno o ambos.</td><td><code>detalle_construcciones</code> y <code>detalle_terrenos</code>.</td></tr>
+    <tr><td>R16</td><td>La comisión se deriva de valor final por porcentaje. No se digita aparte.</td><td><code>comision_valor</code> GENERATED ALWAYS.</td></tr>
+  </tbody>
+</table>
+<p class="note">Nota. Elaboración del equipo.</p>
+
+<h3>3.2 Preguntas de información</h3>
+<p>Estas diez preguntas son el contrato de las consultas. El SQL está en <code>E4_postgresql/sql/03_consultas_f4.sql</code> y el documento que las pone al lado de cada pregunta es <code>E4_postgresql/E4_consultas_vs_preguntas.pdf</code>.</p>
+<ol>
+  <li>¿Cuáles propiedades están disponibles y cuál es su precio, ubicación y estado comercial?</li>
+  <li>¿Qué prospectos han mostrado interés en cada propiedad?</li>
+  <li>¿Qué propiedades tienen más oportunidades comerciales activas?</li>
+  <li>¿Cuál es el estado de seguimiento de cada prospecto interesado en una propiedad?</li>
+  <li>¿Qué visitas se han realizado para cada oportunidad?</li>
+  <li>¿Qué campañas y canales han generado más oportunidades?</li>
+  <li>¿Qué propiedades han generado más prospectos, visitas y negociaciones?</li>
+  <li>¿Qué oportunidades llegaron a una negociación o a un cierre, y cuáles no avanzaron?</li>
+  <li>¿Qué propiedades llevan más tiempo en comercialización sin generar un cierre?</li>
+  <li>¿Cuál ha sido el resultado comercial y económico de las propiedades cerradas?</li>
+</ol>
+
+<h2>4. Decisiones que tomamos al armar el diseño</h2>
+<p>Cada etapa nos obligó a corregir la anterior. Dejamos aquí solo decisiones que se ven en los archivos de esta entrega.</p>
+<table>
+  <caption>Tabla 3. Decisiones de diseño</caption>
+  <thead><tr><th>Qué vimos</th><th>Qué decidimos</th><th>Dónde</th></tr></thead>
+  <tbody>
+    <tr><td>Si la solicitud apuntaba al vínculo de propietario, el dueño y el interesado se mezclaban.</td><td>La solicitud referencia <code>persona_id</code> y <code>propiedad_id</code>. El dueño vive en <code>propiedad_propietarios</code>. Un trigger impide que el dueño sea prospecto de su propia propiedad.</td><td>R6, sección 5.4 y script 01.</td></tr>
+    <tr><td>Una persona puede ser dueña y prospecto a la vez.</td><td>Roles N:M en <code>persona_roles</code>. No duplicamos la fila de <code>personas</code>.</td><td>R13.</td></tr>
+    <tr><td>Lotes, casas y apartamentos no comparten los mismos atributos.</td><td>Especialización opcional y no disjunta: detalle de construcción, de terreno, o ambos.</td><td>R15.</td></tr>
+    <tr><td>La comisión se podía digitar distinta al porcentaje.</td><td><code>comision_valor</code> quedó como columna generada.</td><td>R16, script 01.</td></tr>
+    <tr><td>Con la carga del curso, los índices no cambian el plan.</td><td>Medimos las consultas 7 y 9 antes y después. El plan sigue en Seq Scan. La medición es la de time.txt, con la carga del curso.</td><td><code>time.txt</code> y script 04.</td></tr>
+    <tr><td>Unir visitas y ofertas en la misma consulta multiplica filas.</td><td>Reescribimos la consulta 7 con tres CTE. En esta carga el tiempo no baja. La dejamos porque el resultado no se infla.</td><td>Script 03 y script 04.</td></tr>
+    <tr><td>Hacía falta un cierre que se pudiera mostrar de punta a punta.</td><td>En el script 05 cerramos la oferta 61, de la propiedad 22, que estaba en negociación. La captura muestra la propiedad vendida y la solicitud ganada.</td><td><code>E5_optimizacion_transacciones/evidencia/f5_transaccion_commit_61_02.png</code>.</td></tr>
+  </tbody>
+</table>
+<p class="note">Nota. Elaboración del equipo.</p>
+
+<h2>5. Modelo conceptual ER/EER</h2>
+<h3>5.1 Entidades</h3>
+<p>El modelo representa el proceso comercial, no un CRM completo. Trabajamos con personas, propiedades, propietarios, publicaciones, campañas, solicitudes, visitas, ofertas, transacciones y empleados, más los catálogos de ciudad, tipo de persona, tipo de inmueble, tipo de operación, estado de conservación, uso del suelo, acceso vial, rol del empleado y canal. Los empleados van aparte de las personas porque son personal de la inmobiliaria, no clientes, y la nómina está fuera de alcance.</p>
+<h3>5.2 Diagrama</h3>
+<p>El diagrama que usamos es el archivo <code>E2_modelo_conceptual/modelo_conceptual_2.1.drawio</code>. La figura de abajo es <code>E2_modelo_conceptual/f2_diagrama_conceptual.png</code>. En cada entidad, # marca el identificador, * un atributo obligatorio y o uno opcional.</p>
+<img class="fig" src="file:///C:/Users/agars/Documents/U/Sem%204/Materias/Bases%20de%20datos/proyecto/Profe/E2_modelo_conceptual/f2_diagrama_conceptual.png" alt="Diagrama conceptual ER/EER">
+<p class="figcap">Figura 1. Modelo conceptual. Fuente: E2_modelo_conceptual/f2_diagrama_conceptual.png.</p>
+
+<h3>5.3 Construcciones EER</h3>
+<table>
+  <caption>Tabla 4. Construcciones EER</caption>
+  <thead><tr><th>Construcción</th><th>Dónde</th><th>Por qué</th></tr></thead>
+  <tbody>
+    <tr><td>Relación N:M</td><td>Persona–tipo, persona–propiedad, publicación–canal, campaña–propiedad.</td><td>El negocio es muchos a muchos. En el relacional quedan <code>persona_roles</code>, <code>propiedad_propietarios</code>, <code>publicacion_canales</code> y <code>campana_propiedades</code>.</td></tr>
+    <tr><td>Entidad asociativa</td><td><code>propiedad_propietarios</code>.</td><td>R2 pide dueños con identidad propia, distinta de la solicitud.</td></tr>
+    <tr><td>Especialización no disjunta y opcional</td><td>Detalles de construcción y de terreno.</td><td>Un lote no tiene baños. Una casa sobre lote puede tener los dos detalles (R15).</td></tr>
+    <tr><td>Roles</td><td><code>tipos_persona</code> N:M <code>personas</code>.</td><td>La misma persona puede ser propietario y prospecto (R13).</td></tr>
+    <tr><td>Atributo derivado</td><td><code>transacciones.comision_valor</code>.</td><td>R16: se calcula, no se guarda como un hecho independiente.</td></tr>
+  </tbody>
+</table>
+<p>No usamos categoría ni agregación. Teléfono y correo son un solo dato de contacto. Un historial de teléfonos sería otra entidad y lo dejamos por fuera.</p>
+
+<h3>5.4 Cardinalidades que más nos importan</h3>
+<p>La propiedad debe estar en una ciudad y debe tener tipo de inmueble. Puede tener cero o un detalle de construcción y cero o un detalle de terreno. Puede no estar publicada todavía. Toda publicación es de una propiedad y puede salir en varios canales. Toda campaña tiene un canal principal. La solicitud siempre tiene prospecto y propiedad. La campaña de origen es opcional (R10). Toda visita y toda oferta nacen de una solicitud. Una oferta tiene a lo sumo un cierre.</p>
+<p>El punto delicado es R6. La solicitud no apunta a <code>propiedad_propietarios</code>. Si mezclamos dueño e interesado, las preguntas 2 a 8 dejan de tener respuesta. El recorrido que nos quedó es: propietario N:M propiedad, propiedad 1:N publicación, campaña N:M propiedad, prospecto 1:N solicitud, solicitud 1:N visita, solicitud 1:N oferta y oferta 1:0..1 transacción.</p>
+
+<h2>6. Modelo relacional y normalización</h2>
+<h3>6.1 Cómo pasamos del ER al relacional</h3>
+<p>Cada entidad fuerte quedó en una tabla con clave subrogada <code>*_id</code>. Las relaciones 1:N quedaron como clave foránea del lado N. Las N:M quedaron en tablas puente: <code>persona_roles</code> con clave compuesta, y <code>campana_propiedades</code> y <code>publicacion_canales</code> con clave subrogada más UNIQUE del par. La especialización 1:0..1 quedó en una tabla hija con <code>propiedad_id</code> único. La comisión quedó generada. <code>campana_id</code> y <code>empleado_id</code> de la solicitud admiten NULL.</p>
+<h3>6.2 Diagrama</h3>
+<p>El esquema está en <code>E3_modelo_relacional/modelo_relacional_2.0.drawio</code> y en la figura <code>E3_modelo_relacional/f3_diagrama_relacional.png</code>. Son 24 tablas.</p>
+<img class="fig" src="file:///C:/Users/agars/Documents/U/Sem%204/Materias/Bases%20de%20datos/proyecto/Profe/E3_modelo_relacional/f3_diagrama_relacional.png" alt="Diagrama relacional">
+<p class="figcap">Figura 2. Modelo relacional. Fuente: E3_modelo_relacional/f3_diagrama_relacional.png.</p>
+<p>Las claves, las dependencias y la evidencia de normalización también están en <code>E3_modelo_relacional/E3_claves_pk_fk.json</code>, <code>E3_dependencias_funcionales.json</code>, <code>E3_evidencia_normalizacion.json</code> y en los PDF de esa misma carpeta.</p>
+
+<h3>6.3 Claves</h3>
+<p>Los nueve catálogos usan <code>*_id</code> como primaria y <code>nombre</code> como candidata. En personas y empleados el correo es candidata. En propiedades, la matrícula. En los puentes, el par de claves foráneas es candidata además de la primaria subrogada, salvo <code>persona_roles</code>, cuya primaria ya es el par. En transacciones, <code>oferta_id</code> es única: un cierre por oferta.</p>
+<p>No pusimos UNIQUE sobre (persona, propiedad) en las solicitudes. Un prospecto puede volver a abrir el interés con una solicitud nueva después de una oportunidad perdida. Es una decisión de negocio, no un hueco de normalización.</p>
+
+<h3>6.4 Dependencias y normalización</h3>
+<p>Evitamos listas dentro de una celda (propietarios o canales separados por comas): eso viola 1FN y por eso existen los puentes. No dejamos el nombre del dueño dentro de <code>propiedad_propietarios</code>, porque el nombre depende solo de la persona (2FN). No copiamos ciudad, matrícula ni canal en visitas, ofertas o solicitudes (3FN). La comisión no se digita, así que no puede contradecir el porcentaje. Revisamos que cada determinante sea superclave. Con eso las 24 tablas quedan en BCNF.</p>
+<p>No descompusimos <code>solicitudes_propiedad</code> para sacar el origen de campaña. Separarlo solo agregaría un JOIN y no elimina ninguna anomalía. R10 se modela con una foránea que admite NULL. El detalle de este recorrido está en <code>E3_modelo_relacional/E3_modelo_relacional_normalizacion.pdf</code>.</p>
+
+<h3>6.5 Integridad</h3>
+<p>Borrar un catálogo, una persona o una propiedad referenciada queda en RESTRICT, para no perder el histórico. Borrar una solicitud arrastra sus visitas y ofertas, y la oferta arrastra su transacción, porque una visita no existe sin su oportunidad. Los CHECK cubren áreas, precios y valores mayores que cero, comisión entre 0 y 100, interés de 1 a 5, estados cerrados y fechas coherentes. Las reglas que cruzan tablas (el dueño no es el prospecto, el motivo de descarte, el paso a negociación y el cierre) quedaron en triggers, porque PostgreSQL no admite subconsultas dentro de un CHECK.</p>
+
+<h2>7. Diccionario de datos</h2>
+<p>El diccionario completo, columna por columna, es el script <code>E4_postgresql/sql/01_ddl_f4.sql</code>. Aquí resumimos las tablas de proceso para leer el informe sin abrir el DDL. Los nueve catálogos comparten <code>*_id</code> entero identidad y <code>nombre</code> único. <code>canales_marketing</code> agrega un booleano <code>activo</code>.</p>
+<table>
+  <caption>Tabla 5. Tablas de proceso</caption>
+  <thead><tr><th>Tabla</th><th>Qué guarda</th><th>Clave y restricciones que usamos al consultar</th></tr></thead>
+  <tbody>
+    <tr><td>personas</td><td>Dueños y prospectos.</td><td>PK <code>persona_id</code>. Correo único. Ciudad obligatoria.</td></tr>
+    <tr><td>empleados</td><td>Asesores de la inmobiliaria.</td><td>PK <code>empleado_id</code>. Correo único. FK a <code>rol_empleado</code>.</td></tr>
+    <tr><td>persona_roles</td><td>Si la persona es propietario, prospecto o ambos.</td><td>PK (<code>persona_id</code>, <code>tipo_persona_id</code>).</td></tr>
+    <tr><td>propiedades</td><td>El inmueble y su estado comercial.</td><td>Matrícula única. Estado en disponible, en_negociacion, vendida o no_disponible. Área mayor que cero. Asesor responsable obligatorio.</td></tr>
+    <tr><td>propiedad_propietarios</td><td>Dueños del inmueble.</td><td>UNIQUE (persona, propiedad).</td></tr>
+    <tr><td>detalle_construcciones / detalle_terrenos</td><td>Atributos según el tipo de inmueble.</td><td><code>propiedad_id</code> único en cada detalle.</td></tr>
+    <tr><td>publicaciones</td><td>Aviso de venta o arriendo y precio vigente.</td><td>Precio mayor que cero. <code>publicada</code> indica el aviso activo.</td></tr>
+    <tr><td>publicacion_canales</td><td>Canales donde salió el aviso.</td><td>UNIQUE (publicación, canal).</td></tr>
+    <tr><td>campanas</td><td>Campaña, canal principal, presupuesto y fechas.</td><td>Estado planificada, activa o cerrada. Fecha fin no anterior al inicio.</td></tr>
+    <tr><td>campana_propiedades</td><td>Inmuebles que cubre cada campaña.</td><td>UNIQUE (campaña, propiedad).</td></tr>
+    <tr><td>solicitudes_propiedad</td><td>La oportunidad: prospecto, inmueble, origen y estado.</td><td>Campaña y asesor opcionales. Estados: nueva, en_seguimiento, en_negociacion, ganada, perdida, descartada. Presupuesto del cliente mayor que cero.</td></tr>
+    <tr><td>visitas</td><td>Visita de una oportunidad.</td><td>Siempre tiene solicitud y asesor. Calificación de 1 a 5, si se diligencia.</td></tr>
+    <tr><td>ofertas</td><td>Oferta sobre una solicitud.</td><td>Estados pendiente, aceptada, rechazada o caducada. Valor mayor que cero.</td></tr>
+    <tr><td>transacciones</td><td>El cierre.</td><td><code>oferta_id</code> único. Comisión generada: round(valor_final * porcentaje / 100, 2).</td></tr>
+  </tbody>
+</table>
+<p class="note">Nota. Elaboración del equipo a partir de E4_postgresql/sql/01_ddl_f4.sql.</p>
+
+<h2>8. Implementación en PostgreSQL</h2>
+<h3>8.1 En qué orden se corre</h3>
+<p>Todo está dentro de la carpeta Profe, en las carpetas hermanas de este informe. Sobre una base vacía, en pgAdmin:</p>
+<ol>
+  <li><code>E4_postgresql/sql/00_crear_base_f4.sql</code> sobre la base <code>postgres</code>. Crea <code>inmobiliaria_mcs</code>.</li>
+  <li><code>E4_postgresql/sql/01_ddl_f4.sql</code> sobre <code>inmobiliaria_mcs</code>.</li>
+  <li><code>E4_postgresql/sql/02_carga_f4.sql</code>.</li>
+  <li><code>E4_postgresql/sql/03_consultas_f4.sql</code>.</li>
+  <li><code>E5_optimizacion_transacciones/sql/04_optimizacion_f5.sql</code>.</li>
+  <li><code>E5_optimizacion_transacciones/sql/05_transacciones_f5.sql</code>, bloque por bloque. El COMMIT de la oferta 61 modifica la base. El respaldo que entregamos es la carga de antes de esa demostración.</li>
+</ol>
+<p>Quien no quiera recrear todo desde cero puede restaurar <code>E4_postgresql/backup/inmobiliaria_mcs_f4.sql</code> con <code>psql</code> (no con el Query Tool de pgAdmin: el volcado trae comandos <code>\restrict</code> y bloques <code>COPY</code>). Ese archivo deja las 24 tablas, la carga, las vistas, <code>registrar_cierre</code>, los triggers del script 01 y también <code>cerrar_venta_con_bloqueo</code>. La copiamos ahí después de crear la función y antes de hacer la demo de COMMIT de la oferta 61. El script 05 sigue siendo la referencia por si queremos volver a pegar solo esa función.</p>
+
+<h3>8.2 Qué dejamos en el DDL</h3>
+<p>En <code>01_ddl_f4.sql</code> contamos 30 claves foráneas y 30 CHECK. Las primarias usan <code>GENERATED BY DEFAULT AS IDENTITY</code>. La comisión es <code>GENERATED ALWAYS AS (round(valor_final * comision_porcentaje / 100, 2)) STORED</code>. Los timestamps de auditoría usan <code>DEFAULT now()</code> y tres triggers mantienen <code>actualizado_en</code> en propiedades, publicaciones y solicitudes.</p>
+<p>Las siete funciones del script 01 son <code>fn_set_actualizado_en</code>, <code>fn_solicitud_motivo_descarte</code>, <code>fn_solicitud_no_es_dueno</code>, <code>fn_dueno_no_es_prospecto</code>, <code>fn_oferta_aceptada_en_negociacion</code>, <code>fn_validar_y_aplicar_transaccion</code> y <code>registrar_cierre</code>. <code>cerrar_venta_con_bloqueo</code> está en el script 05 y también en el respaldo. Los ocho triggers son los tres de auditoría, el de motivo de descarte, los dos que separan dueño y prospecto, el que pasa la propiedad a negociación al aceptar una oferta, y el que valida el cierre.</p>
+
+<h3>8.3 Carga</h3>
+<p>Los datos son sintéticos. Los armamos para recorrer el embudo: venta y arriendo, oportunidades en cada estado, visitas, ofertas en sus cuatro estados y cierres. Los conteos de abajo son los del respaldo. Coinciden con la captura <code>E4_postgresql/evidencia/f4_conteos_tablas.png</code> en personas, propiedades, publicaciones, solicitudes, visitas, ofertas y transacciones. El comentario al final de <code>02_carga_f4.sql</code> también espera 65 solicitudes y 18 transacciones.</p>
+<table>
+  <caption>Tabla 6. Filas del respaldo</caption>
+  <thead><tr><th>Tabla</th><th>Filas</th><th>Tabla</th><th>Filas</th></tr></thead>
+  <tbody>
+    <tr><td>personas</td><td>55</td><td>propiedad_propietarios</td><td>65</td></tr>
+    <tr><td>propiedades</td><td>52</td><td>persona_roles</td><td>61</td></tr>
+    <tr><td>publicaciones</td><td>60</td><td>publicacion_canales</td><td>90</td></tr>
+    <tr><td>solicitudes_propiedad</td><td>65</td><td>campana_propiedades</td><td>64</td></tr>
+    <tr><td>visitas</td><td>88</td><td>detalle_construcciones</td><td>42</td></tr>
+    <tr><td>ofertas</td><td>61</td><td>detalle_terrenos</td><td>21</td></tr>
+    <tr><td>transacciones</td><td>18</td><td>campanas / empleados</td><td>12 / 10</td></tr>
+  </tbody>
+</table>
+<p class="note">Nota. Conteo del equipo sobre E4_postgresql/backup/inmobiliaria_mcs_f4.sql. Los catálogos tienen entre 2 y 10 filas.</p>
+<p>Las tablas de proceso superan las 50 filas que pide la guía, salvo los catálogos, que son dominios cerrados, y transacciones, que solo existe cuando una oferta se acepta y se cierra. En esta carga hay 18 cierres.</p>
+<p>Al volver a contar las solicitudes abiertas vimos algo que no alcanzamos a limpiar en el script de carga: varias propiedades ya marcadas como vendidas todavía tienen solicitudes en nueva, en seguimiento o en negociación. La pregunta 3, más abajo, hay que leerla con eso presente. No agregamos filas nuevas para maquillar el resultado.</p>
+
+<h3>8.4 Vistas, funciones y triggers que sostienen reglas</h3>
+<table>
+  <caption>Tabla 7. Objetos que usamos en las consultas y en el cierre</caption>
+  <thead><tr><th>Objeto</th><th>Para qué lo creamos</th></tr></thead>
+  <tbody>
+    <tr><td><code>v_inventario_disponible</code></td><td>Pregunta 1. Propiedades disponibles con el aviso vigente.</td></tr>
+    <tr><td><code>v_pipeline_activo</code></td><td>Pregunta 4. Oportunidades que siguen abiertas.</td></tr>
+    <tr><td><code>v_resultado_cierres</code></td><td>Pregunta 10. Cierres con valor, comisión, propiedad, prospecto y asesor.</td></tr>
+    <tr><td><code>registrar_cierre</code></td><td>R12. Un solo llamado registra el cierre.</td></tr>
+    <tr><td><code>cerrar_venta_con_bloqueo</code></td><td>R11 y R12. Cierre ante dos sesiones. Script 05 y respaldo.</td></tr>
+    <tr><td><code>trg_validar_y_aplicar_transaccion</code></td><td>Rechaza el cierre si la oferta no está aceptada. Marca la solicitud ganada y la propiedad vendida o no disponible.</td></tr>
+    <tr><td><code>trg_solicitud_no_es_dueno</code> y <code>trg_dueno_no_es_prospecto</code></td><td>R2 y R6. El dueño no queda como prospecto de su propio inmueble, ni al revés.</td></tr>
+    <tr><td><code>trg_solicitud_motivo_descarte</code></td><td>Si la oportunidad se descarta, el motivo es obligatorio.</td></tr>
+    <tr><td><code>trg_oferta_aceptada_en_negociacion</code></td><td>Al aceptar una oferta, la propiedad disponible pasa a en_negociacion.</td></tr>
+  </tbody>
+</table>
+<p class="note">Nota. Elaboración del equipo.</p>
+
+<h3>8.5 Respaldo</h3>
+<p>El respaldo de la entrega es <code>E4_postgresql/backup/inmobiliaria_mcs_f4.sql</code>, en texto plano. Ahí están las tablas y la carga de los scripts 01 a 03. La demostración de COMMIT del script 05 no está aplicada dentro de ese archivo. Por eso el respaldo tiene 18 transacciones, y la captura del COMMIT muestra un cierre adicional sobre la oferta 61.</p>
+
+<h2>9. Consultas SQL y lo que nos devolvieron</h2>
+<p>Cada pregunta tiene su consulta en <code>E4_postgresql/sql/03_consultas_f4.sql</code>, con el mismo número. Los resultados de esta sección los contamos sobre el respaldo, que es la base que se puede restaurar sin correr el COMMIT de la oferta 61.</p>
+<table>
+  <caption>Tabla 8. Consultas y resultado sobre el respaldo</caption>
+  <thead><tr><th>#</th><th>Técnica</th><th>Qué nos devolvió</th></tr></thead>
+  <tbody>
+    <tr><td>P1</td><td>Vista <code>v_inventario_disponible</code>. Seis tablas y aviso vigente.</td><td>29 propiedades disponibles y 31 avisos vigentes. Los precios van de $2.360.000 (arriendo) a $830.000.000 (venta).</td></tr>
+    <tr><td>P2</td><td>JOIN de solicitudes, personas y propiedades.</td><td>Las propiedades 1 y 2 reúnen 4 solicitudes cada una.</td></tr>
+    <tr><td>P3</td><td>GROUP BY y HAVING COUNT(*) &gt;= 2, solo estados abiertos.</td><td>Cinco propiedades llegan al umbral. Las dos primeras tienen 3 solicitudes abiertas: Apartamento en Chapinero 1 y Casa en Usaquen 2. Las otras tres tienen 2: el local de Teusaquillo 3, el lote de Cedritos 4 y la oficina de El Poblado 5. Esas cinco ya figuran como vendidas en <code>estado_comercial</code>. La consulta hace lo que le pedimos. El dato de carga no las pasó a perdida.</td></tr>
+    <tr><td>P4</td><td>Vista <code>v_pipeline_activo</code>.</td><td>35 oportunidades abiertas: 17 nuevas, 10 en seguimiento y 8 en negociación.</td></tr>
+    <tr><td>P5</td><td>JOIN de visitas con solicitud, persona y propiedad.</td><td>88 visitas. En las 73 que tienen calificación, el interés promedio es 3,03 sobre 5.</td></tr>
+    <tr><td>P6</td><td>GROUP BY de campaña y canal. Las solicitudes sin campaña no entran en ese JOIN.</td><td>De las 65 solicitudes, 10 tienen <code>campana_id</code> nulo (R10). Entre las demás, Meta Ads reúne 21, web 15, WhatsApp 10, feria inmobiliaria 7 y referidos 2. Las campañas con más solicitudes en el respaldo son Leads Meta Q1 (8), Portales web abril (7) y Meta mid year (7).</td></tr>
+    <tr><td>P7</td><td>Tres CTE, una por solicitudes, visitas y ofertas.</td><td>Las propiedades 1 y 2 lideran: 4 solicitudes y 8 visitas cada una, y 6 ofertas cada una.</td></tr>
+    <tr><td>P8</td><td>EXISTS para el cierre y para la oferta, más LEFT JOIN.</td><td>18 oportunidades llegaron a cierre, 30 tuvieron oferta y no cerraron, 17 no recibieron oferta.</td></tr>
+    <tr><td>P9</td><td>CTE, NOT EXISTS y RANK.</td><td>34 propiedades no tienen cierre en el respaldo. El ranking usa <code>CURRENT_DATE</code>, así que los días cambian según el día en que se corra. El plan de esta consulta está en <code>time.txt</code> y devuelve esas 34 filas.</td></tr>
+    <tr><td>P10</td><td>Vista <code>v_resultado_cierres</code>.</td><td>18 cierres por $7.869.000.000. La comisión calculada suma $294.615.000, con porcentaje promedio de 3,75 %. Diego Parra concentra 4 cierres y $62.305.000 de comisión.</td></tr>
+  </tbody>
+</table>
+<p class="note">Nota. Conteos del equipo sobre el respaldo. El SQL es el de 03_consultas_f4.sql.</p>
+<p>El portafolio cubre lo que pide la guía: más de diez consultas, JOIN de varias tablas, GROUP BY y HAVING, subconsulta, CTE, una función de ventana, tres vistas, funciones y triggers de dominio.</p>
+<p>La comisión de la pregunta 10 no se digita. PostgreSQL la calcula con el valor final y el porcentaje, así que no puede quedar desalineada respecto de R16. En el COPY del respaldo la columna generada no viaja como dato: la volvimos a calcular con la misma fórmula del DDL.</p>
+
+<h2>10. Optimización y transacciones</h2>
+<h3>10.1 Qué medimos</h3>
+<p>Corrimos las consultas 7 y 9 con <code>EXPLAIN (ANALYZE, BUFFERS)</code> antes y después de crear los índices candidatos. El script es <code>E5_optimizacion_transacciones/sql/04_optimizacion_f5.sql</code>. Crea ocho índices. Los planes completos están en <code>E5_optimizacion_transacciones/time.txt</code>. Hay capturas de un plan anterior y uno posterior en <code>E5_optimizacion_transacciones/evidencia/f5_explain_7_antes.png</code> y <code>f5_explain_9_despues.png</code>.</p>
+<table>
+  <caption>Tabla 9. Tiempos en time.txt</caption>
+  <thead><tr><th>Consulta</th><th>Ejecución</th><th>Planificación</th></tr></thead>
+  <tbody>
+    <tr><td>P7 antes de los índices</td><td>0,298 ms</td><td>2,540 ms</td></tr>
+    <tr><td>P9 con NOT IN, antes</td><td>0,352 ms</td><td>1,705 ms</td></tr>
+    <tr><td>P7 después de los índices</td><td>0,428 ms</td><td>1,175 ms</td></tr>
+    <tr><td>P9 con NOT IN, después</td><td>0,264 ms</td><td>1,929 ms</td></tr>
+    <tr><td>P9 reescrita con NOT EXISTS</td><td>0,422 ms</td><td>0,642 ms</td></tr>
+  </tbody>
+</table>
+<p class="note">Nota. Cifras copiadas de E5_optimizacion_transacciones/time.txt. En ese archivo el escaneo de solicitudes devuelve 65 filas y la consulta 9 devuelve 34 propiedades.</p>
+<p>Con unas 60 filas por tabla, cada relación cabe en pocas páginas. El planificador sigue en Seq Scan. La consulta 7 incluso tardó un poco más después de los índices (0,298 ms frente a 0,428 ms). Esa diferencia es ruido. No construimos una base de cientos de miles de filas y no vamos a decir que el índice haya hecho más rápida la consulta.</p>
+
+<h3>10.2 Qué concluimos</h3>
+<p>La hipótesis era que los índices sobre las foráneas de solicitudes, visitas y ofertas, y reescribir la consulta 7 con tres CTE, bajarían el tiempo. Lo medimos. No bajó de un modo que podamos separar del ruido. Conservamos <code>idx_sol_propiedad_id</code>, <code>idx_visitas_solicitud_id</code> e <code>idx_ofertas_solicitud_id</code> porque son el camino por clave foránea cuando el inventario crezca. El resto de candidatos del script 04 no los presentamos como una optimización lograda.</p>
+<p>La reescritura con tres CTE evita multiplicar filas al unir visitas y ofertas. En <code>time.txt</code> esa versión no es más rápida que la original. La dejamos porque el resultado es el que queremos y el plan se lee mejor.</p>
+
+<h3>10.3 El cierre como transacción</h3>
+<p>La operación que necesita atomicidad es el cierre. No es un solo INSERT. El trigger <code>fn_validar_y_aplicar_transaccion</code> revisa que la oferta esté aceptada, marca la solicitud como ganada y cambia la propiedad a vendida o no disponible. Todo ocurre en la misma transacción.</p>
+<p>En el script 05 hicimos dos pruebas, y las dos quedaron en captura:</p>
+<ul>
+  <li>COMMIT de <code>registrar_cierre</code> sobre la oferta 61. Esa oferta estaba aceptada y la propiedad 22, Casa en Manila 22, todavía no tenía cierre. Después del COMMIT la captura muestra la propiedad vendida y la solicitud ganada. Archivos: <code>E5_optimizacion_transacciones/evidencia/f5_transaccion_commit_61.png</code> y <code>f5_transaccion_commit_61_02.png</code>.</li>
+  <li>Intento de cerrar una oferta que no está aceptada. En esta carga, la primera que el bloque encuentra es la oferta 1, en estado pendiente. El aviso de pgAdmin dice que no quedó fila en transacciones para la oferta 1. Archivo: <code>f5_transaccion_rollback_do.png</code>.</li>
+</ul>
+<table>
+  <caption>Tabla 10. ACID en el cierre</caption>
+  <thead><tr><th>Propiedad</th><th>Cómo la vimos</th></tr></thead>
+  <tbody>
+    <tr><td>Atomicidad</td><td>Si la oferta no está aceptada, no queda una transacción a medias. Lo muestra el aviso de la oferta 1.</td></tr>
+    <tr><td>Consistencia</td><td>CHECK, claves foráneas, triggers de R6, R11 y R12, y la comisión generada impiden confirmar un estado inválido.</td></tr>
+    <tr><td>Aislamiento</td><td>READ COMMITTED, que es el nivel por defecto, más el bloqueo de fila de <code>cerrar_venta_con_bloqueo</code>.</td></tr>
+    <tr><td>Durabilidad</td><td>Después del COMMIT, PostgreSQL escribe el cambio en el WAL. La captura del COMMIT de la oferta 61 es la evidencia de que la sesión terminó bien.</td></tr>
+  </tbody>
+</table>
+
+<h3>10.4 Concurrencia</h3>
+<p>El caso que nos preocupa es este: dos asesores cierran, casi al tiempo, dos ofertas aceptadas distintas sobre la misma propiedad. Con <code>registrar_cierre</code> y READ COMMITTED, la segunda sesión espera el bloqueo de la fila, pero si no vuelve a leer el estado puede confirmar otro cierre. La propiedad quedaría vendida dos veces.</p>
+<p><code>cerrar_venta_con_bloqueo</code>, en el script 05, toma <code>FOR UPDATE</code> sobre la solicitud y sobre la propiedad. Después del bloqueo vuelve a leer <code>estado_comercial</code>. Si ya está vendida o no disponible, no llama a <code>registrar_cierre</code>. El código de la función está en ese script. No adjuntamos una corrida automática de dos sesiones a la vez. El nivel que justificamos es READ COMMITTED más ese bloqueo: solo serializa los cierres de la misma propiedad, y las consultas de reporte siguen leyendo. SERIALIZABLE también evitaría la anomalía, pero obliga a reintentar transacciones abortadas en toda la sesión. Para un reporte que necesite los mismos conteos durante toda la sesión, REPEATABLE READ alcanza.</p>
+
+<h2>11. Componente MongoDB</h2>
+<h3>11.1 Por qué salió del relacional</h3>
+<p>En PostgreSQL la visita es una actividad estructurada (R7 y R8). En la operación, el asesor también anota mensajes de WhatsApp, llamadas, correos, contactos de feria y notas internas. La forma cambia según el canal y aparecen campos opcionales: sentimiento, duración, adjuntos. Meter eso como columnas vacías en <code>visitas</code> nos dejaba una tabla rígida para un historial que no lo es. Por eso creamos la colección <code>seguimiento_eventos</code> en la base <code>inmobiliaria_mcs_mongo</code>. MongoDB no copia las tablas. Complementa las preguntas de seguimiento con el historial por canal.</p>
+<p>La carga, el CRUD y las agregaciones quedaron en los scripts de <code>E6_mongodb/scripts</code>.</p>
+
+<h3>11.2 Qué va dentro del documento</h3>
+<p>Cada evento guarda <code>solicitud_id</code> como referencia a la oportunidad de PostgreSQL, y también <code>persona_id</code> y <code>propiedad_id</code> para consultar sin un JOIN. Esos tres tienen que coincidir con la solicitud. El canal, la dirección, el asesor y la fecha son comunes a todos los eventos. <code>contenido</code> y <code>metadata</code> van incrustados porque cambian según el canal y se leen con el evento. Nombres, precios y textos de campaña no se copian: siguen en PostgreSQL.</p>
+<p>El ejemplo de documento y la carga están en <code>E6_mongodb/scripts/seguimiento_eventos_seed.json</code> y en <code>01_setup_y_carga_f6.js</code>. Son 36 documentos. No hay un segundo seed ni un cuaderno de validación en esta entrega.</p>
+
+<h3>11.3 Índices, CRUD y agregaciones</h3>
+<p>La consulta más frecuente es la línea de tiempo de una oportunidad. En el script de carga creamos el índice compuesto <code>idx_solicitud_fecha</code> sobre <code>solicitud_id</code> y <code>ocurrio_en</code>, y <code>idx_canal_fecha</code> para agrupar por canal. El CRUD está en <code>02_crud_f6.js</code>: insertamos un evento de prueba de la solicitud 1, lo consultamos, actualizamos <code>metadata.revisado</code> y lo borramos. La colección vuelve a 36 documentos.</p>
+<p>Las dos agregaciones están en <code>03_agregaciones_f6.js</code>. La salida que guardamos es <code>E6_mongodb/evidencia/f6_agregacion_canales_resultado.json</code> y <code>f6_agregacion_top_solicitudes_resultado.json</code>. También hay captura en <code>f6_agregacion_canales.png</code>, <code>f6_agregacion_top_solicitudes.png</code> y <code>f6_mongo_compass_coleccion.png</code>.</p>
+<table>
+  <caption>Tabla 11. Eventos por canal</caption>
+  <thead><tr><th>Canal</th><th>Eventos</th></tr></thead>
+  <tbody>
+    <tr><td>whatsapp</td><td>14</td></tr>
+    <tr><td>llamada</td><td>7</td></tr>
+    <tr><td>nota_interna</td><td>7</td></tr>
+    <tr><td>email</td><td>6</td></tr>
+    <tr><td>feria</td><td>2</td></tr>
+  </tbody>
+</table>
+<p class="note">Nota. Cifras de E6_mongodb/evidencia/f6_agregacion_canales_resultado.json. 14 + 7 + 7 + 6 + 2 = 36.</p>
+<p>WhatsApp concentra 14 de los 36 eventos. En la otra agregación, la solicitud 2 (propiedad 1) lidera con 3 interacciones por dos canales, llamada y WhatsApp. La solicitud 1, también de la propiedad 1, tiene 2 interacciones.</p>
+<p>Las visitas siguen en PostgreSQL y el resto del seguimiento en MongoDB. No armamos una consulta que una los dos motores en un solo programa. El cruce se hace con <code>solicitud_id</code>.</p>
+
+<h2>12. Conclusiones</h2>
+<p>La base cumple el propósito con el que partimos. En 24 tablas en BCNF queda el recorrido comercial, desde la captación y la publicación hasta el cierre con su comisión, y las diez preguntas se responden sin copiar nombres, precios ni canales en las tablas de hechos. La decisión que más nos importó fue separar al propietario del prospecto. Sin eso, las preguntas de interés, seguimiento y cierre se mezclan con el dueño del inmueble.</p>
+<p>Lo que aprendimos al medir es más sobrio de lo que esperábamos al proponer índices. En <code>time.txt</code> la consulta 7 pasa de 0,298 ms a 0,428 ms y el plan sigue en Seq Scan. Con esta carga no podemos decir que un índice haya acelerado la consulta. El cierre sí quedó en una transacción: COMMIT de la oferta 61 y rechazo de la oferta 1, con READ COMMITTED y <code>FOR UPDATE</code> en la función de bloqueo.</p>
+<p>MongoDB nos sirvió para el historial que la tabla de visitas no modela bien: mensajes y notas con campos distintos según el canal. Las dos agregaciones cuentan eventos por canal y las solicitudes con más interacciones. Esas salidas están en <code>E6_mongodb/evidencia</code>.</p>
+<h3>12.1 Límites</h3>
+<ul>
+  <li>Los datos son sintéticos. Las tasas, los precios y los tiempos ilustran el modelo. No describen una inmobiliaria real.</li>
+  <li>La pregunta 3 muestra solicitudes abiertas sobre propiedades que ya están vendidas. Lo vimos al contar el respaldo y no lo corregimos en <code>02_carga_f4.sql</code>.</li>
+  <li>No medimos una base de cientos de miles de filas. La conclusión sobre índices vale para la carga de <code>time.txt</code>.</li>
+  <li>Guardamos un solo teléfono y un solo correo por persona. Los empleados no están en <code>personas</code> y no hay usuarios ni autenticación.</li>
+  <li>El respaldo es <code>E4_postgresql/backup/inmobiliaria_mcs_f4.sql</code>. No incluye el COMMIT de la oferta 61. Esa demo se ve al correr el script 05 y en las capturas de E5.</li>
+</ul>
+<p>Como trabajo futuro nos queda conectar formularios y WhatsApp a <code>seguimiento_eventos</code>, limpiar las solicitudes abiertas de inmuebles ya vendidos, y volver a medir los índices cuando las oportunidades pasen de unas decenas de miles.</p>
+
+<h2>13. Declaración de uso de inteligencia artificial</h2>
+<p>Durante el proyecto usamos herramientas de inteligencia artificial generativa (Cursor y Claude, de Anthropic) como apoyo para revisar la normalización, redactar documentación, proponer parte de los scripts SQL y estructurar este informe. El código lo ejecutamos en PostgreSQL y en MongoDB, y los resultados los revisamos contra las reglas del negocio y contra los archivos de la carpeta Profe. Los tres asumimos las decisiones de diseño, el contenido del documento y la sustentación individual.</p>
+
+<h2>Referencias</h2>
+<p class="small">Elmasri, R. y Navathe, S. B. (2016). <em>Fundamentals of database systems</em> (7.ª ed.). Pearson.</p>
+<p class="small">MongoDB, Inc. (2025). <em>MongoDB manual</em>. https://www.mongodb.com/docs/manual/</p>
+<p class="small">PostgreSQL Global Development Group. (2025). <em>PostgreSQL 18 documentation</em>. https://www.postgresql.org/docs/18/</p>
+<p class="small">Silberschatz, A., Korth, H. F. y Sudarshan, S. (2020). <em>Database system concepts</em> (7.ª ed.). McGraw-Hill.</p>
+
+<h2>Anexo A. Rúbrica y dónde está cada cosa</h2>
+<p>Las rutas son carpetas dentro de Profe, al lado de <code>E7_informe_final</code>.</p>
+<table>
+  <caption>Tabla 12. Criterios y evidencia</caption>
+  <thead><tr><th>Criterio</th><th>Dónde lo dejamos</th></tr></thead>
+  <tbody>
+    <tr><td>Formulación, reglas y preguntas</td><td>Secciones 2 y 3 de este informe. Doce reglas más cuatro de apoyo, y diez preguntas.</td></tr>
+    <tr><td>Modelo conceptual</td><td>Sección 5, Figura 1, <code>E2_modelo_conceptual/E2_modelo_conceptual.pdf</code> y el archivo drawio de esa carpeta.</td></tr>
+    <tr><td>Modelo relacional y normalización</td><td>Sección 6, Figura 2 y los PDF y JSON de <code>E3_modelo_relacional</code>.</td></tr>
+    <tr><td>Implementación PostgreSQL</td><td>Sección 8. Scripts <code>E4_postgresql/sql/00</code> a <code>03</code>. Respaldo <code>E4_postgresql/backup/inmobiliaria_mcs_f4.sql</code>.</td></tr>
+    <tr><td>Consultas, vistas, función y trigger</td><td>Sección 9 y <code>E4_postgresql/sql/03_consultas_f4.sql</code>. El cruce pregunta por pregunta está en <code>E4_consultas_vs_preguntas.pdf</code>.</td></tr>
+    <tr><td>Optimización, transacción y aislamiento</td><td>Sección 10. Scripts 04 y 05, <code>time.txt</code> y la carpeta <code>E5_optimizacion_transacciones/evidencia</code>.</td></tr>
+    <tr><td>MongoDB</td><td>Sección 11. <code>E6_mongodb/scripts</code> y <code>E6_mongodb/evidencia</code>. El documento de la fase es <code>E6_mongodb/E6_mongodb_nosql.pdf</code>.</td></tr>
+    <tr><td>Informe, diccionario y reproducibilidad</td><td>Este PDF, la sección 7 y el orden de la sección 8.1.</td></tr>
+  </tbody>
+</table>
+<p class="note">Nota. Elaboración del equipo.</p>
+
+<h2>Anexo B. Dónde está el SQL de las preguntas y el cierre</h2>
+<p>Dejamos las diez consultas en un solo lugar, para que este informe y el script no se contradigan. El texto que ejecutamos es <code>E4_postgresql/sql/03_consultas_f4.sql</code>. La función <code>cerrar_venta_con_bloqueo</code> está completa en <code>E5_optimizacion_transacciones/sql/05_transacciones_f5.sql</code>. Lo que hace, en corto, es esto: busca la oferta, bloquea la solicitud, bloquea la propiedad, vuelve a leer <code>estado_comercial</code> y solo entonces llama a <code>registrar_cierre</code>. Si la propiedad ya está vendida o no disponible, rechaza el segundo cierre.</p>
+
+</body>
+</html>

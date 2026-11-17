@@ -1,0 +1,1802 @@
+EVIDENCIA DE EJECUCIÓN · Proyecto MCS Inmobiliaria (inmobiliaria_mcs)
+Fecha: 2026-11-17 14:14 · Motor: PostgreSQL 18.6 on x86_64-windows, compiled by msvc-19.44.35228, 64-bit
+Ejecución completa sobre una base vacía, en orden: 00 (sobre postgres) y 01 a 06 (sobre inmobiliaria_mcs).
+Resultado: 0 errores en los siete scripts.
+
+######################################################################
+### sql/00_crear_base_f4.sql
+######################################################################
+CREATE DATABASE
+
+######################################################################
+### sql/01_ddl_f4.sql
+######################################################################
+SET
+SET
+BEGIN
+psql:sql/01_ddl_f4.sql:38: NOTICE:  table "transacciones" does not exist, skipping
+psql:sql/01_ddl_f4.sql:38: NOTICE:  table "ofertas" does not exist, skipping
+psql:sql/01_ddl_f4.sql:38: NOTICE:  table "visitas" does not exist, skipping
+psql:sql/01_ddl_f4.sql:38: NOTICE:  table "solicitudes_propiedad" does not exist, skipping
+psql:sql/01_ddl_f4.sql:38: NOTICE:  table "campana_propiedades" does not exist, skipping
+psql:sql/01_ddl_f4.sql:38: NOTICE:  table "campanas" does not exist, skipping
+psql:sql/01_ddl_f4.sql:38: NOTICE:  table "publicacion_canales" does not exist, skipping
+psql:sql/01_ddl_f4.sql:38: NOTICE:  table "publicaciones" does not exist, skipping
+psql:sql/01_ddl_f4.sql:38: NOTICE:  table "detalle_terrenos" does not exist, skipping
+psql:sql/01_ddl_f4.sql:38: NOTICE:  table "detalle_construcciones" does not exist, skipping
+psql:sql/01_ddl_f4.sql:38: NOTICE:  table "propiedad_propietarios" does not exist, skipping
+psql:sql/01_ddl_f4.sql:38: NOTICE:  table "propiedades" does not exist, skipping
+psql:sql/01_ddl_f4.sql:38: NOTICE:  table "persona_roles" does not exist, skipping
+psql:sql/01_ddl_f4.sql:38: NOTICE:  table "personas" does not exist, skipping
+psql:sql/01_ddl_f4.sql:38: NOTICE:  table "empleados" does not exist, skipping
+psql:sql/01_ddl_f4.sql:38: NOTICE:  table "canales_marketing" does not exist, skipping
+psql:sql/01_ddl_f4.sql:38: NOTICE:  table "tipos_operacion" does not exist, skipping
+psql:sql/01_ddl_f4.sql:38: NOTICE:  table "tipos_inmueble" does not exist, skipping
+psql:sql/01_ddl_f4.sql:38: NOTICE:  table "tipos_persona" does not exist, skipping
+psql:sql/01_ddl_f4.sql:38: NOTICE:  table "estado_conservacion" does not exist, skipping
+psql:sql/01_ddl_f4.sql:38: NOTICE:  table "uso_suelo" does not exist, skipping
+psql:sql/01_ddl_f4.sql:38: NOTICE:  table "acceso_via" does not exist, skipping
+psql:sql/01_ddl_f4.sql:38: NOTICE:  table "rol_empleado" does not exist, skipping
+psql:sql/01_ddl_f4.sql:38: NOTICE:  table "ciudades" does not exist, skipping
+DROP TABLE
+psql:sql/01_ddl_f4.sql:40: NOTICE:  function fn_set_actualizado_en() does not exist, skipping
+DROP FUNCTION
+psql:sql/01_ddl_f4.sql:41: NOTICE:  function fn_solicitud_motivo_descarte() does not exist, skipping
+DROP FUNCTION
+psql:sql/01_ddl_f4.sql:42: NOTICE:  function fn_solicitud_no_es_dueno() does not exist, skipping
+DROP FUNCTION
+psql:sql/01_ddl_f4.sql:43: NOTICE:  function fn_oferta_aceptada_en_negociacion() does not exist, skipping
+DROP FUNCTION
+psql:sql/01_ddl_f4.sql:44: NOTICE:  function fn_validar_y_aplicar_transaccion() does not exist, skipping
+DROP FUNCTION
+psql:sql/01_ddl_f4.sql:45: NOTICE:  function registrar_cierre(pg_catalog.int4,pg_catalog.int4,pg_catalog.numeric,pg_catalog.numeric,date,date,pg_catalog.varchar) does not exist, skipping
+DROP FUNCTION
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+COMMENT
+COMMENT
+COMMENT
+CREATE FUNCTION
+CREATE TRIGGER
+CREATE TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+CREATE TRIGGER
+CREATE FUNCTION
+CREATE TRIGGER
+CREATE FUNCTION
+CREATE TRIGGER
+CREATE FUNCTION
+CREATE TRIGGER
+CREATE FUNCTION
+COMMIT
+
+######################################################################
+### sql/02_carga_f4.sql
+######################################################################
+SET
+SET
+BEGIN
+INSERT 0 10
+INSERT 0 2
+INSERT 0 5
+INSERT 0 2
+INSERT 0 4
+INSERT 0 4
+INSERT 0 3
+INSERT 0 3
+INSERT 0 5
+INSERT 0 10
+INSERT 0 55
+INSERT 0 61
+INSERT 0 52
+INSERT 0 65
+INSERT 0 42
+INSERT 0 21
+INSERT 0 60
+INSERT 0 80
+INSERT 0 10
+INSERT 0 12
+INSERT 0 64
+INSERT 0 65
+INSERT 0 80
+INSERT 0 8
+INSERT 0 61
+INSERT 0 18
+UPDATE 8
+INSERT 0 9
+INSERT 0 7
+ setval 
+--------
+     10
+(1 fila)
+
+ setval 
+--------
+      2
+(1 fila)
+
+ setval 
+--------
+      5
+(1 fila)
+
+ setval 
+--------
+      2
+(1 fila)
+
+ setval 
+--------
+      4
+(1 fila)
+
+ setval 
+--------
+      4
+(1 fila)
+
+ setval 
+--------
+      3
+(1 fila)
+
+ setval 
+--------
+      3
+(1 fila)
+
+ setval 
+--------
+      5
+(1 fila)
+
+ setval 
+--------
+     55
+(1 fila)
+
+ setval 
+--------
+     10
+(1 fila)
+
+ setval 
+--------
+     52
+(1 fila)
+
+ setval 
+--------
+     65
+(1 fila)
+
+ setval 
+--------
+     42
+(1 fila)
+
+ setval 
+--------
+     21
+(1 fila)
+
+ setval 
+--------
+     60
+(1 fila)
+
+ setval 
+--------
+     90
+(1 fila)
+
+ setval 
+--------
+     12
+(1 fila)
+
+ setval 
+--------
+     71
+(1 fila)
+
+ setval 
+--------
+     74
+(1 fila)
+
+ setval 
+--------
+     88
+(1 fila)
+
+ setval 
+--------
+     61
+(1 fila)
+
+ setval 
+--------
+     18
+(1 fila)
+
+COMMIT
+
+######################################################################
+### sql/03_consultas_f4.sql
+######################################################################
+SET
+SET
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+CREATE FUNCTION
+CREATE FUNCTION
+DROP TRIGGER
+CREATE TRIGGER
+ propiedad_id | matricula_inmobiliaria |              titulo               | estado_comercial |    ciudad    |    direccion     | tipo_inmueble | tipo_operacion |    precio    | valor_administracion | fecha_publicacion | asesor_captacion 
+--------------+------------------------+-----------------------------------+------------------+--------------+------------------+---------------+----------------+--------------+----------------------+-------------------+------------------
+           34 | 50N-000034             | Lote en Cedritos 34               | disponible       | Barranquilla | Calle 44 # 34-22 | lote          | venta          | 605000000.00 |            520000.00 | 2025-09-11        | Marta Rincon
+           21 | 50N-000021             | Apartamento en Chapinero 21       | disponible       | Bogota       | Calle 31 # 21-63 | apartamento   | arriendo       |   3480000.00 |                      | 2025-08-03        | Harold Burgos
+           11 | 50N-000011             | Apartamento en Chapinero 11       | disponible       | Bogota       | Calle 21 # 11-33 | apartamento   | venta          | 317500000.00 |            405000.00 | 2025-07-04        | Harold Burgos
+           31 | 50N-000031             | Apartamento en Chapinero 31       | disponible       | Bogota       | Calle 41 # 31-13 | apartamento   | venta          | 567500000.00 |            505000.00 | 2025-09-02        | Harold Burgos
+           51 | 50N-000051             | Apartamento en Chapinero 51       | disponible       | Bogota       | Calle 61 # 51-73 | apartamento   | venta          | 817500000.00 |            605000.00 | 2024-03-23        | Harold Burgos
+           35 | 50N-000035             | Oficina en El Poblado 35          | disponible       | Bucaramanga  | Calle 45 # 35-25 | oficina       | arriendo       |   4600000.00 |                      | 2025-09-14        | Pedro Ospina
+           15 | 50N-000015             | Oficina en El Poblado 15          | disponible       | Bucaramanga  | Calle 25 # 15-45 | oficina       | venta          | 367500000.00 |            425000.00 | 2025-07-16        | Pedro Ospina
+           25 | 50N-000025             | Oficina en El Poblado 25          | disponible       | Bucaramanga  | Calle 35 # 25-75 | oficina       | venta          | 492500000.00 |            475000.00 | 2025-08-15        | Pedro Ospina
+           13 | 50N-000013             | Local comercial en Teusaquillo 13 | disponible       | Cali         | Calle 23 # 13-39 | local         | venta          | 342500000.00 |            415000.00 | 2025-07-10        | Juan Triana
+           33 | 50N-000033             | Local comercial en Teusaquillo 33 | disponible       | Cali         | Calle 43 # 33-19 | local         | venta          | 592500000.00 |            515000.00 | 2025-09-08        | Juan Triana
+           16 | 50N-000016             | Apartamento en Laureles 16        | disponible       | Cartagena    | Calle 26 # 16-48 | apartamento   | venta          | 380000000.00 |                      | 2025-07-19        | Luisa Restrepo
+           26 | 50N-000026             | Apartamento en Laureles 26        | disponible       | Cartagena    | Calle 36 # 26-78 | apartamento   | venta          | 505000000.00 |            480000.00 | 2025-08-18        | Luisa Restrepo
+           36 | 50N-000036             | Apartamento en Laureles 36        | disponible       | Cartagena    | Calle 46 # 36-28 | apartamento   | venta          | 630000000.00 |                      | 2025-09-17        | Luisa Restrepo
+           46 | 50N-000046             | Apartamento en Laureles 46        | disponible       | Cartagena    | Calle 56 # 46-58 | apartamento   | venta          | 755000000.00 |            580000.00 | 2024-03-18        | Luisa Restrepo
+           10 | 50N-000010             | Oficina en Ciudad Jardin 10       | disponible       | Ibague       | Calle 20 # 10-30 | oficina       | venta          | 305000000.00 |            400000.00 | 2025-07-01        | Camila Soto
+           20 | 50N-000020             | Oficina en Ciudad Jardin 20       | disponible       | Ibague       | Calle 30 # 20-60 | oficina       | venta          | 430000000.00 |                      | 2025-07-31        | Camila Soto
+           30 | 50N-000030             | Oficina en Ciudad Jardin 30       | disponible       | Ibague       | Calle 40 # 30-10 | oficina       | venta          | 555000000.00 |            500000.00 | 2025-08-30        | Camila Soto
+           50 | 50N-000050             | Oficina en Ciudad Jardin 50       | disponible       | Ibague       | Calle 60 # 50-70 | oficina       | venta          | 805000000.00 |            600000.00 | 2024-03-22        | Camila Soto
+            8 | 50N-000008             | Local comercial en Bocagrande 8   | disponible       | Manizales    | Calle 18 # 8-24  | local         | arriendo       |   2920000.00 |            360000.00 | 2026-01-18        | Elena Vargas
+           28 | 50N-000028             | Local comercial en Bocagrande 28  | disponible       | Manizales    | Calle 38 # 28-4  | local         | arriendo       |   4040000.00 |                      | 2025-08-24        | Elena Vargas
+            8 | 50N-000008             | Local comercial en Bocagrande 8   | disponible       | Manizales    | Calle 18 # 8-24  | local         | venta          | 280000000.00 |                      | 2025-06-25        | Elena Vargas
+           18 | 50N-000018             | Local comercial en Bocagrande 18  | disponible       | Manizales    | Calle 28 # 18-54 | local         | venta          | 405000000.00 |            440000.00 | 2025-07-25        | Elena Vargas
+           38 | 50N-000038             | Local comercial en Bocagrande 38  | disponible       | Manizales    | Calle 48 # 38-34 | local         | venta          | 655000000.00 |            540000.00 | 2025-09-23        | Elena Vargas
+           12 | 50N-000012             | Casa en Usaquen 12                | disponible       | Medellin     | Calle 22 # 12-36 | casa          | venta          | 330000000.00 |                      | 2025-07-07        | Sofia Camelo
+           52 | 50N-000052             | Casa en Usaquen 52                | disponible       | Medellin     | Calle 62 # 52-76 | casa          | venta          | 830000000.00 |                      | 2024-03-24        | Sofia Camelo
+            7 | 50N-000007             | Casa en Granada 7                 | disponible       | Pereira      | Calle 17 # 7-21  | casa          | arriendo       |   2360000.00 |                      | 2025-06-22        | Andres Mejia
+            7 | 50N-000007             | Casa en Granada 7                 | disponible       | Pereira      | Calle 17 # 7-21  | casa          | arriendo       |   2830000.00 |            350000.00 | 2026-01-17        | Andres Mejia
+           47 | 50N-000047             | Casa en Granada 47                | disponible       | Pereira      | Calle 57 # 47-61 | casa          | venta          | 767500000.00 |            585000.00 | 2024-03-19        | Andres Mejia
+           49 | 50N-000049             | Lote en Cabecera 49               | disponible       | Santa Marta  | Calle 59 # 49-67 | lote          | arriendo       |   5720000.00 |                      | 2024-03-21        | Diego Parra
+           19 | 50N-000019             | Lote en Cabecera 19               | disponible       | Santa Marta  | Calle 29 # 19-57 | lote          | venta          | 417500000.00 |            445000.00 | 2025-07-28        | Diego Parra
+           39 | 50N-000039             | Lote en Cabecera 39               | disponible       | Santa Marta  | Calle 49 # 39-37 | lote          | venta          | 667500000.00 |            545000.00 | 2025-09-26        | Diego Parra
+(31 filas)
+
+ propiedad_id |              titulo               | persona_id |     prospecto     |            email            |  telefono  | solicitud_id | estado_oportunidad |       creado_en        
+--------------+-----------------------------------+------------+-------------------+-----------------------------+------------+--------------+--------------------+------------------------
+            1 | Apartamento en Chapinero 1        |         23 | Carolina Ruiz     | carolina.ruiz23@mail.co     | 3002000023 |            1 | perdida            | 2026-03-02 09:00:00-05
+            1 | Apartamento en Chapinero 1        |         24 | Alejandro Jimenez | alejandro.jimenez24@mail.co | 3002000024 |            2 | ganada             | 2026-03-03 09:00:00-05
+            1 | Apartamento en Chapinero 1        |         25 | Natalia Mendoza   | natalia.mendoza25@mail.co   | 3002000025 |            3 | perdida            | 2026-03-04 09:00:00-05
+            1 | Apartamento en Chapinero 1        |         26 | Camilo Aguilar    | camilo.aguilar26@mail.co    | 3002000026 |            4 | perdida            | 2026-03-05 09:00:00-05
+            2 | Casa en Usaquen 2                 |         26 | Camilo Aguilar    | camilo.aguilar26@mail.co    | 3002000026 |            5 | perdida            | 2026-03-06 09:00:00-05
+            2 | Casa en Usaquen 2                 |         27 | Daniel Medina     | daniel.medina27@mail.co     | 3002000027 |            6 | ganada             | 2026-03-07 09:00:00-05
+            2 | Casa en Usaquen 2                 |         28 | Mariana Cortes    | mariana.cortes28@mail.co    | 3002000028 |            7 | perdida            | 2026-03-08 09:00:00-05
+            2 | Casa en Usaquen 2                 |         29 | Jorge Silva       | jorge.silva29@mail.co       | 3002000029 |            8 | perdida            | 2026-03-09 09:00:00-05
+            3 | Local comercial en Teusaquillo 3  |         29 | Jorge Silva       | jorge.silva29@mail.co       | 3002000029 |            9 | perdida            | 2026-03-10 09:00:00-05
+            3 | Local comercial en Teusaquillo 3  |         30 | Andrea Ramos      | andrea.ramos30@mail.co      | 3002000030 |           10 | ganada             | 2026-03-11 09:00:00-05
+            3 | Local comercial en Teusaquillo 3  |         31 | Ricardo Romero    | ricardo.romero31@mail.co    | 3002000031 |           11 | perdida            | 2026-03-12 09:00:00-05
+            4 | Lote en Cedritos 4                |         32 | Elena Suarez      | elena.suarez32@mail.co      | 3002000032 |           12 | perdida            | 2026-03-13 09:00:00-05
+            4 | Lote en Cedritos 4                |         33 | Oscar Herrera     | oscar.herrera33@mail.co     | 3002000033 |           13 | ganada             | 2026-03-14 09:00:00-05
+            4 | Lote en Cedritos 4                |         34 | Patricia Nunez    | patricia.nunez34@mail.co    | 3002000034 |           14 | perdida            | 2026-03-15 09:00:00-05
+            5 | Oficina en El Poblado 5           |         35 | Hernan Molina     | hernan.molina35@mail.co     | 3002000035 |           15 | perdida            | 2026-03-16 09:00:00-05
+            5 | Oficina en El Poblado 5           |         36 | Lucia Delgado     | lucia.delgado36@mail.co     | 3002000036 |           16 | ganada             | 2026-03-17 09:00:00-05
+            5 | Oficina en El Poblado 5           |         37 | Tomas Pena        | tomas.pena37@mail.co        | 3002000037 |           17 | perdida            | 2026-03-18 09:00:00-05
+            6 | Apartamento en Laureles 6         |         50 | Tatiana Salazar   | tatiana.salazar50@mail.co   | 3002000050 |           48 | ganada             | 2026-05-22 10:00:00-05
+            7 | Casa en Granada 7                 |         54 | Gloria Restrepo   | gloria.restrepo54@mail.co   | 3002000054 |           49 | nueva              | 2026-05-24 10:00:00-05
+            7 | Casa en Granada 7                 |         40 | Monica Navarro    | monica.navarro40@mail.co    | 3002000040 |           66 | en_seguimiento     | 2026-09-03 10:00:00-05
+            7 | Casa en Granada 7                 |         41 | Cristian Campos   | cristian.campos41@mail.co   | 3002000041 |           67 | nueva              | 2026-10-06 11:00:00-05
+            7 | Casa en Granada 7                 |         42 | Angela Vega       | angela.vega42@mail.co       | 3002000042 |           68 | nueva              | 2026-10-20 09:30:00-05
+            8 | Local comercial en Bocagrande 8   |         22 | David Castro      | david.castro22@mail.co      | 3002000022 |           50 | en_seguimiento     | 2026-05-26 10:00:00-05
+            8 | Local comercial en Bocagrande 8   |         43 | Mauricio Soto     | mauricio.soto43@mail.co     | 3002000043 |           69 | en_seguimiento     | 2026-08-12 15:00:00-05
+            8 | Local comercial en Bocagrande 8   |         44 | Claudia Leon      | claudia.leon44@mail.co      | 3002000044 |           70 | nueva              | 2026-09-15 16:00:00-05
+            9 | Lote en Cabecera 9                |         26 | Camilo Aguilar    | camilo.aguilar26@mail.co    | 3002000026 |           51 | ganada             | 2026-05-28 10:00:00-05
+           10 | Oficina en Ciudad Jardin 10       |         30 | Andrea Ramos      | andrea.ramos30@mail.co      | 3002000030 |           52 | perdida            | 2026-05-30 10:00:00-05
+           11 | Apartamento en Chapinero 11       |         34 | Patricia Nunez    | patricia.nunez34@mail.co    | 3002000034 |           53 | descartada         | 2026-06-01 10:00:00-05
+           12 | Casa en Usaquen 12                |         38 | Diana Guerrero    | diana.guerrero38@mail.co    | 3002000038 |           54 | en_seguimiento     | 2026-06-03 10:00:00-05
+           12 | Casa en Usaquen 12                |         45 | Esteban Rincon    | esteban.rincon45@mail.co    | 3002000045 |           71 | en_seguimiento     | 2026-08-25 10:30:00-05
+           12 | Casa en Usaquen 12                |         46 | Adriana Mejia     | adriana.mejia46@mail.co     | 3002000046 |           72 | nueva              | 2026-10-14 12:00:00-05
+           13 | Local comercial en Teusaquillo 13 |         42 | Angela Vega       | angela.vega42@mail.co       | 3002000042 |           55 | nueva              | 2026-06-05 10:00:00-05
+           14 | Lote en Cedritos 14               |         46 | Adriana Mejia     | adriana.mejia46@mail.co     | 3002000046 |           56 | ganada             | 2026-06-07 10:00:00-05
+           15 | Oficina en El Poblado 15          |         50 | Tatiana Salazar   | tatiana.salazar50@mail.co   | 3002000050 |           57 | nueva              | 2026-06-09 10:00:00-05
+           15 | Oficina en El Poblado 15          |         47 | Julian Cardenas   | julian.cardenas47@mail.co   | 3002000047 |           73 | nueva              | 2026-09-09 09:00:00-05
+           16 | Apartamento en Laureles 16        |         54 | Gloria Restrepo   | gloria.restrepo54@mail.co   | 3002000054 |           58 | en_seguimiento     | 2026-06-11 10:00:00-05
+           16 | Apartamento en Laureles 16        |         48 | Liliana Parra     | liliana.parra48@mail.co     | 3002000048 |           74 | en_seguimiento     | 2026-08-30 14:00:00-05
+           17 | Casa en Granada 17                |         22 | David Castro      | david.castro22@mail.co      | 3002000022 |           59 | ganada             | 2026-06-13 10:00:00-05
+           18 | Local comercial en Bocagrande 18  |         26 | Camilo Aguilar    | camilo.aguilar26@mail.co    | 3002000026 |           60 | perdida            | 2026-06-15 10:00:00-05
+           19 | Lote en Cabecera 19               |         30 | Andrea Ramos      | andrea.ramos30@mail.co      | 3002000030 |           61 | descartada         | 2026-06-17 10:00:00-05
+           20 | Oficina en Ciudad Jardin 20       |         34 | Patricia Nunez    | patricia.nunez34@mail.co    | 3002000034 |           62 | en_seguimiento     | 2026-06-19 10:00:00-05
+           21 | Apartamento en Chapinero 21       |         38 | Diana Guerrero    | diana.guerrero38@mail.co    | 3002000038 |           63 | nueva              | 2026-06-21 10:00:00-05
+           22 | Casa en Usaquen 22                |         42 | Angela Vega       | angela.vega42@mail.co       | 3002000042 |           64 | en_negociacion     | 2026-06-23 10:00:00-05
+           23 | Local comercial en Teusaquillo 23 |         35 | Hernan Molina     | hernan.molina35@mail.co     | 3002000035 |           18 | ganada             | 2026-03-23 10:00:00-05
+           23 | Local comercial en Teusaquillo 23 |         46 | Adriana Mejia     | adriana.mejia46@mail.co     | 3002000046 |           65 | perdida            | 2026-06-25 10:00:00-05
+           24 | Lote en Cedritos 24               |         39 | Pablo Cabrera     | pablo.cabrera39@mail.co     | 3002000039 |           19 | ganada             | 2026-03-25 10:00:00-05
+           25 | Oficina en El Poblado 25          |         43 | Mauricio Soto     | mauricio.soto43@mail.co     | 3002000043 |           20 | perdida            | 2026-03-27 10:00:00-05
+           26 | Apartamento en Laureles 26        |         47 | Julian Cardenas   | julian.cardenas47@mail.co   | 3002000047 |           21 | descartada         | 2026-03-29 10:00:00-05
+           27 | Casa en Granada 27                |         51 | Rafael Bermudez   | rafael.bermudez51@mail.co   | 3002000051 |           22 | ganada             | 2026-03-31 10:00:00-05
+           28 | Local comercial en Bocagrande 28  |         55 | Fernando Valencia | fernando.valencia55@mail.co | 3002000055 |           23 | nueva              | 2026-04-02 10:00:00-05
+           29 | Lote en Cabecera 29               |         23 | Carolina Ruiz     | carolina.ruiz23@mail.co     | 3002000023 |           24 | ganada             | 2026-04-04 10:00:00-05
+           30 | Oficina en Ciudad Jardin 30       |         27 | Daniel Medina     | daniel.medina27@mail.co     | 3002000027 |           25 | nueva              | 2026-04-06 10:00:00-05
+           31 | Apartamento en Chapinero 31       |         31 | Ricardo Romero    | ricardo.romero31@mail.co    | 3002000031 |           26 | en_seguimiento     | 2026-04-08 10:00:00-05
+           32 | Casa en Usaquen 32                |         35 | Hernan Molina     | hernan.molina35@mail.co     | 3002000035 |           27 | ganada             | 2026-04-10 10:00:00-05
+           33 | Local comercial en Teusaquillo 33 |         39 | Pablo Cabrera     | pablo.cabrera39@mail.co     | 3002000039 |           28 | perdida            | 2026-04-12 10:00:00-05
+           34 | Lote en Cedritos 34               |         43 | Mauricio Soto     | mauricio.soto43@mail.co     | 3002000043 |           29 | descartada         | 2026-04-14 10:00:00-05
+           35 | Oficina en El Poblado 35          |         47 | Julian Cardenas   | julian.cardenas47@mail.co   | 3002000047 |           30 | en_seguimiento     | 2026-04-16 10:00:00-05
+           36 | Apartamento en Laureles 36        |         51 | Rafael Bermudez   | rafael.bermudez51@mail.co   | 3002000051 |           31 | nueva              | 2026-04-18 10:00:00-05
+           37 | Casa en Granada 37                |         55 | Fernando Valencia | fernando.valencia55@mail.co | 3002000055 |           32 | ganada             | 2026-04-20 10:00:00-05
+           38 | Local comercial en Bocagrande 38  |         23 | Carolina Ruiz     | carolina.ruiz23@mail.co     | 3002000023 |           33 | nueva              | 2026-04-22 10:00:00-05
+           39 | Lote en Cabecera 39               |         27 | Daniel Medina     | daniel.medina27@mail.co     | 3002000027 |           34 | en_seguimiento     | 2026-04-24 10:00:00-05
+           40 | Oficina en Ciudad Jardin 40       |         31 | Ricardo Romero    | ricardo.romero31@mail.co    | 3002000031 |           35 | ganada             | 2026-04-26 10:00:00-05
+           41 | Apartamento en Chapinero 41       |         35 | Hernan Molina     | hernan.molina35@mail.co     | 3002000035 |           36 | perdida            | 2026-04-28 10:00:00-05
+           42 | Casa en Usaquen 42                |         39 | Pablo Cabrera     | pablo.cabrera39@mail.co     | 3002000039 |           37 | descartada         | 2026-04-30 10:00:00-05
+           43 | Local comercial en Teusaquillo 43 |         43 | Mauricio Soto     | mauricio.soto43@mail.co     | 3002000043 |           38 | perdida            | 2026-05-02 10:00:00-05
+           44 | Lote en Cedritos 44               |         47 | Julian Cardenas   | julian.cardenas47@mail.co   | 3002000047 |           39 | perdida            | 2026-05-04 10:00:00-05
+           45 | Oficina en El Poblado 45          |         51 | Rafael Bermudez   | rafael.bermudez51@mail.co   | 3002000051 |           40 | ganada             | 2026-05-06 10:00:00-05
+           46 | Apartamento en Laureles 46        |         55 | Fernando Valencia | fernando.valencia55@mail.co | 3002000055 |           41 | nueva              | 2026-05-08 10:00:00-05
+           47 | Casa en Granada 47                |         23 | Carolina Ruiz     | carolina.ruiz23@mail.co     | 3002000023 |           42 | en_seguimiento     | 2026-05-10 10:00:00-05
+           48 | Local comercial en Bocagrande 48  |         27 | Daniel Medina     | daniel.medina27@mail.co     | 3002000027 |           43 | ganada             | 2026-05-12 10:00:00-05
+           49 | Lote en Cabecera 49               |         31 | Ricardo Romero    | ricardo.romero31@mail.co    | 3002000031 |           44 | perdida            | 2026-05-14 10:00:00-05
+           50 | Oficina en Ciudad Jardin 50       |         35 | Hernan Molina     | hernan.molina35@mail.co     | 3002000035 |           45 | descartada         | 2026-05-16 10:00:00-05
+           51 | Apartamento en Chapinero 51       |         39 | Pablo Cabrera     | pablo.cabrera39@mail.co     | 3002000039 |           46 | en_seguimiento     | 2026-05-18 10:00:00-05
+           52 | Casa en Usaquen 52                |         43 | Mauricio Soto     | mauricio.soto43@mail.co     | 3002000043 |           47 | nueva              | 2026-05-20 10:00:00-05
+(74 filas)
+
+ propiedad_id |             titulo              | estado_comercial |   ciudad    | oportunidades_activas 
+--------------+---------------------------------+------------------+-------------+-----------------------
+            7 | Casa en Granada 7               | disponible       | Pereira     |                     4
+            8 | Local comercial en Bocagrande 8 | disponible       | Manizales   |                     3
+           12 | Casa en Usaquen 12              | disponible       | Medellin    |                     3
+           15 | Oficina en El Poblado 15        | disponible       | Bucaramanga |                     2
+           16 | Apartamento en Laureles 16      | disponible       | Cartagena   |                     2
+(5 filas)
+
+     prospecto     |            email            |             propiedad             | estado_seguimiento |   nombre_campana   |       canal        |       creado_en        
+-------------------+-----------------------------+-----------------------------------+--------------------+--------------------+--------------------+------------------------
+ Angela Vega       | angela.vega42@mail.co       | Casa en Usaquen 22                | en_negociacion     | Inventario premium | web                | 2026-06-23 10:00:00-05
+ Ricardo Romero    | ricardo.romero31@mail.co    | Apartamento en Chapinero 31       | en_seguimiento     | Remarketing web    | web                | 2026-04-08 10:00:00-05
+ Julian Cardenas   | julian.cardenas47@mail.co   | Oficina en El Poblado 35          | en_seguimiento     |                    |                    | 2026-04-16 10:00:00-05
+ Daniel Medina     | daniel.medina27@mail.co     | Lote en Cabecera 39               | en_seguimiento     | Meta mid year      | Meta Ads           | 2026-04-24 10:00:00-05
+ Carolina Ruiz     | carolina.ruiz23@mail.co     | Casa en Granada 47                | en_seguimiento     |                    |                    | 2026-05-10 10:00:00-05
+ Pablo Cabrera     | pablo.cabrera39@mail.co     | Apartamento en Chapinero 51       | en_seguimiento     | Meta mid year      | Meta Ads           | 2026-05-18 10:00:00-05
+ David Castro      | david.castro22@mail.co      | Local comercial en Bocagrande 8   | en_seguimiento     | Lanzamiento norte  | Meta Ads           | 2026-05-26 10:00:00-05
+ Diana Guerrero    | diana.guerrero38@mail.co    | Casa en Usaquen 12                | en_seguimiento     |                    |                    | 2026-06-03 10:00:00-05
+ Gloria Restrepo   | gloria.restrepo54@mail.co   | Apartamento en Laureles 16        | en_seguimiento     | WhatsApp referidos | WhatsApp           | 2026-06-11 10:00:00-05
+ Patricia Nunez    | patricia.nunez34@mail.co    | Oficina en Ciudad Jardin 20       | en_seguimiento     | Lanzamiento norte  | Meta Ads           | 2026-06-19 10:00:00-05
+ Mauricio Soto     | mauricio.soto43@mail.co     | Local comercial en Bocagrande 8   | en_seguimiento     | Meta mid year      | Meta Ads           | 2026-08-12 15:00:00-05
+ Esteban Rincon    | esteban.rincon45@mail.co    | Casa en Usaquen 12                | en_seguimiento     | WhatsApp referidos | WhatsApp           | 2026-08-25 10:30:00-05
+ Liliana Parra     | liliana.parra48@mail.co     | Apartamento en Laureles 16        | en_seguimiento     | Meta mid year      | Meta Ads           | 2026-08-30 14:00:00-05
+ Monica Navarro    | monica.navarro40@mail.co    | Casa en Granada 7                 | en_seguimiento     | WhatsApp referidos | WhatsApp           | 2026-09-03 10:00:00-05
+ Fernando Valencia | fernando.valencia55@mail.co | Local comercial en Bocagrande 28  | nueva              | WhatsApp referidos | WhatsApp           | 2026-04-02 10:00:00-05
+ Daniel Medina     | daniel.medina27@mail.co     | Oficina en Ciudad Jardin 30       | nueva              | Referidos asesores | referidos          | 2026-04-06 10:00:00-05
+ Rafael Bermudez   | rafael.bermudez51@mail.co   | Apartamento en Laureles 36        | nueva              | Open house Usaquen | feria inmobiliaria | 2026-04-18 10:00:00-05
+ Carolina Ruiz     | carolina.ruiz23@mail.co     | Local comercial en Bocagrande 38  | nueva              | Portales web abril | web                | 2026-04-22 10:00:00-05
+ Fernando Valencia | fernando.valencia55@mail.co | Apartamento en Laureles 46        | nueva              | Inventario premium | web                | 2026-05-08 10:00:00-05
+ Mauricio Soto     | mauricio.soto43@mail.co     | Casa en Usaquen 52                | nueva              | WhatsApp referidos | WhatsApp           | 2026-05-20 10:00:00-05
+ Gloria Restrepo   | gloria.restrepo54@mail.co   | Casa en Granada 7                 | nueva              | Remarketing web    | web                | 2026-05-24 10:00:00-05
+ Angela Vega       | angela.vega42@mail.co       | Local comercial en Teusaquillo 13 | nueva              | Leads Meta Q1      | Meta Ads           | 2026-06-05 10:00:00-05
+ Tatiana Salazar   | tatiana.salazar50@mail.co   | Oficina en El Poblado 15          | nueva              | Meta mid year      | Meta Ads           | 2026-06-09 10:00:00-05
+ Diana Guerrero    | diana.guerrero38@mail.co    | Apartamento en Chapinero 21       | nueva              | Captacion WhatsApp | WhatsApp           | 2026-06-21 10:00:00-05
+ Julian Cardenas   | julian.cardenas47@mail.co   | Oficina en El Poblado 15          | nueva              | Inventario premium | web                | 2026-09-09 09:00:00-05
+ Claudia Leon      | claudia.leon44@mail.co      | Local comercial en Bocagrande 8   | nueva              | Inventario premium | web                | 2026-09-15 16:00:00-05
+ Cristian Campos   | cristian.campos41@mail.co   | Casa en Granada 7                 | nueva              | Remarketing web    | web                | 2026-10-06 11:00:00-05
+ Adriana Mejia     | adriana.mejia46@mail.co     | Casa en Usaquen 12                | nueva              | Remarketing web    | web                | 2026-10-14 12:00:00-05
+ Angela Vega       | angela.vega42@mail.co       | Casa en Granada 7                 | nueva              | Inventario premium | web                | 2026-10-20 09:30:00-05
+(29 filas)
+
+ solicitud_id |     prospecto     |             propiedad             | estado_oportunidad | visita_id | asesor_visita  |    fecha_programada    |    fecha_realizada     | duracion_min | calificacion_interes |          feedback_cliente           | motivo_cancelacion 
+--------------+-------------------+-----------------------------------+--------------------+-----------+----------------+------------------------+------------------------+--------------+----------------------+-------------------------------------+--------------------
+            1 | Carolina Ruiz     | Apartamento en Chapinero 1        | perdida            |         1 | Marta Rincon   | 2026-04-02 11:00:00-05 | 2026-04-02 12:00:00-05 |           36 |                    2 | Interes alto en la zona y el precio | 
+            1 | Carolina Ruiz     | Apartamento en Chapinero 1        | perdida            |         2 | Marta Rincon   | 2026-04-05 11:00:00-05 |                        |              |                      |                                     | 
+            2 | Alejandro Jimenez | Apartamento en Chapinero 1        | ganada             |         3 | Pedro Ospina   | 2026-04-03 11:00:00-05 | 2026-04-03 12:00:00-05 |           37 |                    3 | Interes alto en la zona y el precio | 
+            2 | Alejandro Jimenez | Apartamento en Chapinero 1        | ganada             |         4 | Pedro Ospina   | 2026-04-06 11:00:00-05 | 2026-04-06 12:00:00-05 |           37 |                    4 | Interes alto en la zona y el precio | 
+            3 | Natalia Mendoza   | Apartamento en Chapinero 1        | perdida            |         5 | Luisa Restrepo | 2026-04-04 11:00:00-05 | 2026-04-04 12:00:00-05 |           38 |                    4 | Interes alto en la zona y el precio | 
+            3 | Natalia Mendoza   | Apartamento en Chapinero 1        | perdida            |         6 | Luisa Restrepo | 2026-04-07 11:00:00-05 | 2026-04-07 12:00:00-05 |           38 |                    5 | Interes alto en la zona y el precio | 
+            4 | Camilo Aguilar    | Apartamento en Chapinero 1        | perdida            |         7 | Andres Mejia   | 2026-04-05 11:00:00-05 | 2026-04-05 12:00:00-05 |           39 |                    5 | Interes alto en la zona y el precio | 
+            4 | Camilo Aguilar    | Apartamento en Chapinero 1        | perdida            |         8 | Andres Mejia   | 2026-04-08 11:00:00-05 | 2026-04-08 12:00:00-05 |           39 |                    1 | Interes alto en la zona y el precio | 
+            5 | Camilo Aguilar    | Casa en Usaquen 2                 | perdida            |         9 | Elena Vargas   | 2026-04-06 11:00:00-05 | 2026-04-06 12:00:00-05 |           40 |                    1 | Interes alto en la zona y el precio | 
+            5 | Camilo Aguilar    | Casa en Usaquen 2                 | perdida            |        10 | Elena Vargas   | 2026-04-09 11:00:00-05 |                        |              |                      |                                     | 
+            6 | Daniel Medina     | Casa en Usaquen 2                 | ganada             |        11 | Diego Parra    | 2026-04-07 11:00:00-05 | 2026-04-07 12:00:00-05 |           41 |                    2 | Interes alto en la zona y el precio | 
+            6 | Daniel Medina     | Casa en Usaquen 2                 | ganada             |        12 | Diego Parra    | 2026-04-10 11:00:00-05 | 2026-04-10 12:00:00-05 |           41 |                    3 | Interes alto en la zona y el precio | 
+            7 | Mariana Cortes    | Casa en Usaquen 2                 | perdida            |        13 | Camila Soto    | 2026-04-08 11:00:00-05 | 2026-04-08 12:00:00-05 |           42 |                    3 | Interes alto en la zona y el precio | 
+            7 | Mariana Cortes    | Casa en Usaquen 2                 | perdida            |        14 | Camila Soto    | 2026-04-11 11:00:00-05 | 2026-04-11 12:00:00-05 |           42 |                    4 | Interes alto en la zona y el precio | 
+            8 | Jorge Silva       | Casa en Usaquen 2                 | perdida            |        15 | Marta Rincon   | 2026-04-09 11:00:00-05 | 2026-04-09 12:00:00-05 |           43 |                    4 | Interes alto en la zona y el precio | 
+            8 | Jorge Silva       | Casa en Usaquen 2                 | perdida            |        16 | Marta Rincon   | 2026-04-12 11:00:00-05 | 2026-04-12 12:00:00-05 |           43 |                    5 | Interes alto en la zona y el precio | 
+            9 | Jorge Silva       | Local comercial en Teusaquillo 3  | perdida            |        17 | Pedro Ospina   | 2026-04-10 11:00:00-05 | 2026-04-10 12:00:00-05 |           44 |                    5 | Interes alto en la zona y el precio | 
+            9 | Jorge Silva       | Local comercial en Teusaquillo 3  | perdida            |        18 | Pedro Ospina   | 2026-04-13 11:00:00-05 |                        |              |                      |                                     | 
+           10 | Andrea Ramos      | Local comercial en Teusaquillo 3  | ganada             |        19 | Luisa Restrepo | 2026-04-11 11:00:00-05 | 2026-04-11 12:00:00-05 |           45 |                    1 | Interes alto en la zona y el precio | 
+           10 | Andrea Ramos      | Local comercial en Teusaquillo 3  | ganada             |        20 | Luisa Restrepo | 2026-04-14 11:00:00-05 | 2026-04-14 12:00:00-05 |           45 |                    2 | Interes alto en la zona y el precio | 
+           11 | Ricardo Romero    | Local comercial en Teusaquillo 3  | perdida            |        21 | Andres Mejia   | 2026-04-12 11:00:00-05 | 2026-04-12 12:00:00-05 |           46 |                    2 | Interes alto en la zona y el precio | 
+           11 | Ricardo Romero    | Local comercial en Teusaquillo 3  | perdida            |        22 | Andres Mejia   | 2026-04-15 11:00:00-05 | 2026-04-15 12:00:00-05 |           46 |                    3 | Interes alto en la zona y el precio | 
+           12 | Elena Suarez      | Lote en Cedritos 4                | perdida            |        23 | Elena Vargas   | 2026-04-13 11:00:00-05 | 2026-04-13 12:00:00-05 |           47 |                    3 | Interes alto en la zona y el precio | 
+           12 | Elena Suarez      | Lote en Cedritos 4                | perdida            |        24 | Elena Vargas   | 2026-04-16 11:00:00-05 |                        |              |                      |                                     | 
+           13 | Oscar Herrera     | Lote en Cedritos 4                | ganada             |        25 | Diego Parra    | 2026-04-14 11:00:00-05 | 2026-04-14 12:00:00-05 |           48 |                    4 | Interes alto en la zona y el precio | 
+           13 | Oscar Herrera     | Lote en Cedritos 4                | ganada             |        26 | Diego Parra    | 2026-04-17 11:00:00-05 | 2026-04-17 12:00:00-05 |           48 |                    5 | Interes alto en la zona y el precio | 
+           14 | Patricia Nunez    | Lote en Cedritos 4                | perdida            |        27 | Camila Soto    | 2026-04-15 11:00:00-05 | 2026-04-15 12:00:00-05 |           49 |                    5 | Interes alto en la zona y el precio | 
+           14 | Patricia Nunez    | Lote en Cedritos 4                | perdida            |        28 | Camila Soto    | 2026-04-18 11:00:00-05 | 2026-04-18 12:00:00-05 |           49 |                    1 | Interes alto en la zona y el precio | 
+           15 | Hernan Molina     | Oficina en El Poblado 5           | perdida            |        29 | Marta Rincon   | 2026-04-16 11:00:00-05 | 2026-04-16 12:00:00-05 |           50 |                    1 | Interes alto en la zona y el precio | 
+           15 | Hernan Molina     | Oficina en El Poblado 5           | perdida            |        30 | Marta Rincon   | 2026-04-19 11:00:00-05 |                        |              |                      |                                     | 
+           16 | Lucia Delgado     | Oficina en El Poblado 5           | ganada             |        31 | Pedro Ospina   | 2026-04-17 11:00:00-05 | 2026-04-17 12:00:00-05 |           51 |                    2 | Interes alto en la zona y el precio | 
+           16 | Lucia Delgado     | Oficina en El Poblado 5           | ganada             |        32 | Pedro Ospina   | 2026-04-20 11:00:00-05 | 2026-04-20 12:00:00-05 |           51 |                    3 | Interes alto en la zona y el precio | 
+           17 | Tomas Pena        | Oficina en El Poblado 5           | perdida            |        33 | Luisa Restrepo | 2026-04-18 11:00:00-05 | 2026-04-18 12:00:00-05 |           52 |                    3 | Interes alto en la zona y el precio | 
+           17 | Tomas Pena        | Oficina en El Poblado 5           | perdida            |        34 | Luisa Restrepo | 2026-04-21 11:00:00-05 | 2026-04-21 12:00:00-05 |           52 |                    4 | Interes alto en la zona y el precio | 
+           18 | Hernan Molina     | Local comercial en Teusaquillo 23 | ganada             |        35 | Andres Mejia   | 2026-04-19 11:00:00-05 | 2026-04-19 12:00:00-05 |           53 |                    4 | Interes alto en la zona y el precio | 
+           18 | Hernan Molina     | Local comercial en Teusaquillo 23 | ganada             |        36 | Andres Mejia   | 2026-04-22 11:00:00-05 | 2026-04-22 12:00:00-05 |           53 |                    5 | Interes alto en la zona y el precio | 
+           19 | Pablo Cabrera     | Lote en Cedritos 24               | ganada             |        37 | Elena Vargas   | 2026-04-20 11:00:00-05 | 2026-04-20 12:00:00-05 |           54 |                    5 | Interes alto en la zona y el precio | 
+           19 | Pablo Cabrera     | Lote en Cedritos 24               | ganada             |        38 | Elena Vargas   | 2026-04-23 11:00:00-05 | 2026-04-23 12:00:00-05 |           54 |                    1 | Interes alto en la zona y el precio | 
+           20 | Mauricio Soto     | Oficina en El Poblado 25          | perdida            |        39 | Diego Parra    | 2026-04-21 11:00:00-05 | 2026-04-21 12:00:00-05 |           55 |                    1 | Interes alto en la zona y el precio | 
+           20 | Mauricio Soto     | Oficina en El Poblado 25          | perdida            |        40 | Diego Parra    | 2026-04-24 11:00:00-05 | 2026-04-24 12:00:00-05 |           55 |                    2 | Interes alto en la zona y el precio | 
+           21 | Julian Cardenas   | Apartamento en Laureles 26        | descartada         |        41 | Camila Soto    | 2026-04-22 11:00:00-05 | 2026-04-22 12:00:00-05 |           56 |                    2 | Interes alto en la zona y el precio | 
+           21 | Julian Cardenas   | Apartamento en Laureles 26        | descartada         |        42 | Camila Soto    | 2026-04-25 11:00:00-05 | 2026-04-25 12:00:00-05 |           56 |                    3 | Interes alto en la zona y el precio | 
+           22 | Rafael Bermudez   | Casa en Granada 27                | ganada             |        43 | Marta Rincon   | 2026-04-23 11:00:00-05 | 2026-04-23 12:00:00-05 |           57 |                    3 | Interes alto en la zona y el precio | 
+           22 | Rafael Bermudez   | Casa en Granada 27                | ganada             |        44 | Marta Rincon   | 2026-04-26 11:00:00-05 | 2026-04-26 12:00:00-05 |           57 |                    4 | Interes alto en la zona y el precio | 
+           23 | Fernando Valencia | Local comercial en Bocagrande 28  | nueva              |        45 | Pedro Ospina   | 2026-04-24 11:00:00-05 | 2026-04-24 12:00:00-05 |           58 |                    4 | Interes alto en la zona y el precio | 
+           23 | Fernando Valencia | Local comercial en Bocagrande 28  | nueva              |        46 | Pedro Ospina   | 2026-04-27 11:00:00-05 |                        |              |                      |                                     | 
+           24 | Carolina Ruiz     | Lote en Cabecera 29               | ganada             |        47 | Luisa Restrepo | 2026-04-25 11:00:00-05 | 2026-04-25 12:00:00-05 |           59 |                    5 | Interes alto en la zona y el precio | 
+           24 | Carolina Ruiz     | Lote en Cabecera 29               | ganada             |        48 | Luisa Restrepo | 2026-04-28 11:00:00-05 | 2026-04-28 12:00:00-05 |           59 |                    1 | Interes alto en la zona y el precio | 
+           25 | Daniel Medina     | Oficina en Ciudad Jardin 30       | nueva              |        49 | Andres Mejia   | 2026-04-26 11:00:00-05 | 2026-04-26 12:00:00-05 |           60 |                    1 | Interes alto en la zona y el precio | 
+           25 | Daniel Medina     | Oficina en Ciudad Jardin 30       | nueva              |        50 | Andres Mejia   | 2026-04-29 11:00:00-05 |                        |              |                      |                                     | 
+           26 | Ricardo Romero    | Apartamento en Chapinero 31       | en_seguimiento     |        51 | Elena Vargas   | 2026-04-27 11:00:00-05 | 2026-04-27 12:00:00-05 |           61 |                    2 | Interes alto en la zona y el precio | 
+           27 | Hernan Molina     | Casa en Usaquen 32                | ganada             |        52 | Diego Parra    | 2026-04-28 11:00:00-05 | 2026-04-28 12:00:00-05 |           62 |                    3 | Interes alto en la zona y el precio | 
+           28 | Pablo Cabrera     | Local comercial en Teusaquillo 33 | perdida            |        53 | Camila Soto    | 2026-04-29 11:00:00-05 | 2026-04-29 12:00:00-05 |           63 |                    4 | Interes alto en la zona y el precio | 
+           29 | Mauricio Soto     | Lote en Cedritos 34               | descartada         |        54 | Marta Rincon   | 2026-04-30 11:00:00-05 | 2026-04-30 12:00:00-05 |           64 |                    5 | Interes alto en la zona y el precio | 
+           30 | Julian Cardenas   | Oficina en El Poblado 35          | en_seguimiento     |        55 | Pedro Ospina   | 2026-05-01 11:00:00-05 | 2026-05-01 12:00:00-05 |           65 |                    1 | Interes alto en la zona y el precio | 
+           31 | Rafael Bermudez   | Apartamento en Laureles 36        | nueva              |        56 | Luisa Restrepo | 2026-05-02 11:00:00-05 |                        |              |                      |                                     | 
+           32 | Fernando Valencia | Casa en Granada 37                | ganada             |        57 | Andres Mejia   | 2026-05-03 11:00:00-05 | 2026-05-03 12:00:00-05 |           67 |                    3 | Interes alto en la zona y el precio | 
+           33 | Carolina Ruiz     | Local comercial en Bocagrande 38  | nueva              |        58 | Elena Vargas   | 2026-05-04 11:00:00-05 |                        |              |                      |                                     | cliente reprogramo
+           34 | Daniel Medina     | Lote en Cabecera 39               | en_seguimiento     |        59 | Diego Parra    | 2026-05-05 11:00:00-05 | 2026-05-05 12:00:00-05 |           69 |                    5 | Interes alto en la zona y el precio | 
+           35 | Ricardo Romero    | Oficina en Ciudad Jardin 40       | ganada             |        60 | Camila Soto    | 2026-05-06 11:00:00-05 | 2026-05-06 12:00:00-05 |           70 |                    1 | Interes alto en la zona y el precio | 
+           36 | Hernan Molina     | Apartamento en Chapinero 41       | perdida            |        61 | Marta Rincon   | 2026-05-07 11:00:00-05 | 2026-05-07 12:00:00-05 |           71 |                    2 | Interes alto en la zona y el precio | 
+           37 | Pablo Cabrera     | Casa en Usaquen 42                | descartada         |        62 | Pedro Ospina   | 2026-05-08 11:00:00-05 | 2026-05-08 12:00:00-05 |           72 |                    3 | Interes alto en la zona y el precio | 
+           38 | Mauricio Soto     | Local comercial en Teusaquillo 43 | perdida            |        63 | Luisa Restrepo | 2026-05-09 11:00:00-05 | 2026-05-09 12:00:00-05 |           73 |                    4 | Interes alto en la zona y el precio | 
+           39 | Julian Cardenas   | Lote en Cedritos 44               | perdida            |        64 | Andres Mejia   | 2026-05-10 11:00:00-05 |                        |              |                      |                                     | 
+           40 | Rafael Bermudez   | Oficina en El Poblado 45          | ganada             |        65 | Elena Vargas   | 2026-05-11 11:00:00-05 | 2026-05-11 12:00:00-05 |           35 |                    1 | Interes alto en la zona y el precio | 
+           41 | Fernando Valencia | Apartamento en Laureles 46        | nueva              |        66 | Diego Parra    | 2026-05-12 11:00:00-05 |                        |              |                      |                                     | 
+           42 | Carolina Ruiz     | Casa en Granada 47                | en_seguimiento     |        67 | Camila Soto    | 2026-05-13 11:00:00-05 | 2026-05-13 12:00:00-05 |           37 |                    3 | Interes alto en la zona y el precio | 
+           43 | Daniel Medina     | Local comercial en Bocagrande 48  | ganada             |        68 | Marta Rincon   | 2026-05-14 11:00:00-05 | 2026-05-14 12:00:00-05 |           38 |                    4 | Interes alto en la zona y el precio | 
+           44 | Ricardo Romero    | Lote en Cabecera 49               | perdida            |        69 | Pedro Ospina   | 2026-05-15 11:00:00-05 | 2026-05-15 12:00:00-05 |           39 |                    5 | Interes alto en la zona y el precio | 
+           45 | Hernan Molina     | Oficina en Ciudad Jardin 50       | descartada         |        70 | Luisa Restrepo | 2026-05-16 11:00:00-05 | 2026-05-16 12:00:00-05 |           40 |                    1 | Interes alto en la zona y el precio | 
+           46 | Pablo Cabrera     | Apartamento en Chapinero 51       | en_seguimiento     |        71 | Andres Mejia   | 2026-05-17 11:00:00-05 | 2026-05-17 12:00:00-05 |           41 |                    2 | Interes alto en la zona y el precio | 
+           47 | Mauricio Soto     | Casa en Usaquen 52                | nueva              |        72 | Elena Vargas   | 2026-05-18 11:00:00-05 |                        |              |                      |                                     | 
+           48 | Tatiana Salazar   | Apartamento en Laureles 6         | ganada             |        73 | Diego Parra    | 2026-05-19 11:00:00-05 | 2026-05-19 12:00:00-05 |           43 |                    4 | Interes alto en la zona y el precio | 
+           49 | Gloria Restrepo   | Casa en Granada 7                 | nueva              |        74 | Camila Soto    | 2026-05-20 11:00:00-05 |                        |              |                      |                                     | 
+           50 | David Castro      | Local comercial en Bocagrande 8   | en_seguimiento     |        75 | Marta Rincon   | 2026-05-21 11:00:00-05 | 2026-05-21 12:00:00-05 |           45 |                    1 | Interes alto en la zona y el precio | 
+           51 | Camilo Aguilar    | Lote en Cabecera 9                | ganada             |        76 | Pedro Ospina   | 2026-05-22 11:00:00-05 | 2026-05-22 12:00:00-05 |           46 |                    2 | Interes alto en la zona y el precio | 
+           52 | Andrea Ramos      | Oficina en Ciudad Jardin 10       | perdida            |        77 | Luisa Restrepo | 2026-05-23 11:00:00-05 | 2026-05-23 12:00:00-05 |           47 |                    3 | Interes alto en la zona y el precio | 
+           53 | Patricia Nunez    | Apartamento en Chapinero 11       | descartada         |        78 | Andres Mejia   | 2026-05-24 11:00:00-05 | 2026-05-24 12:00:00-05 |           48 |                    4 | Interes alto en la zona y el precio | 
+           54 | Diana Guerrero    | Casa en Usaquen 12                | en_seguimiento     |        79 | Elena Vargas   | 2026-05-25 11:00:00-05 | 2026-05-25 12:00:00-05 |           49 |                    5 | Interes alto en la zona y el precio | 
+           56 | Adriana Mejia     | Lote en Cedritos 14               | ganada             |        80 | Camila Soto    | 2026-05-27 11:00:00-05 | 2026-05-27 12:00:00-05 |           51 |                    2 | Interes alto en la zona y el precio | 
+           57 | Tatiana Salazar   | Oficina en El Poblado 15          | nueva              |        81 | Marta Rincon   | 2026-05-28 11:00:00-05 |                        |              |                      |                                     | 
+           58 | Gloria Restrepo   | Apartamento en Laureles 16        | en_seguimiento     |        82 | Pedro Ospina   | 2026-05-29 11:00:00-05 | 2026-05-29 12:00:00-05 |           53 |                    4 | Interes alto en la zona y el precio | 
+           59 | David Castro      | Casa en Granada 17                | ganada             |        83 | Luisa Restrepo | 2026-05-30 11:00:00-05 | 2026-05-30 12:00:00-05 |           54 |                    5 | Interes alto en la zona y el precio | 
+           60 | Camilo Aguilar    | Local comercial en Bocagrande 18  | perdida            |        84 | Andres Mejia   | 2026-05-31 11:00:00-05 | 2026-05-31 12:00:00-05 |           55 |                    1 | Interes alto en la zona y el precio | 
+           61 | Andrea Ramos      | Lote en Cabecera 19               | descartada         |        85 | Elena Vargas   | 2026-06-01 11:00:00-05 | 2026-06-01 12:00:00-05 |           56 |                    2 | Interes alto en la zona y el precio | 
+           62 | Patricia Nunez    | Oficina en Ciudad Jardin 20       | en_seguimiento     |        86 | Diego Parra    | 2026-06-02 11:00:00-05 | 2026-06-02 12:00:00-05 |           57 |                    3 | Interes alto en la zona y el precio | 
+           63 | Diana Guerrero    | Apartamento en Chapinero 21       | nueva              |        87 | Camila Soto    | 2026-06-03 11:00:00-05 |                        |              |                      |                                     | 
+           64 | Angela Vega       | Casa en Usaquen 22                | en_negociacion     |        88 | Marta Rincon   | 2026-06-04 11:00:00-05 | 2026-06-04 12:00:00-05 |           59 |                    5 | Interes alto en la zona y el precio | 
+(88 filas)
+
+ campana_id |   nombre_campana   | estado_campana |       canal        | oportunidades | prospectos_distintos 
+------------+--------------------+----------------+--------------------+---------------+----------------------
+          3 | Meta mid year      | activa         | Meta Ads           |             9 |                    9
+          1 | Leads Meta Q1      | cerrada        | Meta Ads           |             8 |                    8
+          4 | WhatsApp referidos | activa         | WhatsApp           |             8 |                    8
+          2 | Portales web abril | cerrada        | web                |             7 |                    7
+         10 | Inventario premium | activa         | web                |             7 |                    6
+          7 | Remarketing web    | activa         | web                |             6 |                    6
+          8 | Lanzamiento norte  | planificada    | Meta Ads           |             4 |                    4
+          9 | Captacion WhatsApp | cerrada        | WhatsApp           |             4 |                    4
+          5 | Feria Corferias    | cerrada        | feria inmobiliaria |             4 |                    4
+         12 | Open house Usaquen | cerrada        | feria inmobiliaria |             3 |                    3
+          6 | Referidos asesores | activa         | referidos          |             2 |                    2
+         11 | Campaña lotes      | cerrada        | Meta Ads           |             2 |                    2
+(12 filas)
+
+ oportunidades_sin_campana 
+---------------------------
+                        10
+(1 fila)
+
+ propiedad_id |              titulo               | n_prospectos | n_visitas | n_ofertas 
+--------------+-----------------------------------+--------------+-----------+-----------
+            1 | Apartamento en Chapinero 1        |            4 |         8 |         6
+            2 | Casa en Usaquen 2                 |            4 |         8 |         6
+            7 | Casa en Granada 7                 |            4 |         1 |         0
+            5 | Oficina en El Poblado 5           |            3 |         6 |         4
+            4 | Lote en Cedritos 4                |            3 |         6 |         4
+            3 | Local comercial en Teusaquillo 3  |            3 |         6 |         4
+           12 | Casa en Usaquen 12                |            3 |         1 |         1
+            8 | Local comercial en Bocagrande 8   |            3 |         1 |         1
+           23 | Local comercial en Teusaquillo 23 |            2 |         2 |         2
+           16 | Apartamento en Laureles 16        |            2 |         1 |         1
+           15 | Oficina en El Poblado 15          |            2 |         1 |         0
+           24 | Lote en Cedritos 24               |            1 |         2 |         1
+           27 | Casa en Granada 27                |            1 |         2 |         1
+           26 | Apartamento en Laureles 26        |            1 |         2 |         1
+           25 | Oficina en El Poblado 25          |            1 |         2 |         1
+           29 | Lote en Cabecera 29               |            1 |         2 |         1
+           30 | Oficina en Ciudad Jardin 30       |            1 |         2 |         0
+           28 | Local comercial en Bocagrande 28  |            1 |         2 |         0
+           50 | Oficina en Ciudad Jardin 50       |            1 |         1 |         1
+           14 | Lote en Cedritos 14               |            1 |         1 |         1
+           41 | Apartamento en Chapinero 41       |            1 |         1 |         1
+           32 | Casa en Usaquen 32                |            1 |         1 |         1
+           20 | Oficina en Ciudad Jardin 20       |            1 |         1 |         1
+           22 | Casa en Usaquen 22                |            1 |         1 |         1
+           11 | Apartamento en Chapinero 11       |            1 |         1 |         1
+           42 | Casa en Usaquen 42                |            1 |         1 |         1
+           40 | Oficina en Ciudad Jardin 40       |            1 |         1 |         1
+           43 | Local comercial en Teusaquillo 43 |            1 |         1 |         1
+            9 | Lote en Cabecera 9                |            1 |         1 |         1
+           48 | Local comercial en Bocagrande 48  |            1 |         1 |         1
+           19 | Lote en Cabecera 19               |            1 |         1 |         1
+           17 | Casa en Granada 17                |            1 |         1 |         1
+           37 | Casa en Granada 37                |            1 |         1 |         1
+           34 | Lote en Cedritos 34               |            1 |         1 |         1
+           10 | Oficina en Ciudad Jardin 10       |            1 |         1 |         1
+           35 | Oficina en El Poblado 35          |            1 |         1 |         1
+           45 | Oficina en El Poblado 45          |            1 |         1 |         1
+            6 | Apartamento en Laureles 6         |            1 |         1 |         1
+           39 | Lote en Cabecera 39               |            1 |         1 |         1
+           31 | Apartamento en Chapinero 31       |            1 |         1 |         1
+           49 | Lote en Cabecera 49               |            1 |         1 |         1
+           47 | Casa en Granada 47                |            1 |         1 |         1
+           51 | Apartamento en Chapinero 51       |            1 |         1 |         1
+           33 | Local comercial en Teusaquillo 33 |            1 |         1 |         1
+           18 | Local comercial en Bocagrande 18  |            1 |         1 |         1
+           46 | Apartamento en Laureles 46        |            1 |         1 |         0
+           44 | Lote en Cedritos 44               |            1 |         1 |         0
+           38 | Local comercial en Bocagrande 38  |            1 |         1 |         0
+           21 | Apartamento en Chapinero 21       |            1 |         1 |         0
+           52 | Casa en Usaquen 52                |            1 |         1 |         0
+           36 | Apartamento en Laureles 36        |            1 |         1 |         0
+           13 | Local comercial en Teusaquillo 13 |            1 |         0 |         0
+(52 filas)
+
+ solicitud_id |     prospecto     |             propiedad             |     estado     |         avance         | n_ofertas 
+--------------+-------------------+-----------------------------------+----------------+------------------------+-----------
+            2 | Alejandro Jimenez | Apartamento en Chapinero 1        | ganada         | cierre                 |         2
+            6 | Daniel Medina     | Casa en Usaquen 2                 | ganada         | cierre                 |         2
+           10 | Andrea Ramos      | Local comercial en Teusaquillo 3  | ganada         | cierre                 |         2
+           13 | Oscar Herrera     | Lote en Cedritos 4                | ganada         | cierre                 |         2
+           16 | Lucia Delgado     | Oficina en El Poblado 5           | ganada         | cierre                 |         2
+           18 | Hernan Molina     | Local comercial en Teusaquillo 23 | ganada         | cierre                 |         2
+           19 | Pablo Cabrera     | Lote en Cedritos 24               | ganada         | cierre                 |         1
+           22 | Rafael Bermudez   | Casa en Granada 27                | ganada         | cierre                 |         1
+           24 | Carolina Ruiz     | Lote en Cabecera 29               | ganada         | cierre                 |         1
+           27 | Hernan Molina     | Casa en Usaquen 32                | ganada         | cierre                 |         1
+           32 | Fernando Valencia | Casa en Granada 37                | ganada         | cierre                 |         1
+           35 | Ricardo Romero    | Oficina en Ciudad Jardin 40       | ganada         | cierre                 |         1
+           40 | Rafael Bermudez   | Oficina en El Poblado 45          | ganada         | cierre                 |         1
+           43 | Daniel Medina     | Local comercial en Bocagrande 48  | ganada         | cierre                 |         1
+           48 | Tatiana Salazar   | Apartamento en Laureles 6         | ganada         | cierre                 |         1
+           51 | Camilo Aguilar    | Lote en Cabecera 9                | ganada         | cierre                 |         1
+           56 | Adriana Mejia     | Lote en Cedritos 14               | ganada         | cierre                 |         1
+           59 | David Castro      | Casa en Granada 17                | ganada         | cierre                 |         1
+            3 | Natalia Mendoza   | Apartamento en Chapinero 1        | perdida        | negociacion_sin_cierre |         2
+            4 | Camilo Aguilar    | Apartamento en Chapinero 1        | perdida        | negociacion_sin_cierre |         2
+            7 | Mariana Cortes    | Casa en Usaquen 2                 | perdida        | negociacion_sin_cierre |         2
+            8 | Jorge Silva       | Casa en Usaquen 2                 | perdida        | negociacion_sin_cierre |         2
+           11 | Ricardo Romero    | Local comercial en Teusaquillo 3  | perdida        | negociacion_sin_cierre |         2
+           14 | Patricia Nunez    | Lote en Cedritos 4                | perdida        | negociacion_sin_cierre |         2
+           17 | Tomas Pena        | Oficina en El Poblado 5           | perdida        | negociacion_sin_cierre |         2
+           20 | Mauricio Soto     | Oficina en El Poblado 25          | perdida        | negociacion_sin_cierre |         1
+           21 | Julian Cardenas   | Apartamento en Laureles 26        | descartada     | negociacion_sin_cierre |         1
+           26 | Ricardo Romero    | Apartamento en Chapinero 31       | en_seguimiento | negociacion_sin_cierre |         1
+           28 | Pablo Cabrera     | Local comercial en Teusaquillo 33 | perdida        | negociacion_sin_cierre |         1
+           29 | Mauricio Soto     | Lote en Cedritos 34               | descartada     | negociacion_sin_cierre |         1
+           30 | Julian Cardenas   | Oficina en El Poblado 35          | en_seguimiento | negociacion_sin_cierre |         1
+           34 | Daniel Medina     | Lote en Cabecera 39               | en_seguimiento | negociacion_sin_cierre |         1
+           36 | Hernan Molina     | Apartamento en Chapinero 41       | perdida        | negociacion_sin_cierre |         1
+           37 | Pablo Cabrera     | Casa en Usaquen 42                | descartada     | negociacion_sin_cierre |         1
+           38 | Mauricio Soto     | Local comercial en Teusaquillo 43 | perdida        | negociacion_sin_cierre |         1
+           42 | Carolina Ruiz     | Casa en Granada 47                | en_seguimiento | negociacion_sin_cierre |         1
+           44 | Ricardo Romero    | Lote en Cabecera 49               | perdida        | negociacion_sin_cierre |         1
+           45 | Hernan Molina     | Oficina en Ciudad Jardin 50       | descartada     | negociacion_sin_cierre |         1
+           46 | Pablo Cabrera     | Apartamento en Chapinero 51       | en_seguimiento | negociacion_sin_cierre |         1
+           50 | David Castro      | Local comercial en Bocagrande 8   | en_seguimiento | negociacion_sin_cierre |         1
+           52 | Andrea Ramos      | Oficina en Ciudad Jardin 10       | perdida        | negociacion_sin_cierre |         1
+           53 | Patricia Nunez    | Apartamento en Chapinero 11       | descartada     | negociacion_sin_cierre |         1
+           54 | Diana Guerrero    | Casa en Usaquen 12                | en_seguimiento | negociacion_sin_cierre |         1
+           58 | Gloria Restrepo   | Apartamento en Laureles 16        | en_seguimiento | negociacion_sin_cierre |         1
+           60 | Camilo Aguilar    | Local comercial en Bocagrande 18  | perdida        | negociacion_sin_cierre |         1
+           61 | Andrea Ramos      | Lote en Cabecera 19               | descartada     | negociacion_sin_cierre |         1
+           62 | Patricia Nunez    | Oficina en Ciudad Jardin 20       | en_seguimiento | negociacion_sin_cierre |         1
+           64 | Angela Vega       | Casa en Usaquen 22                | en_negociacion | negociacion_sin_cierre |         1
+            1 | Carolina Ruiz     | Apartamento en Chapinero 1        | perdida        | sin_oferta             |         0
+            5 | Camilo Aguilar    | Casa en Usaquen 2                 | perdida        | sin_oferta             |         0
+            9 | Jorge Silva       | Local comercial en Teusaquillo 3  | perdida        | sin_oferta             |         0
+           12 | Elena Suarez      | Lote en Cedritos 4                | perdida        | sin_oferta             |         0
+           15 | Hernan Molina     | Oficina en El Poblado 5           | perdida        | sin_oferta             |         0
+           23 | Fernando Valencia | Local comercial en Bocagrande 28  | nueva          | sin_oferta             |         0
+           25 | Daniel Medina     | Oficina en Ciudad Jardin 30       | nueva          | sin_oferta             |         0
+           31 | Rafael Bermudez   | Apartamento en Laureles 36        | nueva          | sin_oferta             |         0
+           33 | Carolina Ruiz     | Local comercial en Bocagrande 38  | nueva          | sin_oferta             |         0
+           39 | Julian Cardenas   | Lote en Cedritos 44               | perdida        | sin_oferta             |         0
+           41 | Fernando Valencia | Apartamento en Laureles 46        | nueva          | sin_oferta             |         0
+           47 | Mauricio Soto     | Casa en Usaquen 52                | nueva          | sin_oferta             |         0
+           49 | Gloria Restrepo   | Casa en Granada 7                 | nueva          | sin_oferta             |         0
+           55 | Angela Vega       | Local comercial en Teusaquillo 13 | nueva          | sin_oferta             |         0
+           57 | Tatiana Salazar   | Oficina en El Poblado 15          | nueva          | sin_oferta             |         0
+           63 | Diana Guerrero    | Apartamento en Chapinero 21       | nueva          | sin_oferta             |         0
+           65 | Adriana Mejia     | Local comercial en Teusaquillo 23 | perdida        | sin_oferta             |         0
+           66 | Monica Navarro    | Casa en Granada 7                 | en_seguimiento | sin_oferta             |         0
+           67 | Cristian Campos   | Casa en Granada 7                 | nueva          | sin_oferta             |         0
+           68 | Angela Vega       | Casa en Granada 7                 | nueva          | sin_oferta             |         0
+           69 | Mauricio Soto     | Local comercial en Bocagrande 8   | en_seguimiento | sin_oferta             |         0
+           70 | Claudia Leon      | Local comercial en Bocagrande 8   | nueva          | sin_oferta             |         0
+           71 | Esteban Rincon    | Casa en Usaquen 12                | en_seguimiento | sin_oferta             |         0
+           72 | Adriana Mejia     | Casa en Usaquen 12                | nueva          | sin_oferta             |         0
+           73 | Julian Cardenas   | Oficina en El Poblado 15          | nueva          | sin_oferta             |         0
+           74 | Liliana Parra     | Apartamento en Laureles 16        | en_seguimiento | sin_oferta             |         0
+(74 filas)
+
+ propiedad_id |              titulo               |    ciudad    | estado_comercial | fecha_inicio | dias_en_comercializacion | ranking_antiguedad 
+--------------+-----------------------------------+--------------+------------------+--------------+--------------------------+--------------------
+           46 | Apartamento en Laureles 46        | Cartagena    | disponible       | 2024-03-18   |                      974 |                  1
+           47 | Casa en Granada 47                | Pereira      | disponible       | 2024-03-19   |                      973 |                  2
+           49 | Lote en Cabecera 49               | Santa Marta  | disponible       | 2024-03-21   |                      971 |                  3
+           50 | Oficina en Ciudad Jardin 50       | Ibague       | disponible       | 2024-03-22   |                      970 |                  4
+           51 | Apartamento en Chapinero 51       | Bogota       | disponible       | 2024-03-23   |                      969 |                  5
+           52 | Casa en Usaquen 52                | Medellin     | disponible       | 2024-03-24   |                      968 |                  6
+           41 | Apartamento en Chapinero 41       | Bogota       | no_disponible    | 2024-10-14   |                      764 |                  7
+           42 | Casa en Usaquen 42                | Medellin     | no_disponible    | 2024-10-21   |                      757 |                  8
+           43 | Local comercial en Teusaquillo 43 | Cali         | no_disponible    | 2024-10-28   |                      750 |                  9
+           44 | Lote en Cedritos 44               | Barranquilla | no_disponible    | 2024-11-04   |                      743 |                 10
+            7 | Casa en Granada 7                 | Pereira      | disponible       | 2025-06-22   |                      513 |                 11
+            8 | Local comercial en Bocagrande 8   | Manizales    | disponible       | 2025-06-25   |                      510 |                 12
+           10 | Oficina en Ciudad Jardin 10       | Ibague       | disponible       | 2025-07-01   |                      504 |                 13
+           11 | Apartamento en Chapinero 11       | Bogota       | disponible       | 2025-07-04   |                      501 |                 14
+           12 | Casa en Usaquen 12                | Medellin     | disponible       | 2025-07-07   |                      498 |                 15
+           13 | Local comercial en Teusaquillo 13 | Cali         | disponible       | 2025-07-10   |                      495 |                 16
+           15 | Oficina en El Poblado 15          | Bucaramanga  | disponible       | 2025-07-16   |                      489 |                 17
+           16 | Apartamento en Laureles 16        | Cartagena    | disponible       | 2025-07-19   |                      486 |                 18
+           18 | Local comercial en Bocagrande 18  | Manizales    | disponible       | 2025-07-25   |                      480 |                 19
+           19 | Lote en Cabecera 19               | Santa Marta  | disponible       | 2025-07-28   |                      477 |                 20
+           20 | Oficina en Ciudad Jardin 20       | Ibague       | disponible       | 2025-07-31   |                      474 |                 21
+           21 | Apartamento en Chapinero 21       | Bogota       | disponible       | 2025-08-03   |                      471 |                 22
+           22 | Casa en Usaquen 22                | Medellin     | en_negociacion   | 2025-08-06   |                      468 |                 23
+           25 | Oficina en El Poblado 25          | Bucaramanga  | disponible       | 2025-08-15   |                      459 |                 24
+           26 | Apartamento en Laureles 26        | Cartagena    | disponible       | 2025-08-18   |                      456 |                 25
+           28 | Local comercial en Bocagrande 28  | Manizales    | disponible       | 2025-08-24   |                      450 |                 26
+           30 | Oficina en Ciudad Jardin 30       | Ibague       | disponible       | 2025-08-30   |                      444 |                 27
+           31 | Apartamento en Chapinero 31       | Bogota       | disponible       | 2025-09-02   |                      441 |                 28
+           33 | Local comercial en Teusaquillo 33 | Cali         | disponible       | 2025-09-08   |                      435 |                 29
+           34 | Lote en Cedritos 34               | Barranquilla | disponible       | 2025-09-11   |                      432 |                 30
+           35 | Oficina en El Poblado 35          | Bucaramanga  | disponible       | 2025-09-14   |                      429 |                 31
+           36 | Apartamento en Laureles 36        | Cartagena    | disponible       | 2025-09-17   |                      426 |                 32
+           38 | Local comercial en Bocagrande 38  | Manizales    | disponible       | 2025-09-23   |                      420 |                 33
+           39 | Lote en Cabecera 39               | Santa Marta  | disponible       | 2025-09-26   |                      417 |                 34
+(34 filas)
+
+ transaccion_id |              titulo               |    ciudad    | estado_comercial |     prospecto     | asesor_cierre  | valor_final  | comision_porcentaje | comision_valor | fecha_inicio_contrato | fecha_fin_contrato | estado_contrato 
+----------------+-----------------------------------+--------------+------------------+-------------------+----------------+--------------+---------------------+----------------+-----------------------+--------------------+-----------------
+             18 | Casa en Granada 17                | Pereira      | vendida          | David Castro      | Luisa Restrepo | 706000000.00 |                4.00 |    28240000.00 | 2026-08-12            |                    | cerrada
+             17 | Lote en Cedritos 14               | Barranquilla | no_disponible    | Adriana Mejia     | Camila Soto    | 679000000.00 |                3.50 |    23765000.00 | 2026-08-08            | 2027-08-08         | activa
+             16 | Lote en Cabecera 9                | Santa Marta  | vendida          | Camilo Aguilar    | Pedro Ospina   | 634000000.00 |                3.00 |    19020000.00 | 2026-08-04            |                    | cerrada
+             15 | Apartamento en Laureles 6         | Cartagena    | vendida          | Tatiana Salazar   | Diego Parra    | 607000000.00 |                4.50 |    27315000.00 | 2026-07-31            |                    | cerrada
+             14 | Local comercial en Bocagrande 48  | Manizales    | vendida          | Daniel Medina     | Marta Rincon   | 562000000.00 |                4.00 |    22480000.00 | 2026-07-27            |                    | cerrada
+             13 | Oficina en El Poblado 45          | Bucaramanga  | vendida          | Rafael Bermudez   | Elena Vargas   | 535000000.00 |                3.50 |    18725000.00 | 2026-07-23            |                    | cerrada
+             12 | Oficina en Ciudad Jardin 40       | Ibague       | vendida          | Ricardo Romero    | Camila Soto    | 490000000.00 |                3.00 |    14700000.00 | 2026-07-19            |                    | cerrada
+             11 | Casa en Granada 37                | Pereira      | vendida          | Fernando Valencia | Andres Mejia   | 463000000.00 |                4.50 |    20835000.00 | 2026-07-15            |                    | cerrada
+             10 | Casa en Usaquen 32                | Medellin     | vendida          | Hernan Molina     | Diego Parra    | 418000000.00 |                4.00 |    16720000.00 | 2026-07-11            |                    | cerrada
+              9 | Lote en Cabecera 29               | Santa Marta  | vendida          | Carolina Ruiz     | Luisa Restrepo | 391000000.00 |                3.50 |    13685000.00 | 2026-07-07            |                    | cerrada
+              8 | Casa en Granada 27                | Pereira      | vendida          | Rafael Bermudez   | Marta Rincon   | 373000000.00 |                3.00 |    11190000.00 | 2026-07-03            |                    | cerrada
+              7 | Lote en Cedritos 24               | Barranquilla | vendida          | Pablo Cabrera     | Elena Vargas   | 346000000.00 |                4.50 |    15570000.00 | 2026-06-29            |                    | cerrada
+              6 | Local comercial en Teusaquillo 23 | Cali         | vendida          | Hernan Molina     | Andres Mejia   | 342000000.00 |                4.00 |    13680000.00 | 2026-06-25            |                    | cerrada
+              5 | Oficina en El Poblado 5           | Bucaramanga  | vendida          | Lucia Delgado     | Pedro Ospina   | 324000000.00 |                3.50 |    11340000.00 | 2026-06-21            |                    | cerrada
+              4 | Lote en Cedritos 4                | Barranquilla | vendida          | Oscar Herrera     | Diego Parra    | 297000000.00 |                3.00 |     8910000.00 | 2026-06-17            |                    | cerrada
+              3 | Local comercial en Teusaquillo 3  | Cali         | vendida          | Andrea Ramos      | Luisa Restrepo | 270000000.00 |                4.50 |    12150000.00 | 2026-06-13            |                    | cerrada
+              2 | Casa en Usaquen 2                 | Medellin     | vendida          | Daniel Medina     | Diego Parra    | 234000000.00 |                4.00 |     9360000.00 | 2026-06-09            |                    | cerrada
+              1 | Apartamento en Chapinero 1        | Bogota       | vendida          | Alejandro Jimenez | Pedro Ospina   | 198000000.00 |                3.50 |     6930000.00 | 2026-06-05            |                    | cerrada
+(18 filas)
+
+         tabla         | count 
+-----------------------+-------
+ ofertas               |    61
+ personas              |    55
+ propiedades           |    52
+ publicaciones         |    60
+ solicitudes_propiedad |    74
+ transacciones         |    18
+ visitas               |    88
+(7 filas)
+
+
+######################################################################
+### sql/04_optimizacion_f5.sql
+######################################################################
+SET
+SET
+                                                                                                                    QUERY PLAN                                                                                                                     
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=91.73..91.80 rows=27 width=446) (actual time=0.284..0.287 rows=52.00 loops=1)
+   Output: p.propiedad_id, p.titulo, (count(DISTINCT s.solicitud_id)), (count(DISTINCT v.visita_id)), (count(DISTINCT o.oferta_id))
+   Sort Key: (count(DISTINCT s.solicitud_id)) DESC, (count(DISTINCT v.visita_id)) DESC, (count(DISTINCT o.oferta_id)) DESC
+   Sort Method: quicksort  Memory: 28kB
+   Buffers: shared hit=14
+   ->  GroupAggregate  (cost=84.14..91.09 rows=27 width=446) (actual time=0.193..0.255 rows=52.00 loops=1)
+         Output: p.propiedad_id, p.titulo, count(DISTINCT s.solicitud_id), count(DISTINCT v.visita_id), count(DISTINCT o.oferta_id)
+         Group Key: p.propiedad_id
+         Filter: (count(DISTINCT s.solicitud_id) > 0)
+         Buffers: shared hit=11
+         ->  Sort  (cost=84.14..85.33 rows=476 width=434) (actual time=0.177..0.181 rows=125.00 loops=1)
+               Output: p.propiedad_id, p.titulo, s.solicitud_id, v.visita_id, o.oferta_id
+               Sort Key: p.propiedad_id, s.solicitud_id
+               Sort Method: quicksort  Memory: 32kB
+               Buffers: shared hit=11
+               ->  Hash Right Join  (cost=38.86..62.97 rows=476 width=434) (actual time=0.126..0.144 rows=125.00 loops=1)
+                     Output: p.propiedad_id, p.titulo, s.solicitud_id, v.visita_id, o.oferta_id
+                     Hash Cond: (o.solicitud_id = s.solicitud_id)
+                     Buffers: shared hit=8
+                     ->  Seq Scan on public.ofertas o  (cost=0.00..16.80 rows=680 width=8) (actual time=0.007..0.010 rows=61.00 loops=1)
+                           Output: o.oferta_id, o.solicitud_id, o.estado_oferta, o.valor_ofertado, o.fecha_oferta
+                           Buffers: shared hit=1
+                     ->  Hash  (cost=37.11..37.11 rows=140 width=430) (actual time=0.113..0.113 rows=99.00 loops=1)
+                           Output: p.propiedad_id, p.titulo, s.solicitud_id, v.visita_id
+                           Buckets: 1024  Batches: 1  Memory Usage: 15kB
+                           Buffers: shared hit=7
+                           ->  Hash Right Join  (cost=24.95..37.11 rows=140 width=430) (actual time=0.071..0.102 rows=99.00 loops=1)
+                                 Output: p.propiedad_id, p.titulo, s.solicitud_id, v.visita_id
+                                 Inner Unique: true
+                                 Hash Cond: (s.propiedad_id = p.propiedad_id)
+                                 Buffers: shared hit=7
+                                 ->  Hash Right Join  (cost=13.15..24.93 rows=140 width=12) (actual time=0.033..0.051 rows=99.00 loops=1)
+                                       Output: s.solicitud_id, s.propiedad_id, v.visita_id
+                                       Inner Unique: true
+                                       Hash Cond: (v.solicitud_id = s.solicitud_id)
+                                       Buffers: shared hit=4
+                                       ->  Seq Scan on public.visitas v  (cost=0.00..11.40 rows=140 width=8) (actual time=0.006..0.011 rows=88.00 loops=1)
+                                             Output: v.visita_id, v.solicitud_id, v.empleado_id, v.fecha_programada, v.fecha_realizada, v.duracion_min, v.motivo_cancelacion, v.feedback_cliente, v.calificacion_interes, v.observaciones_empleado
+                                             Buffers: shared hit=2
+                                       ->  Hash  (cost=11.40..11.40 rows=140 width=8) (actual time=0.021..0.021 rows=74.00 loops=1)
+                                             Output: s.solicitud_id, s.propiedad_id
+                                             Buckets: 1024  Batches: 1  Memory Usage: 11kB
+                                             Buffers: shared hit=2
+                                             ->  Seq Scan on public.solicitudes_propiedad s  (cost=0.00..11.40 rows=140 width=8) (actual time=0.008..0.013 rows=74.00 loops=1)
+                                                   Output: s.solicitud_id, s.propiedad_id
+                                                   Buffers: shared hit=2
+                                 ->  Hash  (cost=10.80..10.80 rows=80 width=422) (actual time=0.034..0.034 rows=52.00 loops=1)
+                                       Output: p.propiedad_id, p.titulo
+                                       Buckets: 1024  Batches: 1  Memory Usage: 12kB
+                                       Buffers: shared hit=3
+                                       ->  Seq Scan on public.propiedades p  (cost=0.00..10.80 rows=80 width=422) (actual time=0.017..0.026 rows=52.00 loops=1)
+                                             Output: p.propiedad_id, p.titulo
+                                             Buffers: shared hit=3
+ Planning:
+   Buffers: shared hit=258
+ Planning Time: 4.331 ms
+ Execution Time: 0.395 ms
+(57 filas)
+
+                                                                                                                 QUERY PLAN                                                                                                                 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Incremental Sort  (cost=139.36..159.28 rows=400 width=714) (actual time=0.218..0.222 rows=34.00 loops=1)
+   Output: inicio_comercial.propiedad_id, inicio_comercial.titulo, inicio_comercial.ciudad, inicio_comercial.estado_comercial, inicio_comercial.fecha_inicio, ((CURRENT_DATE - inicio_comercial.fecha_inicio)), (rank() OVER w1)
+   Sort Key: ((CURRENT_DATE - inicio_comercial.fecha_inicio)) DESC, inicio_comercial.propiedad_id
+   Presorted Key: ((CURRENT_DATE - inicio_comercial.fecha_inicio))
+   Full-sort Groups: 2  Sort Method: quicksort  Average Memory: 27kB  Peak Memory: 27kB
+   Buffers: shared hit=9
+   ->  WindowAgg  (cost=139.30..148.28 rows=400 width=714) (actual time=0.202..0.213 rows=34.00 loops=1)
+         Output: inicio_comercial.propiedad_id, inicio_comercial.titulo, inicio_comercial.ciudad, inicio_comercial.estado_comercial, inicio_comercial.fecha_inicio, ((CURRENT_DATE - inicio_comercial.fecha_inicio)), rank() OVER w1
+         Window: w1 AS (ORDER BY ((CURRENT_DATE - inicio_comercial.fecha_inicio)) ROWS UNBOUNDED PRECEDING)
+         Storage: Memory  Maximum Storage: 17kB
+         Buffers: shared hit=9
+         ->  Sort  (cost=139.28..140.28 rows=400 width=706) (actual time=0.192..0.194 rows=34.00 loops=1)
+               Output: ((CURRENT_DATE - inicio_comercial.fecha_inicio)), inicio_comercial.propiedad_id, inicio_comercial.titulo, inicio_comercial.ciudad, inicio_comercial.estado_comercial, inicio_comercial.fecha_inicio
+               Sort Key: ((CURRENT_DATE - inicio_comercial.fecha_inicio)) DESC
+               Sort Method: quicksort  Memory: 27kB
+               Buffers: shared hit=9
+               ->  Subquery Scan on inicio_comercial  (cost=111.00..122.00 rows=400 width=706) (actual time=0.177..0.185 rows=34.00 loops=1)
+                     Output: (CURRENT_DATE - inicio_comercial.fecha_inicio), inicio_comercial.propiedad_id, inicio_comercial.titulo, inicio_comercial.ciudad, inicio_comercial.estado_comercial, inicio_comercial.fecha_inicio
+                     Buffers: shared hit=9
+                     ->  HashAggregate  (cost=111.00..116.00 rows=400 width=710) (actual time=0.172..0.177 rows=34.00 loops=1)
+                           Output: p.propiedad_id, p.titulo, p.estado_comercial, c.nombre, COALESCE(min(pub.fecha_publicacion), (p.creado_en)::date), p.creado_en
+                           Group Key: p.propiedad_id, c.nombre
+                           Batches: 1  Memory Usage: 48kB
+                           Buffers: shared hit=9
+                           ->  Hash Right Join  (cost=85.40..108.00 rows=400 width=710) (actual time=0.150..0.162 rows=36.00 loops=1)
+                                 Output: p.propiedad_id, c.nombre, p.titulo, p.estado_comercial, pub.fecha_publicacion, p.creado_en
+                                 Hash Cond: (pub.propiedad_id = p.propiedad_id)
+                                 Buffers: shared hit=9
+                                 ->  Seq Scan on public.publicaciones pub  (cost=0.00..18.00 rows=800 width=8) (actual time=0.005..0.007 rows=60.00 loops=1)
+                                       Output: pub.publicacion_id, pub.propiedad_id, pub.tipo_operacion_id, pub.precio, pub.valor_administracion, pub.publicada, pub.fecha_publicacion, pub.fecha_retiro, pub.creado_en, pub.actualizado_en
+                                       Buffers: shared hit=1
+                                 ->  Hash  (cost=84.90..84.90 rows=40 width=706) (actual time=0.136..0.137 rows=34.00 loops=1)
+                                       Output: p.propiedad_id, p.titulo, p.estado_comercial, p.creado_en, c.nombre
+                                       Buckets: 1024  Batches: 1  Memory Usage: 12kB
+                                       Buffers: shared hit=8
+                                       ->  Hash Join  (cost=70.10..84.90 rows=40 width=706) (actual time=0.125..0.130 rows=34.00 loops=1)
+                                             Output: p.propiedad_id, p.titulo, p.estado_comercial, p.creado_en, c.nombre
+                                             Hash Cond: (c.ciudad_id = p.ciudad_id)
+                                             Buffers: shared hit=8
+                                             ->  Seq Scan on public.ciudades c  (cost=0.00..13.20 rows=320 width=222) (actual time=0.011..0.012 rows=10.00 loops=1)
+                                                   Output: c.ciudad_id, c.nombre
+                                                   Buffers: shared hit=1
+                                             ->  Hash  (cost=69.60..69.60 rows=40 width=492) (actual time=0.104..0.105 rows=34.00 loops=1)
+                                                   Output: p.propiedad_id, p.titulo, p.estado_comercial, p.creado_en, p.ciudad_id
+                                                   Buckets: 1024  Batches: 1  Memory Usage: 11kB
+                                                   Buffers: shared hit=7
+                                                   ->  Seq Scan on public.propiedades p  (cost=58.60..69.60 rows=40 width=492) (actual time=0.088..0.096 rows=34.00 loops=1)
+                                                         Output: p.propiedad_id, p.titulo, p.estado_comercial, p.creado_en, p.ciudad_id
+                                                         Filter: (NOT (ANY (p.propiedad_id = (hashed SubPlan 1).col1)))
+                                                         Rows Removed by Filter: 18
+                                                         Buffers: shared hit=7
+                                                         SubPlan 1
+                                                           ->  Hash Join  (cost=37.11..57.20 rows=557 width=4) (actual time=0.060..0.068 rows=18.00 loops=1)
+                                                                 Output: s.propiedad_id
+                                                                 Inner Unique: true
+                                                                 Hash Cond: (o.solicitud_id = s.solicitud_id)
+                                                                 Buffers: shared hit=4
+                                                                 ->  Hash Join  (cost=23.96..42.56 rows=557 width=4) (actual time=0.036..0.042 rows=18.00 loops=1)
+                                                                       Output: o.solicitud_id
+                                                                       Inner Unique: true
+                                                                       Hash Cond: (o.oferta_id = t.oferta_id)
+                                                                       Buffers: shared hit=2
+                                                                       ->  Seq Scan on public.ofertas o  (cost=0.00..16.80 rows=680 width=8) (actual time=0.005..0.007 rows=61.00 loops=1)
+                                                                             Output: o.oferta_id, o.solicitud_id, o.estado_oferta, o.valor_ofertado, o.fecha_oferta
+                                                                             Buffers: shared hit=1
+                                                                       ->  Hash  (cost=17.00..17.00 rows=557 width=4) (actual time=0.023..0.023 rows=18.00 loops=1)
+                                                                             Output: t.oferta_id
+                                                                             Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                                                             Buffers: shared hit=1
+                                                                             ->  Seq Scan on public.transacciones t  (cost=0.00..17.00 rows=557 width=4) (actual time=0.018..0.021 rows=18.00 loops=1)
+                                                                                   Output: t.oferta_id
+                                                                                   Filter: ((t.estado)::text <> 'anulada'::text)
+                                                                                   Buffers: shared hit=1
+                                                                 ->  Hash  (cost=11.40..11.40 rows=140 width=8) (actual time=0.017..0.017 rows=74.00 loops=1)
+                                                                       Output: s.propiedad_id, s.solicitud_id
+                                                                       Buckets: 1024  Batches: 1  Memory Usage: 11kB
+                                                                       Buffers: shared hit=2
+                                                                       ->  Seq Scan on public.solicitudes_propiedad s  (cost=0.00..11.40 rows=140 width=8) (actual time=0.006..0.012 rows=74.00 loops=1)
+                                                                             Output: s.propiedad_id, s.solicitud_id
+                                                                             Buffers: shared hit=2
+ Planning:
+   Buffers: shared hit=146
+ Planning Time: 3.423 ms
+ Execution Time: 0.329 ms
+(84 filas)
+
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+ANALYZE
+ANALYZE
+ANALYZE
+ANALYZE
+ANALYZE
+ANALYZE
+                                                                                                                 QUERY PLAN                                                                                                                  
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=19.69..19.73 rows=17 width=53) (actual time=0.261..0.264 rows=52.00 loops=1)
+   Output: p.propiedad_id, p.titulo, (count(DISTINCT s.solicitud_id)), (count(DISTINCT v.visita_id)), (count(DISTINCT o.oferta_id))
+   Sort Key: (count(DISTINCT s.solicitud_id)) DESC, (count(DISTINCT v.visita_id)) DESC, (count(DISTINCT o.oferta_id)) DESC
+   Sort Method: quicksort  Memory: 28kB
+   Buffers: shared hit=8
+   ->  GroupAggregate  (cost=17.60..19.35 rows=17 width=53) (actual time=0.180..0.246 rows=52.00 loops=1)
+         Output: p.propiedad_id, p.titulo, count(DISTINCT s.solicitud_id), count(DISTINCT v.visita_id), count(DISTINCT o.oferta_id)
+         Group Key: p.propiedad_id
+         Filter: (count(DISTINCT s.solicitud_id) > 0)
+         Buffers: shared hit=8
+         ->  Sort  (cost=17.60..17.82 rows=88 width=41) (actual time=0.167..0.172 rows=125.00 loops=1)
+               Output: p.propiedad_id, p.titulo, s.solicitud_id, v.visita_id, o.oferta_id
+               Sort Key: p.propiedad_id, s.solicitud_id
+               Sort Method: quicksort  Memory: 32kB
+               Buffers: shared hit=8
+               ->  Hash Left Join  (cost=10.21..14.75 rows=88 width=41) (actual time=0.097..0.141 rows=125.00 loops=1)
+                     Output: p.propiedad_id, p.titulo, s.solicitud_id, v.visita_id, o.oferta_id
+                     Hash Cond: (s.solicitud_id = o.solicitud_id)
+                     Buffers: shared hit=8
+                     ->  Hash Right Join  (cost=7.84..11.21 rows=88 width=37) (actual time=0.076..0.108 rows=99.00 loops=1)
+                           Output: p.propiedad_id, p.titulo, s.solicitud_id, v.visita_id
+                           Inner Unique: true
+                           Hash Cond: (s.propiedad_id = p.propiedad_id)
+                           Buffers: shared hit=7
+                           ->  Hash Right Join  (cost=3.67..6.79 rows=88 width=12) (actual time=0.030..0.048 rows=99.00 loops=1)
+                                 Output: s.solicitud_id, s.propiedad_id, v.visita_id
+                                 Inner Unique: true
+                                 Hash Cond: (v.solicitud_id = s.solicitud_id)
+                                 Buffers: shared hit=4
+                                 ->  Seq Scan on public.visitas v  (cost=0.00..2.88 rows=88 width=8) (actual time=0.006..0.010 rows=88.00 loops=1)
+                                       Output: v.visita_id, v.solicitud_id, v.empleado_id, v.fecha_programada, v.fecha_realizada, v.duracion_min, v.motivo_cancelacion, v.feedback_cliente, v.calificacion_interes, v.observaciones_empleado
+                                       Buffers: shared hit=2
+                                 ->  Hash  (cost=2.74..2.74 rows=74 width=8) (actual time=0.016..0.016 rows=74.00 loops=1)
+                                       Output: s.solicitud_id, s.propiedad_id
+                                       Buckets: 1024  Batches: 1  Memory Usage: 11kB
+                                       Buffers: shared hit=2
+                                       ->  Seq Scan on public.solicitudes_propiedad s  (cost=0.00..2.74 rows=74 width=8) (actual time=0.005..0.010 rows=74.00 loops=1)
+                                             Output: s.solicitud_id, s.propiedad_id
+                                             Buffers: shared hit=2
+                           ->  Hash  (cost=3.52..3.52 rows=52 width=29) (actual time=0.032..0.032 rows=52.00 loops=1)
+                                 Output: p.propiedad_id, p.titulo
+                                 Buckets: 1024  Batches: 1  Memory Usage: 12kB
+                                 Buffers: shared hit=3
+                                 ->  Seq Scan on public.propiedades p  (cost=0.00..3.52 rows=52 width=29) (actual time=0.018..0.024 rows=52.00 loops=1)
+                                       Output: p.propiedad_id, p.titulo
+                                       Buffers: shared hit=3
+                     ->  Hash  (cost=1.61..1.61 rows=61 width=8) (actual time=0.014..0.014 rows=61.00 loops=1)
+                           Output: o.oferta_id, o.solicitud_id
+                           Buckets: 1024  Batches: 1  Memory Usage: 11kB
+                           Buffers: shared hit=1
+                           ->  Seq Scan on public.ofertas o  (cost=0.00..1.61 rows=61 width=8) (actual time=0.006..0.009 rows=61.00 loops=1)
+                                 Output: o.oferta_id, o.solicitud_id
+                                 Buffers: shared hit=1
+ Planning:
+   Buffers: shared hit=123 read=9
+ Planning Time: 4.139 ms
+ Execution Time: 0.330 ms
+(57 filas)
+
+                                                                                                                                     QUERY PLAN                                                                                                                                      
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Incremental Sort  (cost=31.72..33.69 rows=30 width=273) (actual time=0.206..0.210 rows=34.00 loops=1)
+   Output: inicio_comercial.propiedad_id, inicio_comercial.titulo, inicio_comercial.ciudad, inicio_comercial.estado_comercial, inicio_comercial.fecha_inicio, ((CURRENT_DATE - inicio_comercial.fecha_inicio)), (rank() OVER w1)
+   Sort Key: ((CURRENT_DATE - inicio_comercial.fecha_inicio)) DESC, inicio_comercial.propiedad_id
+   Presorted Key: ((CURRENT_DATE - inicio_comercial.fecha_inicio))
+   Full-sort Groups: 2  Sort Method: quicksort  Average Memory: 27kB  Peak Memory: 27kB
+   Buffers: shared hit=9
+   ->  WindowAgg  (cost=31.68..32.34 rows=30 width=273) (actual time=0.187..0.199 rows=34.00 loops=1)
+         Output: inicio_comercial.propiedad_id, inicio_comercial.titulo, inicio_comercial.ciudad, inicio_comercial.estado_comercial, inicio_comercial.fecha_inicio, ((CURRENT_DATE - inicio_comercial.fecha_inicio)), rank() OVER w1
+         Window: w1 AS (ORDER BY ((CURRENT_DATE - inicio_comercial.fecha_inicio)) ROWS UNBOUNDED PRECEDING)
+         Storage: Memory  Maximum Storage: 17kB
+         Buffers: shared hit=9
+         ->  Sort  (cost=31.67..31.74 rows=30 width=265) (actual time=0.180..0.182 rows=34.00 loops=1)
+               Output: ((CURRENT_DATE - inicio_comercial.fecha_inicio)), inicio_comercial.propiedad_id, inicio_comercial.titulo, inicio_comercial.ciudad, inicio_comercial.estado_comercial, inicio_comercial.fecha_inicio
+               Sort Key: ((CURRENT_DATE - inicio_comercial.fecha_inicio)) DESC
+               Sort Method: quicksort  Memory: 27kB
+               Buffers: shared hit=9
+               ->  Subquery Scan on inicio_comercial  (cost=30.10..30.93 rows=30 width=265) (actual time=0.165..0.173 rows=34.00 loops=1)
+                     Output: (CURRENT_DATE - inicio_comercial.fecha_inicio), inicio_comercial.propiedad_id, inicio_comercial.titulo, inicio_comercial.ciudad, inicio_comercial.estado_comercial, inicio_comercial.fecha_inicio
+                     Buffers: shared hit=9
+                     ->  HashAggregate  (cost=30.10..30.48 rows=30 width=269) (actual time=0.163..0.168 rows=34.00 loops=1)
+                           Output: p.propiedad_id, p.titulo, p.estado_comercial, c.nombre, COALESCE(min(pub.fecha_publicacion), (p.creado_en)::date), p.creado_en
+                           Group Key: p.propiedad_id, c.nombre
+                           Batches: 1  Memory Usage: 32kB
+                           Buffers: shared hit=9
+                           ->  Hash Join  (cost=12.78..29.88 rows=30 width=269) (actual time=0.149..0.154 rows=36.00 loops=1)
+                                 Output: p.propiedad_id, c.nombre, p.titulo, p.estado_comercial, pub.fecha_publicacion, p.creado_en
+                                 Hash Cond: (c.ciudad_id = p.ciudad_id)
+                                 Buffers: shared hit=9
+                                 ->  Seq Scan on public.ciudades c  (cost=0.00..13.20 rows=320 width=222) (actual time=0.013..0.013 rows=10.00 loops=1)
+                                       Output: c.ciudad_id, c.nombre
+                                       Buffers: shared hit=1
+                                 ->  Hash  (cost=12.40..12.40 rows=30 width=55) (actual time=0.124..0.125 rows=36.00 loops=1)
+                                       Output: p.propiedad_id, p.titulo, p.estado_comercial, p.creado_en, p.ciudad_id, pub.fecha_publicacion
+                                       Buckets: 1024  Batches: 1  Memory Usage: 12kB
+                                       Buffers: shared hit=8
+                                       ->  Hash Right Join  (cost=10.64..12.40 rows=30 width=55) (actual time=0.107..0.119 rows=36.00 loops=1)
+                                             Output: p.propiedad_id, p.titulo, p.estado_comercial, p.creado_en, p.ciudad_id, pub.fecha_publicacion
+                                             Inner Unique: true
+                                             Hash Cond: (pub.propiedad_id = p.propiedad_id)
+                                             Buffers: shared hit=8
+                                             ->  Seq Scan on public.publicaciones pub  (cost=0.00..1.60 rows=60 width=8) (actual time=0.005..0.006 rows=60.00 loops=1)
+                                                   Output: pub.publicacion_id, pub.propiedad_id, pub.tipo_operacion_id, pub.precio, pub.valor_administracion, pub.publicada, pub.fecha_publicacion, pub.fecha_retiro, pub.creado_en, pub.actualizado_en
+                                                   Buffers: shared hit=1
+                                             ->  Hash  (cost=10.31..10.31 rows=26 width=51) (actual time=0.095..0.096 rows=34.00 loops=1)
+                                                   Output: p.propiedad_id, p.titulo, p.estado_comercial, p.creado_en, p.ciudad_id
+                                                   Buckets: 1024  Batches: 1  Memory Usage: 11kB
+                                                   Buffers: shared hit=7
+                                                   ->  Seq Scan on public.propiedades p  (cost=6.66..10.31 rows=26 width=51) (actual time=0.080..0.089 rows=34.00 loops=1)
+                                                         Output: p.propiedad_id, p.titulo, p.estado_comercial, p.creado_en, p.ciudad_id
+                                                         Filter: (NOT (ANY (p.propiedad_id = (hashed SubPlan 1).col1)))
+                                                         Rows Removed by Filter: 18
+                                                         Buffers: shared hit=7
+                                                         SubPlan 1
+                                                           ->  Hash Join  (cost=3.43..6.62 rows=17 width=4) (actual time=0.059..0.064 rows=18.00 loops=1)
+                                                                 Output: s.propiedad_id
+                                                                 Hash Cond: (s.solicitud_id = o.solicitud_id)
+                                                                 Buffers: shared hit=4
+                                                                 ->  Seq Scan on public.solicitudes_propiedad s  (cost=0.00..2.74 rows=74 width=8) (actual time=0.007..0.010 rows=74.00 loops=1)
+                                                                       Output: s.solicitud_id, s.persona_id, s.propiedad_id, s.empleado_id, s.campana_id, s.estado, s.motivo_descarte, s.presupuesto_cliente, s.requiere_financiacion, s.fecha_cierre, s.creado_en, s.actualizado_en
+                                                                       Buffers: shared hit=2
+                                                                 ->  Hash  (cost=3.22..3.22 rows=17 width=4) (actual time=0.041..0.041 rows=18.00 loops=1)
+                                                                       Output: o.solicitud_id
+                                                                       Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                                                       Buffers: shared hit=2
+                                                                       ->  Hash Join  (cost=1.44..3.22 rows=17 width=4) (actual time=0.032..0.038 rows=18.00 loops=1)
+                                                                             Output: o.solicitud_id
+                                                                             Inner Unique: true
+                                                                             Hash Cond: (o.oferta_id = t.oferta_id)
+                                                                             Buffers: shared hit=2
+                                                                             ->  Seq Scan on public.ofertas o  (cost=0.00..1.61 rows=61 width=8) (actual time=0.007..0.009 rows=61.00 loops=1)
+                                                                                   Output: o.oferta_id, o.solicitud_id, o.estado_oferta, o.valor_ofertado, o.fecha_oferta
+                                                                                   Buffers: shared hit=1
+                                                                             ->  Hash  (cost=1.23..1.23 rows=17 width=4) (actual time=0.017..0.017 rows=18.00 loops=1)
+                                                                                   Output: t.oferta_id
+                                                                                   Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                                                                   Buffers: shared hit=1
+                                                                                   ->  Seq Scan on public.transacciones t  (cost=0.00..1.23 rows=17 width=4) (actual time=0.010..0.013 rows=18.00 loops=1)
+                                                                                         Output: t.oferta_id
+                                                                                         Filter: ((t.estado)::text <> 'anulada'::text)
+                                                                                         Buffers: shared hit=1
+ Planning:
+   Buffers: shared hit=72 read=3
+ Planning Time: 2.792 ms
+ Execution Time: 0.309 ms
+(84 filas)
+
+                                                                                                                                 QUERY PLAN                                                                                                                                  
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Incremental Sort  (cost=28.77..31.42 rows=40 width=273) (actual time=0.219..0.224 rows=34.00 loops=1)
+   Output: inicio_comercial.propiedad_id, inicio_comercial.titulo, inicio_comercial.ciudad, inicio_comercial.estado_comercial, inicio_comercial.fecha_inicio, ((CURRENT_DATE - inicio_comercial.fecha_inicio)), (rank() OVER w1)
+   Sort Key: ((CURRENT_DATE - inicio_comercial.fecha_inicio)) DESC, inicio_comercial.propiedad_id
+   Presorted Key: ((CURRENT_DATE - inicio_comercial.fecha_inicio))
+   Full-sort Groups: 2  Sort Method: quicksort  Average Memory: 27kB  Peak Memory: 27kB
+   Buffers: shared hit=28
+   ->  WindowAgg  (cost=28.74..29.62 rows=40 width=273) (actual time=0.200..0.212 rows=34.00 loops=1)
+         Output: inicio_comercial.propiedad_id, inicio_comercial.titulo, inicio_comercial.ciudad, inicio_comercial.estado_comercial, inicio_comercial.fecha_inicio, ((CURRENT_DATE - inicio_comercial.fecha_inicio)), rank() OVER w1
+         Window: w1 AS (ORDER BY ((CURRENT_DATE - inicio_comercial.fecha_inicio)) ROWS UNBOUNDED PRECEDING)
+         Storage: Memory  Maximum Storage: 17kB
+         Buffers: shared hit=28
+         ->  Sort  (cost=28.72..28.82 rows=40 width=265) (actual time=0.195..0.199 rows=34.00 loops=1)
+               Output: ((CURRENT_DATE - inicio_comercial.fecha_inicio)), inicio_comercial.propiedad_id, inicio_comercial.titulo, inicio_comercial.ciudad, inicio_comercial.estado_comercial, inicio_comercial.fecha_inicio
+               Sort Key: ((CURRENT_DATE - inicio_comercial.fecha_inicio)) DESC
+               Sort Method: quicksort  Memory: 27kB
+               Buffers: shared hit=28
+               ->  Subquery Scan on inicio_comercial  (cost=26.55..27.65 rows=40 width=265) (actual time=0.178..0.188 rows=34.00 loops=1)
+                     Output: (CURRENT_DATE - inicio_comercial.fecha_inicio), inicio_comercial.propiedad_id, inicio_comercial.titulo, inicio_comercial.ciudad, inicio_comercial.estado_comercial, inicio_comercial.fecha_inicio
+                     Buffers: shared hit=28
+                     ->  HashAggregate  (cost=26.55..27.05 rows=40 width=269) (actual time=0.176..0.183 rows=34.00 loops=1)
+                           Output: p.propiedad_id, p.titulo, p.estado_comercial, c.nombre, COALESCE(min(pub.fecha_publicacion) FILTER (WHERE pub.publicada), (p.creado_en)::date), p.creado_en
+                           Group Key: p.propiedad_id, c.nombre
+                           Batches: 1  Memory Usage: 32kB
+                           Buffers: shared hit=28
+                           ->  Nested Loop  (cost=11.37..26.25 rows=40 width=270) (actual time=0.134..0.168 rows=36.00 loops=1)
+                                 Output: p.propiedad_id, c.nombre, p.titulo, p.estado_comercial, pub.fecha_publicacion, pub.publicada, p.creado_en
+                                 Inner Unique: true
+                                 Buffers: shared hit=28
+                                 ->  Hash Anti Join  (cost=11.21..13.56 rows=40 width=56) (actual time=0.116..0.135 rows=36.00 loops=1)
+                                       Output: p.propiedad_id, p.titulo, p.estado_comercial, p.creado_en, p.ciudad_id, pub.fecha_publicacion, pub.publicada
+                                       Hash Cond: (p.propiedad_id = s.propiedad_id)
+                                       Buffers: shared hit=8
+                                       ->  Hash Right Join  (cost=4.17..5.94 rows=60 width=56) (actual time=0.047..0.062 rows=60.00 loops=1)
+                                             Output: p.propiedad_id, p.titulo, p.estado_comercial, p.creado_en, p.ciudad_id, pub.fecha_publicacion, pub.publicada
+                                             Inner Unique: true
+                                             Hash Cond: (pub.propiedad_id = p.propiedad_id)
+                                             Buffers: shared hit=4
+                                             ->  Seq Scan on public.publicaciones pub  (cost=0.00..1.60 rows=60 width=9) (actual time=0.006..0.009 rows=60.00 loops=1)
+                                                   Output: pub.publicacion_id, pub.propiedad_id, pub.tipo_operacion_id, pub.precio, pub.valor_administracion, pub.publicada, pub.fecha_publicacion, pub.fecha_retiro, pub.creado_en, pub.actualizado_en
+                                                   Buffers: shared hit=1
+                                             ->  Hash  (cost=3.52..3.52 rows=52 width=51) (actual time=0.031..0.031 rows=52.00 loops=1)
+                                                   Output: p.propiedad_id, p.titulo, p.estado_comercial, p.creado_en, p.ciudad_id
+                                                   Buckets: 1024  Batches: 1  Memory Usage: 13kB
+                                                   Buffers: shared hit=3
+                                                   ->  Seq Scan on public.propiedades p  (cost=0.00..3.52 rows=52 width=51) (actual time=0.016..0.021 rows=52.00 loops=1)
+                                                         Output: p.propiedad_id, p.titulo, p.estado_comercial, p.creado_en, p.ciudad_id
+                                                         Buffers: shared hit=3
+                                       ->  Hash  (cost=6.83..6.83 rows=17 width=4) (actual time=0.060..0.061 rows=18.00 loops=1)
+                                             Output: s.propiedad_id
+                                             Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                             Buffers: shared hit=4
+                                             ->  HashAggregate  (cost=6.66..6.83 rows=17 width=4) (actual time=0.056..0.058 rows=18.00 loops=1)
+                                                   Output: s.propiedad_id
+                                                   Group Key: s.propiedad_id
+                                                   Batches: 1  Memory Usage: 32kB
+                                                   Buffers: shared hit=4
+                                                   ->  Hash Join  (cost=3.43..6.62 rows=17 width=4) (actual time=0.048..0.053 rows=18.00 loops=1)
+                                                         Output: s.propiedad_id
+                                                         Hash Cond: (s.solicitud_id = o.solicitud_id)
+                                                         Buffers: shared hit=4
+                                                         ->  Seq Scan on public.solicitudes_propiedad s  (cost=0.00..2.74 rows=74 width=8) (actual time=0.006..0.009 rows=74.00 loops=1)
+                                                               Output: s.solicitud_id, s.persona_id, s.propiedad_id, s.empleado_id, s.campana_id, s.estado, s.motivo_descarte, s.presupuesto_cliente, s.requiere_financiacion, s.fecha_cierre, s.creado_en, s.actualizado_en
+                                                               Buffers: shared hit=2
+                                                         ->  Hash  (cost=3.22..3.22 rows=17 width=4) (actual time=0.033..0.034 rows=18.00 loops=1)
+                                                               Output: o.solicitud_id
+                                                               Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                                               Buffers: shared hit=2
+                                                               ->  Hash Join  (cost=1.44..3.22 rows=17 width=4) (actual time=0.025..0.031 rows=18.00 loops=1)
+                                                                     Output: o.solicitud_id
+                                                                     Inner Unique: true
+                                                                     Hash Cond: (o.oferta_id = t.oferta_id)
+                                                                     Buffers: shared hit=2
+                                                                     ->  Seq Scan on public.ofertas o  (cost=0.00..1.61 rows=61 width=8) (actual time=0.005..0.007 rows=61.00 loops=1)
+                                                                           Output: o.oferta_id, o.solicitud_id, o.estado_oferta, o.valor_ofertado, o.fecha_oferta
+                                                                           Buffers: shared hit=1
+                                                                     ->  Hash  (cost=1.23..1.23 rows=17 width=4) (actual time=0.014..0.014 rows=18.00 loops=1)
+                                                                           Output: t.oferta_id
+                                                                           Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                                                           Buffers: shared hit=1
+                                                                           ->  Seq Scan on public.transacciones t  (cost=0.00..1.23 rows=17 width=4) (actual time=0.008..0.010 rows=18.00 loops=1)
+                                                                                 Output: t.oferta_id
+                                                                                 Filter: ((t.estado)::text <> 'anulada'::text)
+                                                                                 Buffers: shared hit=1
+                                 ->  Memoize  (cost=0.16..1.10 rows=1 width=222) (actual time=0.001..0.001 rows=1.00 loops=36)
+                                       Output: c.nombre, c.ciudad_id
+                                       Cache Key: p.ciudad_id
+                                       Cache Mode: logical
+                                       Hits: 26  Misses: 10  Evictions: 0  Overflows: 0  Memory Usage: 2kB
+                                       Buffers: shared hit=20
+                                       ->  Index Scan using pk_ciudades on public.ciudades c  (cost=0.15..1.09 rows=1 width=222) (actual time=0.002..0.002 rows=1.00 loops=10)
+                                             Output: c.nombre, c.ciudad_id
+                                             Index Cond: (c.ciudad_id = p.ciudad_id)
+                                             Index Searches: 10
+                                             Buffers: shared hit=20
+ Planning:
+   Buffers: shared hit=19
+ Planning Time: 0.615 ms
+ Execution Time: 0.343 ms
+(98 filas)
+
+ schemaname |       tablename       |            indexname            |                                                                                                                          indexdef                                                                                                                          
+------------+-----------------------+---------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ public     | ofertas               | idx_ofertas_estado              | CREATE INDEX idx_ofertas_estado ON public.ofertas USING btree (solicitud_id, estado_oferta)
+ public     | ofertas               | idx_ofertas_solicitud_id        | CREATE INDEX idx_ofertas_solicitud_id ON public.ofertas USING btree (solicitud_id)
+ public     | publicaciones         | idx_publicaciones_propiedad_pub | CREATE INDEX idx_publicaciones_propiedad_pub ON public.publicaciones USING btree (propiedad_id, fecha_publicacion) WHERE (publicada = true)
+ public     | solicitudes_propiedad | idx_sol_campana_id              | CREATE INDEX idx_sol_campana_id ON public.solicitudes_propiedad USING btree (campana_id) WHERE (campana_id IS NOT NULL)
+ public     | solicitudes_propiedad | idx_sol_estado_activo           | CREATE INDEX idx_sol_estado_activo ON public.solicitudes_propiedad USING btree (propiedad_id, estado) WHERE ((estado)::text = ANY ((ARRAY['nueva'::character varying, 'en_seguimiento'::character varying, 'en_negociacion'::character varying])::text[]))
+ public     | solicitudes_propiedad | idx_sol_propiedad_id            | CREATE INDEX idx_sol_propiedad_id ON public.solicitudes_propiedad USING btree (propiedad_id)
+ public     | transacciones         | idx_transacciones_oferta_id     | CREATE INDEX idx_transacciones_oferta_id ON public.transacciones USING btree (oferta_id)
+ public     | visitas               | idx_visitas_solicitud_id        | CREATE INDEX idx_visitas_solicitud_id ON public.visitas USING btree (solicitud_id)
+(8 filas)
+
+
+######################################################################
+### sql/05_transacciones_f5.sql
+######################################################################
+SET
+SET
+ transaction_isolation 
+-----------------------
+ read committed
+(1 fila)
+
+ oferta_id | solicitud_id | estado_oferta | valor_ofertado | propiedad_id |       titulo       | estado_propiedad_antes 
+-----------+--------------+---------------+----------------+--------------+--------------------+------------------------
+        61 |           64 | aceptada      |   751000000.00 |           22 | Casa en Usaquen 22 | en_negociacion
+(1 fila)
+
+BEGIN
+ nueva_transaccion_id 
+----------------------
+                   19
+(1 fila)
+
+ propiedad_id |       titulo       | estado_comercial | estado_solicitud 
+--------------+--------------------+------------------+------------------
+           22 | Casa en Usaquen 22 | vendida          | ganada
+(1 fila)
+
+COMMIT
+psql:sql/05_transacciones_f5.sql:112: NOTICE:  ROLLBACK implícito OK: R12: la transacción exige oferta aceptada (oferta_id=1, estado=pendiente)
+psql:sql/05_transacciones_f5.sql:112: NOTICE:  Atomicidad: no quedó fila en transacciones para oferta 1
+DO
+CREATE FUNCTION
+COMMENT
+ propiedad_id | cierres 
+--------------+---------
+(0 filas)
+
+ oferta_id | propiedad_id | estado_comercial 
+-----------+--------------+------------------
+(0 filas)
+
+ propiedad_id |              titulo               | estado_comercial | cierres 
+--------------+-----------------------------------+------------------+---------
+            1 | Apartamento en Chapinero 1        | vendida          |       1
+            2 | Casa en Usaquen 2                 | vendida          |       1
+            3 | Local comercial en Teusaquillo 3  | vendida          |       1
+            4 | Lote en Cedritos 4                | vendida          |       1
+            5 | Oficina en El Poblado 5           | vendida          |       1
+            6 | Apartamento en Laureles 6         | vendida          |       1
+            9 | Lote en Cabecera 9                | vendida          |       1
+           14 | Lote en Cedritos 14               | no_disponible    |       1
+           17 | Casa en Granada 17                | vendida          |       1
+           22 | Casa en Usaquen 22                | vendida          |       1
+           23 | Local comercial en Teusaquillo 23 | vendida          |       1
+           24 | Lote en Cedritos 24               | vendida          |       1
+           27 | Casa en Granada 27                | vendida          |       1
+           29 | Lote en Cabecera 29               | vendida          |       1
+           32 | Casa en Usaquen 32                | vendida          |       1
+           37 | Casa en Granada 37                | vendida          |       1
+           40 | Oficina en Ciudad Jardin 40       | vendida          |       1
+           45 | Oficina en El Poblado 45          | vendida          |       1
+           48 | Local comercial en Bocagrande 48  | vendida          |       1
+(19 filas)
+
+
+######################################################################
+### sql/06_optimizacion_escala_f5.sql
+######################################################################
+SET
+ setseed 
+---------
+ 
+(1 fila)
+
+psql:sql/06_optimizacion_escala_f5.sql:18: NOTICE:  schema "escala" does not exist, skipping
+DROP SCHEMA
+CREATE SCHEMA
+SELECT 10
+ALTER TABLE
+SELECT 100000
+ALTER TABLE
+SELECT 115000
+ALTER TABLE
+SELECT 125000
+ALTER TABLE
+SELECT 170000
+ALTER TABLE
+SELECT 117000
+ALTER TABLE
+SELECT 29269
+ALTER TABLE
+ALTER TABLE
+ANALYZE
+         tabla         | count  
+-----------------------+--------
+ transacciones         |  29269
+ publicaciones         | 115000
+ propiedades           | 100000
+ ofertas               | 117000
+ solicitudes_propiedad | 125000
+ visitas               | 170000
+(6 filas)
+
+SET
+                                                        QUERY PLAN                                                         
+---------------------------------------------------------------------------------------------------------------------------
+ Seq Scan on solicitudes_propiedad s  (cost=0.00..12641.56 rows=2 width=31) (actual time=10.239..52.685 rows=5.00 loops=1)
+   Filter: (propiedad_id = 4264)
+   Rows Removed by Filter: 124995
+   Buffers: shared hit=8512
+   SubPlan 1
+     ->  Aggregate  (cost=2893.01..2893.02 rows=1 width=8) (actual time=5.650..5.650 rows=1.00 loops=5)
+           Buffers: shared hit=3840
+           ->  Seq Scan on visitas v  (cost=0.00..2893.00 rows=2 width=0) (actual time=0.896..5.640 rows=2.20 loops=5)
+                 Filter: (solicitud_id = s.solicitud_id)
+                 Rows Removed by Filter: 169998
+                 Buffers: shared hit=3840
+   SubPlan 2
+     ->  Aggregate  (cost=2230.51..2230.52 rows=1 width=8) (actual time=3.995..3.995 rows=1.00 loops=5)
+           Buffers: shared hit=3840
+           ->  Seq Scan on ofertas o  (cost=0.00..2230.50 rows=2 width=0) (actual time=2.562..3.985 rows=1.20 loops=5)
+                 Filter: (solicitud_id = s.solicitud_id)
+                 Rows Removed by Filter: 116999
+                 Buffers: shared hit=3840
+ Planning:
+   Buffers: shared hit=12
+ Planning Time: 0.108 ms
+ Execution Time: 52.710 ms
+(22 filas)
+
+                                                       QUERY PLAN                                                       
+------------------------------------------------------------------------------------------------------------------------
+ Seq Scan on solicitudes_propiedad s  (cost=0.00..2863.25 rows=1 width=15) (actual time=1.800..5.138 rows=4.00 loops=1)
+   Filter: ((propiedad_id = 4264) AND (estado = ANY ('{nueva,en_seguimiento,en_negociacion}'::text[])))
+   Rows Removed by Filter: 124996
+   Buffers: shared hit=832
+ Planning:
+   Buffers: shared hit=3
+ Planning Time: 0.086 ms
+ Execution Time: 5.148 ms
+(8 filas)
+
+                                                                                   QUERY PLAN                                                                                    
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=40632.39..40715.73 rows=33333 width=43) (actual time=569.929..577.376 rows=71271.00 loops=1)
+   Sort Key: (count(DISTINCT s.solicitud_id)) DESC, (count(DISTINCT v.visita_id)) DESC, (count(DISTINCT o.oferta_id)) DESC
+   Sort Method: external merge  Disk: 4056kB
+   Buffers: shared hit=3331, temp read=2539 written=2545
+   ->  GroupAggregate  (cost=34753.31..38128.31 rows=33333 width=43) (actual time=378.555..533.469 rows=71271.00 loops=1)
+         Group Key: p.propiedad_id
+         Filter: (count(DISTINCT s.solicitud_id) > 0)
+         Rows Removed by Filter: 28729
+         Buffers: shared hit=3328, temp read=2032 written=2037
+         ->  Sort  (cost=34753.31..35178.31 rows=170000 width=31) (actual time=378.534..413.181 rows=297299.00 loops=1)
+               Sort Key: p.propiedad_id, s.solicitud_id
+               Sort Method: external merge  Disk: 11432kB
+               Buffers: shared hit=3328, temp read=2032 written=2037
+               ->  Hash Right Join  (cost=10662.14..15913.91 rows=170000 width=31) (actual time=104.688..288.080 rows=297299.00 loops=1)
+                     Hash Cond: (s.propiedad_id = p.propiedad_id)
+                     Buffers: shared hit=3328, temp read=603 written=603
+                     ->  Hash Right Join  (cost=7452.14..12257.64 rows=170000 width=16) (actual time=90.545..208.194 rows=268570.00 loops=1)
+                           Hash Cond: (v.solicitud_id = s.solicitud_id)
+                           Buffers: shared hit=2368, temp read=603 written=603
+                           ->  Seq Scan on visitas v  (cost=0.00..2468.00 rows=170000 width=8) (actual time=0.025..6.129 rows=170000.00 loops=1)
+                                 Buffers: shared hit=768
+                           ->  Hash  (cost=5889.64..5889.64 rows=125000 width=12) (actual time=89.943..89.945 rows=166169.00 loops=1)
+                                 Buckets: 262144 (originally 131072)  Batches: 2 (originally 1)  Memory Usage: 6145kB
+                                 Buffers: shared hit=1600, temp written=312
+                                 ->  Hash Right Join  (cost=3644.50..5889.64 rows=125000 width=12) (actual time=16.923..51.141 rows=166169.00 loops=1)
+                                       Hash Cond: (o.solicitud_id = s.solicitud_id)
+                                       Buffers: shared hit=1600
+                                       ->  Seq Scan on ofertas o  (cost=0.00..1938.00 rows=117000 width=8) (actual time=0.019..4.518 rows=117000.00 loops=1)
+                                             Buffers: shared hit=768
+                                       ->  Hash  (cost=2082.00..2082.00 rows=125000 width=8) (actual time=16.599..16.600 rows=125000.00 loops=1)
+                                             Buckets: 131072  Batches: 1  Memory Usage: 5907kB
+                                             Buffers: shared hit=832
+                                             ->  Seq Scan on solicitudes_propiedad s  (cost=0.00..2082.00 rows=125000 width=8) (actual time=0.022..7.351 rows=125000.00 loops=1)
+                                                   Buffers: shared hit=832
+                     ->  Hash  (cost=1960.00..1960.00 rows=100000 width=19) (actual time=13.868..13.868 rows=100000.00 loops=1)
+                           Buckets: 131072  Batches: 1  Memory Usage: 6092kB
+                           Buffers: shared hit=960
+                           ->  Seq Scan on propiedades p  (cost=0.00..1960.00 rows=100000 width=19) (actual time=0.014..5.828 rows=100000.00 loops=1)
+                                 Buffers: shared hit=960
+ Planning:
+   Buffers: shared hit=58 read=8
+ Planning Time: 0.474 ms
+ Execution Time: 613.925 ms
+(43 filas)
+
+                                                                                   QUERY PLAN                                                                                    
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=31568.52..31718.31 rows=59917 width=43) (actual time=321.471..329.469 rows=71271.00 loops=1)
+   Sort Key: sol.n_prospectos DESC, (COALESCE(vis.n_visitas, '0'::bigint)) DESC, (COALESCE(ofe.n_ofertas, '0'::bigint)) DESC
+   Sort Method: external merge  Disk: 4056kB
+   Buffers: shared hit=4992, temp read=507 written=508
+   ->  Hash Left Join  (cost=22432.30..24969.40 rows=59917 width=43) (actual time=224.792..286.968 rows=71271.00 loops=1)
+         Hash Cond: (p.propiedad_id = ofe.propiedad_id)
+         Buffers: shared hit=4992
+         ->  Hash Left Join  (cost=14010.37..16390.17 rows=59917 width=35) (actual time=143.856..189.295 rows=71271.00 loops=1)
+               Hash Cond: (p.propiedad_id = vis.propiedad_id)
+               Buffers: shared hit=3392
+               ->  Hash Join  (cost=4654.30..6876.81 rows=59917 width=27) (actual time=38.961..66.674 rows=71271.00 loops=1)
+                     Hash Cond: (p.propiedad_id = sol.propiedad_id)
+                     Buffers: shared hit=1792
+                     ->  Seq Scan on propiedades p  (cost=0.00..1960.00 rows=100000 width=19) (actual time=0.017..4.318 rows=100000.00 loops=1)
+                           Buffers: shared hit=960
+                     ->  Hash  (cost=3905.34..3905.34 rows=59917 width=12) (actual time=38.796..38.798 rows=71271.00 loops=1)
+                           Buckets: 131072 (originally 65536)  Batches: 1 (originally 1)  Memory Usage: 4087kB
+                           Buffers: shared hit=832
+                           ->  Subquery Scan on sol  (cost=2707.00..3905.34 rows=59917 width=12) (actual time=21.938..32.174 rows=71271.00 loops=1)
+                                 Buffers: shared hit=832
+                                 ->  HashAggregate  (cost=2707.00..3306.17 rows=59917 width=12) (actual time=21.936..28.542 rows=71271.00 loops=1)
+                                       Group Key: solicitudes_propiedad.propiedad_id
+                                       Batches: 1  Memory Usage: 4889kB
+                                       Buffers: shared hit=832
+                                       ->  Seq Scan on solicitudes_propiedad  (cost=0.00..2082.00 rows=125000 width=4) (actual time=0.006..4.443 rows=125000.00 loops=1)
+                                             Buffers: shared hit=832
+               ->  Hash  (cost=8607.10..8607.10 rows=59917 width=12) (actual time=104.860..104.862 rows=60515.00 loops=1)
+                     Buckets: 65536  Batches: 1  Memory Usage: 3113kB
+                     Buffers: shared hit=1600
+                     ->  Subquery Scan on vis  (cost=7408.76..8607.10 rows=59917 width=12) (actual time=90.394..99.572 rows=60515.00 loops=1)
+                           Buffers: shared hit=1600
+                           ->  HashAggregate  (cost=7408.76..8007.93 rows=59917 width=12) (actual time=90.392..96.436 rows=60515.00 loops=1)
+                                 Group Key: s.propiedad_id
+                                 Batches: 1  Memory Usage: 4633kB
+                                 Buffers: shared hit=1600
+                                 ->  Hash Join  (cost=3644.50..6558.76 rows=170000 width=4) (actual time=21.066..62.511 rows=170000.00 loops=1)
+                                       Hash Cond: (v.solicitud_id = s.solicitud_id)
+                                       Buffers: shared hit=1600
+                                       ->  Seq Scan on visitas v  (cost=0.00..2468.00 rows=170000 width=4) (actual time=0.029..6.132 rows=170000.00 loops=1)
+                                             Buffers: shared hit=768
+                                       ->  Hash  (cost=2082.00..2082.00 rows=125000 width=8) (actual time=20.662..20.662 rows=125000.00 loops=1)
+                                             Buckets: 131072  Batches: 1  Memory Usage: 5907kB
+                                             Buffers: shared hit=832
+                                             ->  Seq Scan on solicitudes_propiedad s  (cost=0.00..2082.00 rows=125000 width=8) (actual time=0.014..8.063 rows=125000.00 loops=1)
+                                                   Buffers: shared hit=832
+         ->  Hash  (cost=7672.98..7672.98 rows=59917 width=12) (actual time=80.770..80.772 rows=53173.00 loops=1)
+               Buckets: 65536  Batches: 1  Memory Usage: 2797kB
+               Buffers: shared hit=1600
+               ->  Subquery Scan on ofe  (cost=6474.64..7672.98 rows=59917 width=12) (actual time=68.207..75.917 rows=53173.00 loops=1)
+                     Buffers: shared hit=1600
+                     ->  HashAggregate  (cost=6474.64..7073.81 rows=59917 width=12) (actual time=68.206..73.201 rows=53173.00 loops=1)
+                           Group Key: s_1.propiedad_id
+                           Batches: 1  Memory Usage: 4377kB
+                           Buffers: shared hit=1600
+                           ->  Hash Join  (cost=3644.50..5889.64 rows=117000 width=4) (actual time=19.175..48.478 rows=117000.00 loops=1)
+                                 Hash Cond: (o.solicitud_id = s_1.solicitud_id)
+                                 Buffers: shared hit=1600
+                                 ->  Seq Scan on ofertas o  (cost=0.00..1938.00 rows=117000 width=4) (actual time=0.028..4.639 rows=117000.00 loops=1)
+                                       Buffers: shared hit=768
+                                 ->  Hash  (cost=2082.00..2082.00 rows=125000 width=8) (actual time=18.796..18.797 rows=125000.00 loops=1)
+                                       Buckets: 131072  Batches: 1  Memory Usage: 5907kB
+                                       Buffers: shared hit=832
+                                       ->  Seq Scan on solicitudes_propiedad s_1  (cost=0.00..2082.00 rows=125000 width=8) (actual time=0.014..7.824 rows=125000.00 loops=1)
+                                             Buffers: shared hit=832
+ Planning:
+   Buffers: shared hit=16
+ Planning Time: 0.279 ms
+ Execution Time: 343.626 ms
+(68 filas)
+
+                                                                                                     QUERY PLAN                                                                                                      
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=36827.67..36828.89 rows=20 width=55) (actual time=214.536..214.545 rows=20.00 loops=1)
+   Buffers: shared hit=3393, temp read=545 written=702
+   ->  Incremental Sort  (cost=36827.67..41923.82 rows=82983 width=55) (actual time=214.535..214.542 rows=20.00 loops=1)
+         Sort Key: ((CURRENT_DATE - inicio_comercial.fecha_inicio)) DESC, inicio_comercial.propiedad_id
+         Presorted Key: ((CURRENT_DATE - inicio_comercial.fecha_inicio))
+         Full-sort Groups: 1  Sort Method: top-N heapsort  Average Memory: 29kB  Peak Memory: 29kB
+         Pre-sorted Groups: 1  Sort Method: top-N heapsort  Average Memory: 28kB  Peak Memory: 28kB
+         Buffers: shared hit=3393, temp read=545 written=702
+         ->  WindowAgg  (cost=36807.29..38674.39 rows=82983 width=55) (actual time=214.447..214.499 rows=150.00 loops=1)
+               Window: w1 AS (ORDER BY ((CURRENT_DATE - inicio_comercial.fecha_inicio)) ROWS UNBOUNDED PRECEDING)
+               Storage: Memory  Maximum Storage: 17kB
+               Buffers: shared hit=3393, temp read=545 written=702
+               ->  Sort  (cost=36807.27..37014.73 rows=82983 width=47) (actual time=214.438..214.452 rows=150.00 loops=1)
+                     Sort Key: ((CURRENT_DATE - inicio_comercial.fecha_inicio)) DESC
+                     Sort Method: external merge  Disk: 4584kB
+                     Buffers: shared hit=3393, temp read=545 written=702
+                     ->  Subquery Scan on inicio_comercial  (cost=23569.55..27472.34 rows=82983 width=47) (actual time=169.248..190.304 rows=77847.00 loops=1)
+                           Buffers: shared hit=3393, temp read=59 written=128
+                           ->  HashAggregate  (cost=23569.55..26227.60 rows=82983 width=51) (actual time=169.243..185.236 rows=77847.00 loops=1)
+                                 Group Key: p.propiedad_id, c.nombre
+                                 Planned Partitions: 4  Batches: 5  Memory Usage: 8249kB  Disk Usage: 688kB
+                                 Buffers: shared hit=3393, temp read=59 written=128
+                                 ->  Hash Join  (cost=11443.24..14804.47 rows=82983 width=52) (actual time=84.400..138.456 rows=114106.00 loops=1)
+                                       Hash Cond: (p.ciudad_id = c.ciudad_id)
+                                       Buffers: shared hit=3393
+                                       ->  Hash Right Join  (cost=11442.02..14493.10 rows=82983 width=47) (actual time=84.370..125.977 rows=114106.00 loops=1)
+                                             Hash Cond: (pub.propiedad_id = p.propiedad_id)
+                                             Buffers: shared hit=3392
+                                             ->  Seq Scan on publicaciones pub  (cost=0.00..1790.00 rows=115000 width=9) (actual time=0.023..4.294 rows=115000.00 loops=1)
+                                                   Buffers: shared hit=640
+                                             ->  Hash  (cost=10540.03..10540.03 rows=72159 width=42) (actual time=84.062..84.066 rows=77847.00 loops=1)
+                                                   Buckets: 131072  Batches: 1  Memory Usage: 7004kB
+                                                   Buffers: shared hit=2752
+                                                   ->  Hash Anti Join  (cost=7564.62..10540.03 rows=72159 width=42) (actual time=55.376..72.407 rows=77847.00 loops=1)
+                                                         Hash Cond: (p.propiedad_id = s.propiedad_id)
+                                                         Buffers: shared hit=2752
+                                                         ->  Seq Scan on propiedades p  (cost=0.00..1960.00 rows=100000 width=42) (actual time=0.008..4.185 rows=100000.00 loops=1)
+                                                               Buffers: shared hit=960
+                                                         ->  Hash  (cost=7216.61..7216.61 rows=27841 width=4) (actual time=55.283..55.287 rows=22153.00 loops=1)
+                                                               Buckets: 32768  Batches: 1  Memory Usage: 1035kB
+                                                               Buffers: shared hit=1792
+                                                               ->  HashAggregate  (cost=6938.20..7216.61 rows=27841 width=4) (actual time=52.015..53.504 rows=22153.00 loops=1)
+                                                                     Group Key: s.propiedad_id
+                                                                     Batches: 1  Memory Usage: 1305kB
+                                                                     Buffers: shared hit=1792
+                                                                     ->  Hash Join  (cost=4550.38..6868.59 rows=27841 width=4) (actual time=22.040..47.495 rows=27841.00 loops=1)
+                                                                           Hash Cond: (o.solicitud_id = s.solicitud_id)
+                                                                           Buffers: shared hit=1792
+                                                                           ->  Hash Join  (cost=905.88..3151.01 rows=27841 width=4) (actual time=4.414..21.864 rows=27841.00 loops=1)
+                                                                                 Hash Cond: (o.oferta_id = t.oferta_id)
+                                                                                 Buffers: shared hit=960
+                                                                                 ->  Seq Scan on ofertas o  (cost=0.00..1938.00 rows=117000 width=8) (actual time=0.007..4.873 rows=117000.00 loops=1)
+                                                                                       Buffers: shared hit=768
+                                                                                 ->  Hash  (cost=557.86..557.86 rows=27841 width=4) (actual time=4.327..4.328 rows=27841.00 loops=1)
+                                                                                       Buckets: 32768  Batches: 1  Memory Usage: 1235kB
+                                                                                       Buffers: shared hit=192
+                                                                                       ->  Seq Scan on transacciones t  (cost=0.00..557.86 rows=27841 width=4) (actual time=0.008..2.289 rows=27841.00 loops=1)
+                                                                                             Filter: (estado <> 'anulada'::text)
+                                                                                             Rows Removed by Filter: 1428
+                                                                                             Buffers: shared hit=192
+                                                                           ->  Hash  (cost=2082.00..2082.00 rows=125000 width=8) (actual time=17.328..17.329 rows=125000.00 loops=1)
+                                                                                 Buckets: 131072  Batches: 1  Memory Usage: 5907kB
+                                                                                 Buffers: shared hit=832
+                                                                                 ->  Seq Scan on solicitudes_propiedad s  (cost=0.00..2082.00 rows=125000 width=8) (actual time=0.027..7.414 rows=125000.00 loops=1)
+                                                                                       Buffers: shared hit=832
+                                       ->  Hash  (cost=1.10..1.10 rows=10 width=13) (actual time=0.026..0.026 rows=10.00 loops=1)
+                                             Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                             Buffers: shared hit=1
+                                             ->  Seq Scan on ciudades c  (cost=0.00..1.10 rows=10 width=13) (actual time=0.021..0.022 rows=10.00 loops=1)
+                                                   Buffers: shared hit=1
+ Planning:
+   Buffers: shared hit=75 read=10
+ Planning Time: 0.575 ms
+ Execution Time: 232.211 ms
+(74 filas)
+
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+ANALYZE
+ pg_stat_reset 
+---------------
+ 
+(1 fila)
+
+                                                                    QUERY PLAN                                                                    
+--------------------------------------------------------------------------------------------------------------------------------------------------
+ Bitmap Heap Scan on solicitudes_propiedad s  (cost=4.43..60.59 rows=2 width=30) (actual time=0.105..0.214 rows=5.00 loops=1)
+   Recheck Cond: (propiedad_id = 4264)
+   Heap Blocks: exact=5
+   Buffers: shared hit=33 read=17
+   ->  Bitmap Index Scan on idx_sol_propiedad_id  (cost=0.00..4.43 rows=2 width=0) (actual time=0.030..0.030 rows=5.00 loops=1)
+         Index Cond: (propiedad_id = 4264)
+         Index Searches: 1
+         Buffers: shared read=3
+   SubPlan 1
+     ->  Aggregate  (cost=12.16..12.17 rows=1 width=8) (actual time=0.019..0.019 rows=1.00 loops=5)
+           Buffers: shared hit=18 read=8
+           ->  Bitmap Heap Scan on visitas v  (cost=4.44..12.15 rows=2 width=0) (actual time=0.016..0.017 rows=2.20 loops=5)
+                 Recheck Cond: (solicitud_id = s.solicitud_id)
+                 Heap Blocks: exact=11
+                 Buffers: shared hit=18 read=8
+                 ->  Bitmap Index Scan on idx_visitas_solicitud_id  (cost=0.00..4.43 rows=2 width=0) (actual time=0.014..0.014 rows=2.20 loops=5)
+                       Index Cond: (solicitud_id = s.solicitud_id)
+                       Index Searches: 5
+                       Buffers: shared hit=7 read=8
+   SubPlan 2
+     ->  Aggregate  (cost=12.03..12.04 rows=1 width=8) (actual time=0.014..0.014 rows=1.00 loops=5)
+           Buffers: shared hit=10 read=6
+           ->  Bitmap Heap Scan on ofertas o  (cost=4.31..12.03 rows=2 width=0) (actual time=0.012..0.012 rows=1.20 loops=5)
+                 Recheck Cond: (solicitud_id = s.solicitud_id)
+                 Heap Blocks: exact=6
+                 Buffers: shared hit=10 read=6
+                 ->  Bitmap Index Scan on idx_ofertas_solicitud_id  (cost=0.00..4.31 rows=2 width=0) (actual time=0.010..0.010 rows=1.20 loops=5)
+                       Index Cond: (solicitud_id = s.solicitud_id)
+                       Index Searches: 5
+                       Buffers: shared hit=4 read=6
+ Planning:
+   Buffers: shared hit=39 read=6
+ Planning Time: 1.639 ms
+ Execution Time: 0.248 ms
+(34 filas)
+
+                                                                    QUERY PLAN                                                                     
+---------------------------------------------------------------------------------------------------------------------------------------------------
+ Index Scan using idx_sol_estado_activo on solicitudes_propiedad s  (cost=0.42..8.44 rows=1 width=14) (actual time=0.037..0.040 rows=4.00 loops=1)
+   Index Cond: (propiedad_id = 4264)
+   Index Searches: 1
+   Buffers: shared hit=4 read=3
+ Planning Time: 0.066 ms
+ Execution Time: 0.046 ms
+(6 filas)
+
+                                                                                QUERY PLAN                                                                                 
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=40775.22..40858.55 rows=33333 width=43) (actual time=524.695..532.572 rows=71271.00 loops=1)
+   Sort Key: (count(DISTINCT s.solicitud_id)) DESC, (count(DISTINCT v.visita_id)) DESC, (count(DISTINCT o.oferta_id)) DESC
+   Sort Method: external merge  Disk: 4056kB
+   Buffers: shared hit=3328, temp read=1936 written=1942
+   ->  GroupAggregate  (cost=34896.13..38271.13 rows=33333 width=43) (actual time=324.605..490.327 rows=71271.00 loops=1)
+         Group Key: p.propiedad_id
+         Filter: (count(DISTINCT s.solicitud_id) > 0)
+         Rows Removed by Filter: 28729
+         Buffers: shared hit=3328, temp read=1429 written=1434
+         ->  Sort  (cost=34896.13..35321.13 rows=170000 width=31) (actual time=324.579..361.251 rows=297299.00 loops=1)
+               Sort Key: p.propiedad_id, s.solicitud_id
+               Sort Method: external merge  Disk: 11432kB
+               Buffers: shared hit=3328, temp read=1429 written=1434
+               ->  Hash Left Join  (cost=10255.00..16056.73 rows=170000 width=31) (actual time=47.417..241.421 rows=297299.00 loops=1)
+                     Hash Cond: (s.solicitud_id = o.solicitud_id)
+                     Buffers: shared hit=3328
+                     ->  Hash Right Join  (cost=6854.50..10215.03 rows=170000 width=27) (actual time=31.330..156.848 rows=230687.00 loops=1)
+                           Hash Cond: (s.propiedad_id = p.propiedad_id)
+                           Buffers: shared hit=2560
+                           ->  Hash Right Join  (cost=3644.50..6558.76 rows=170000 width=12) (actual time=17.082..80.350 rows=201958.00 loops=1)
+                                 Hash Cond: (v.solicitud_id = s.solicitud_id)
+                                 Buffers: shared hit=1600
+                                 ->  Seq Scan on visitas v  (cost=0.00..2468.00 rows=170000 width=8) (actual time=0.025..6.553 rows=170000.00 loops=1)
+                                       Buffers: shared hit=768
+                                 ->  Hash  (cost=2082.00..2082.00 rows=125000 width=8) (actual time=16.773..16.775 rows=125000.00 loops=1)
+                                       Buckets: 131072  Batches: 1  Memory Usage: 5907kB
+                                       Buffers: shared hit=832
+                                       ->  Seq Scan on solicitudes_propiedad s  (cost=0.00..2082.00 rows=125000 width=8) (actual time=0.023..7.340 rows=125000.00 loops=1)
+                                             Buffers: shared hit=832
+                           ->  Hash  (cost=1960.00..1960.00 rows=100000 width=19) (actual time=13.972..13.972 rows=100000.00 loops=1)
+                                 Buckets: 131072  Batches: 1  Memory Usage: 6092kB
+                                 Buffers: shared hit=960
+                                 ->  Seq Scan on propiedades p  (cost=0.00..1960.00 rows=100000 width=19) (actual time=0.015..5.974 rows=100000.00 loops=1)
+                                       Buffers: shared hit=960
+                     ->  Hash  (cost=1938.00..1938.00 rows=117000 width=8) (actual time=15.696..15.697 rows=117000.00 loops=1)
+                           Buckets: 131072  Batches: 1  Memory Usage: 5595kB
+                           Buffers: shared hit=768
+                           ->  Seq Scan on ofertas o  (cost=0.00..1938.00 rows=117000 width=8) (actual time=0.011..6.445 rows=117000.00 loops=1)
+                                 Buffers: shared hit=768
+ Planning:
+   Buffers: shared hit=69 read=10
+ Planning Time: 0.429 ms
+ Execution Time: 561.511 ms
+(43 filas)
+
+                                                                                   QUERY PLAN                                                                                    
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=31524.04..31673.33 rows=59719 width=43) (actual time=342.820..350.973 rows=71271.00 loops=1)
+   Sort Key: sol.n_prospectos DESC, (COALESCE(vis.n_visitas, '0'::bigint)) DESC, (COALESCE(ofe.n_ofertas, '0'::bigint)) DESC
+   Sort Method: external merge  Disk: 4056kB
+   Buffers: shared hit=4992, temp read=507 written=508
+   ->  Hash Left Join  (cost=22413.00..24949.06 rows=59719 width=43) (actual time=243.230..307.054 rows=71271.00 loops=1)
+         Hash Cond: (p.propiedad_id = ofe.propiedad_id)
+         Buffers: shared hit=4992
+         ->  Hash Left Join  (cost=13997.50..16376.78 rows=59719 width=35) (actual time=160.692..206.970 rows=71271.00 loops=1)
+               Hash Cond: (p.propiedad_id = vis.propiedad_id)
+               Buffers: shared hit=3392
+               ->  Hash Join  (cost=4647.87..6870.38 rows=59719 width=27) (actual time=40.922..69.102 rows=71271.00 loops=1)
+                     Hash Cond: (p.propiedad_id = sol.propiedad_id)
+                     Buffers: shared hit=1792
+                     ->  Seq Scan on propiedades p  (cost=0.00..1960.00 rows=100000 width=19) (actual time=0.020..4.248 rows=100000.00 loops=1)
+                           Buffers: shared hit=960
+                     ->  Hash  (cost=3901.38..3901.38 rows=59719 width=12) (actual time=40.757..40.758 rows=71271.00 loops=1)
+                           Buckets: 131072 (originally 65536)  Batches: 1 (originally 1)  Memory Usage: 4087kB
+                           Buffers: shared hit=832
+                           ->  Subquery Scan on sol  (cost=2707.00..3901.38 rows=59719 width=12) (actual time=22.979..33.695 rows=71271.00 loops=1)
+                                 Buffers: shared hit=832
+                                 ->  HashAggregate  (cost=2707.00..3304.19 rows=59719 width=12) (actual time=22.977..30.142 rows=71271.00 loops=1)
+                                       Group Key: solicitudes_propiedad.propiedad_id
+                                       Batches: 1  Memory Usage: 4889kB
+                                       Buffers: shared hit=832
+                                       ->  Seq Scan on solicitudes_propiedad  (cost=0.00..2082.00 rows=125000 width=4) (actual time=0.007..4.487 rows=125000.00 loops=1)
+                                             Buffers: shared hit=832
+               ->  Hash  (cost=8603.14..8603.14 rows=59719 width=12) (actual time=119.748..119.750 rows=60515.00 loops=1)
+                     Buckets: 65536  Batches: 1  Memory Usage: 3113kB
+                     Buffers: shared hit=1600
+                     ->  Subquery Scan on vis  (cost=7408.76..8603.14 rows=59719 width=12) (actual time=104.433..114.202 rows=60515.00 loops=1)
+                           Buffers: shared hit=1600
+                           ->  HashAggregate  (cost=7408.76..8005.95 rows=59719 width=12) (actual time=104.432..110.997 rows=60515.00 loops=1)
+                                 Group Key: s.propiedad_id
+                                 Batches: 1  Memory Usage: 4633kB
+                                 Buffers: shared hit=1600
+                                 ->  Hash Join  (cost=3644.50..6558.76 rows=170000 width=4) (actual time=18.978..69.579 rows=170000.00 loops=1)
+                                       Hash Cond: (v.solicitud_id = s.solicitud_id)
+                                       Buffers: shared hit=1600
+                                       ->  Seq Scan on visitas v  (cost=0.00..2468.00 rows=170000 width=4) (actual time=0.029..6.688 rows=170000.00 loops=1)
+                                             Buffers: shared hit=768
+                                       ->  Hash  (cost=2082.00..2082.00 rows=125000 width=8) (actual time=18.642..18.642 rows=125000.00 loops=1)
+                                             Buckets: 131072  Batches: 1  Memory Usage: 5907kB
+                                             Buffers: shared hit=832
+                                             ->  Seq Scan on solicitudes_propiedad s  (cost=0.00..2082.00 rows=125000 width=8) (actual time=0.013..7.837 rows=125000.00 loops=1)
+                                                   Buffers: shared hit=832
+         ->  Hash  (cost=7669.02..7669.02 rows=59719 width=12) (actual time=82.363..82.365 rows=53173.00 loops=1)
+               Buckets: 65536  Batches: 1  Memory Usage: 2797kB
+               Buffers: shared hit=1600
+               ->  Subquery Scan on ofe  (cost=6474.64..7669.02 rows=59719 width=12) (actual time=69.102..77.364 rows=53173.00 loops=1)
+                     Buffers: shared hit=1600
+                     ->  HashAggregate  (cost=6474.64..7071.83 rows=59719 width=12) (actual time=69.100..74.550 rows=53173.00 loops=1)
+                           Group Key: s_1.propiedad_id
+                           Batches: 1  Memory Usage: 4377kB
+                           Buffers: shared hit=1600
+                           ->  Hash Join  (cost=3644.50..5889.64 rows=117000 width=4) (actual time=18.616..49.173 rows=117000.00 loops=1)
+                                 Hash Cond: (o.solicitud_id = s_1.solicitud_id)
+                                 Buffers: shared hit=1600
+                                 ->  Seq Scan on ofertas o  (cost=0.00..1938.00 rows=117000 width=4) (actual time=0.028..4.625 rows=117000.00 loops=1)
+                                       Buffers: shared hit=768
+                                 ->  Hash  (cost=2082.00..2082.00 rows=125000 width=8) (actual time=18.273..18.274 rows=125000.00 loops=1)
+                                       Buckets: 131072  Batches: 1  Memory Usage: 5907kB
+                                       Buffers: shared hit=832
+                                       ->  Seq Scan on solicitudes_propiedad s_1  (cost=0.00..2082.00 rows=125000 width=8) (actual time=0.010..7.712 rows=125000.00 loops=1)
+                                             Buffers: shared hit=832
+ Planning:
+   Buffers: shared hit=32
+ Planning Time: 0.496 ms
+ Execution Time: 363.156 ms
+(68 filas)
+
+                                                                                                      QUERY PLAN                                                                                                      
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=36287.26..36288.48 rows=20 width=55) (actual time=207.291..207.299 rows=20.00 loops=1)
+   Buffers: shared hit=3393, temp read=545 written=702
+   ->  Incremental Sort  (cost=36287.26..41383.41 rows=82983 width=55) (actual time=207.289..207.296 rows=20.00 loops=1)
+         Sort Key: ((CURRENT_DATE - inicio_comercial.fecha_inicio)) DESC, inicio_comercial.propiedad_id
+         Presorted Key: ((CURRENT_DATE - inicio_comercial.fecha_inicio))
+         Full-sort Groups: 1  Sort Method: top-N heapsort  Average Memory: 29kB  Peak Memory: 29kB
+         Pre-sorted Groups: 1  Sort Method: top-N heapsort  Average Memory: 28kB  Peak Memory: 28kB
+         Buffers: shared hit=3393, temp read=545 written=702
+         ->  WindowAgg  (cost=36266.88..38133.98 rows=82983 width=55) (actual time=207.200..207.251 rows=150.00 loops=1)
+               Window: w1 AS (ORDER BY ((CURRENT_DATE - inicio_comercial.fecha_inicio)) ROWS UNBOUNDED PRECEDING)
+               Storage: Memory  Maximum Storage: 17kB
+               Buffers: shared hit=3393, temp read=545 written=702
+               ->  Sort  (cost=36266.86..36474.32 rows=82983 width=47) (actual time=207.189..207.203 rows=150.00 loops=1)
+                     Sort Key: ((CURRENT_DATE - inicio_comercial.fecha_inicio)) DESC
+                     Sort Method: external merge  Disk: 4584kB
+                     Buffers: shared hit=3393, temp read=545 written=702
+                     ->  Subquery Scan on inicio_comercial  (cost=23029.14..26931.93 rows=82983 width=47) (actual time=158.180..179.385 rows=77847.00 loops=1)
+                           Buffers: shared hit=3393, temp read=59 written=128
+                           ->  HashAggregate  (cost=23029.14..25687.19 rows=82983 width=51) (actual time=158.176..174.262 rows=77847.00 loops=1)
+                                 Group Key: p.propiedad_id, c.nombre
+                                 Planned Partitions: 4  Batches: 5  Memory Usage: 8249kB  Disk Usage: 688kB
+                                 Buffers: shared hit=3393, temp read=59 written=128
+                                 ->  Hash Join  (cost=10902.83..14264.06 rows=82983 width=52) (actual time=74.404..127.139 rows=114106.00 loops=1)
+                                       Hash Cond: (p.ciudad_id = c.ciudad_id)
+                                       Buffers: shared hit=3393
+                                       ->  Hash Right Join  (cost=10901.61..13952.69 rows=82983 width=47) (actual time=74.373..114.827 rows=114106.00 loops=1)
+                                             Hash Cond: (pub.propiedad_id = p.propiedad_id)
+                                             Buffers: shared hit=3392
+                                             ->  Seq Scan on publicaciones pub  (cost=0.00..1790.00 rows=115000 width=9) (actual time=0.020..4.481 rows=115000.00 loops=1)
+                                                   Buffers: shared hit=640
+                                             ->  Hash  (cost=9999.62..9999.62 rows=72159 width=42) (actual time=74.048..74.052 rows=77847.00 loops=1)
+                                                   Buckets: 131072  Batches: 1  Memory Usage: 7004kB
+                                                   Buffers: shared hit=2752
+                                                   ->  Hash Anti Join  (cost=7024.21..9999.62 rows=72159 width=42) (actual time=45.494..62.934 rows=77847.00 loops=1)
+                                                         Hash Cond: (p.propiedad_id = s.propiedad_id)
+                                                         Buffers: shared hit=2752
+                                                         ->  Seq Scan on propiedades p  (cost=0.00..1960.00 rows=100000 width=42) (actual time=0.010..4.263 rows=100000.00 loops=1)
+                                                               Buffers: shared hit=960
+                                                         ->  Hash  (cost=6676.20..6676.20 rows=27841 width=4) (actual time=45.397..45.400 rows=22153.00 loops=1)
+                                                               Buckets: 32768  Batches: 1  Memory Usage: 1035kB
+                                                               Buffers: shared hit=1792
+                                                               ->  HashAggregate  (cost=6397.79..6676.20 rows=27841 width=4) (actual time=42.373..43.716 rows=22153.00 loops=1)
+                                                                     Group Key: s.propiedad_id
+                                                                     Batches: 1  Memory Usage: 1305kB
+                                                                     Buffers: shared hit=1792
+                                                                     ->  Hash Join  (cost=3499.02..6328.18 rows=27841 width=4) (actual time=21.277..38.599 rows=27841.00 loops=1)
+                                                                           Hash Cond: (s.solicitud_id = o.solicitud_id)
+                                                                           Buffers: shared hit=1792
+                                                                           ->  Seq Scan on solicitudes_propiedad s  (cost=0.00..2082.00 rows=125000 width=8) (actual time=0.007..4.793 rows=125000.00 loops=1)
+                                                                                 Buffers: shared hit=832
+                                                                           ->  Hash  (cost=3151.01..3151.01 rows=27841 width=4) (actual time=21.185..21.187 rows=27841.00 loops=1)
+                                                                                 Buckets: 32768  Batches: 1  Memory Usage: 1235kB
+                                                                                 Buffers: shared hit=960
+                                                                                 ->  Hash Join  (cost=905.88..3151.01 rows=27841 width=4) (actual time=4.299..18.794 rows=27841.00 loops=1)
+                                                                                       Hash Cond: (o.oferta_id = t.oferta_id)
+                                                                                       Buffers: shared hit=960
+                                                                                       ->  Seq Scan on ofertas o  (cost=0.00..1938.00 rows=117000 width=8) (actual time=0.008..4.314 rows=117000.00 loops=1)
+                                                                                             Buffers: shared hit=768
+                                                                                       ->  Hash  (cost=557.86..557.86 rows=27841 width=4) (actual time=4.145..4.146 rows=27841.00 loops=1)
+                                                                                             Buckets: 32768  Batches: 1  Memory Usage: 1235kB
+                                                                                             Buffers: shared hit=192
+                                                                                             ->  Seq Scan on transacciones t  (cost=0.00..557.86 rows=27841 width=4) (actual time=0.024..2.209 rows=27841.00 loops=1)
+                                                                                                   Filter: (estado <> 'anulada'::text)
+                                                                                                   Rows Removed by Filter: 1428
+                                                                                                   Buffers: shared hit=192
+                                       ->  Hash  (cost=1.10..1.10 rows=10 width=13) (actual time=0.024..0.024 rows=10.00 loops=1)
+                                             Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                             Buffers: shared hit=1
+                                             ->  Seq Scan on ciudades c  (cost=0.00..1.10 rows=10 width=13) (actual time=0.018..0.019 rows=10.00 loops=1)
+                                                   Buffers: shared hit=1
+ Planning:
+   Buffers: shared hit=72 read=5
+ Planning Time: 1.303 ms
+ Execution Time: 223.813 ms
+(74 filas)
+
+             indice              | veces_usado | tamano  
+---------------------------------+-------------+---------
+ idx_visitas_solicitud_id        |          11 | 3120 kB
+ idx_ofertas_estado              |           6 | 3448 kB
+ idx_ofertas_solicitud_id        |           5 | 2280 kB
+ idx_sol_propiedad_id            |           3 | 2344 kB
+ idx_sol_estado_activo           |           1 | 2512 kB
+ idx_publicaciones_propiedad_pub |           0 | 2024 kB
+ idx_sol_campana_id              |           0 | 608 kB
+ idx_transacciones_oferta_id     |           0 | 656 kB
+(8 filas)
+
+DROP INDEX
+DROP INDEX
+DROP INDEX
+DROP INDEX
+DROP INDEX
+psql:sql/06_optimizacion_escala_f5.sql:276: NOTICE:  relation "idx_sol_propiedad_id" already exists, skipping
+CREATE INDEX
+psql:sql/06_optimizacion_escala_f5.sql:277: NOTICE:  relation "idx_visitas_solicitud_id" already exists, skipping
+CREATE INDEX
+psql:sql/06_optimizacion_escala_f5.sql:278: NOTICE:  relation "idx_ofertas_solicitud_id" already exists, skipping
+CREATE INDEX
+RESET
+psql:sql/06_optimizacion_escala_f5.sql:281: NOTICE:  drop cascades to 7 other objects
+DETALLE:  drop cascades to table escala.ciudades
+drop cascades to table escala.propiedades
+drop cascades to table escala.publicaciones
+drop cascades to table escala.solicitudes_propiedad
+drop cascades to table escala.visitas
+drop cascades to table escala.ofertas
+drop cascades to table escala.transacciones
+DROP SCHEMA
+       tablename       |        indexname         |                                           indexdef                                           
+-----------------------+--------------------------+----------------------------------------------------------------------------------------------
+ ofertas               | idx_ofertas_solicitud_id | CREATE INDEX idx_ofertas_solicitud_id ON public.ofertas USING btree (solicitud_id)
+ solicitudes_propiedad | idx_sol_propiedad_id     | CREATE INDEX idx_sol_propiedad_id ON public.solicitudes_propiedad USING btree (propiedad_id)
+ visitas               | idx_visitas_solicitud_id | CREATE INDEX idx_visitas_solicitud_id ON public.visitas USING btree (solicitud_id)
+(3 filas)
+

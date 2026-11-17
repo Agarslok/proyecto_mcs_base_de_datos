@@ -1,0 +1,60 @@
+SET
+SET
+ transaction_isolation 
+-----------------------
+ read committed
+(1 fila)
+
+ oferta_id | solicitud_id | estado_oferta | valor_ofertado | propiedad_id |       titulo       | estado_propiedad_antes 
+-----------+--------------+---------------+----------------+--------------+--------------------+------------------------
+        61 |           64 | aceptada      |   751000000.00 |           22 | Casa en Usaquen 22 | en_negociacion
+(1 fila)
+
+BEGIN
+ nueva_transaccion_id 
+----------------------
+                   19
+(1 fila)
+
+ propiedad_id |       titulo       | estado_comercial | estado_solicitud 
+--------------+--------------------+------------------+------------------
+           22 | Casa en Usaquen 22 | vendida          | ganada
+(1 fila)
+
+COMMIT
+psql:sql/05_transacciones_f5.sql:112: NOTICE:  ROLLBACK implícito OK: R12: la transacción exige oferta aceptada (oferta_id=1, estado=pendiente)
+psql:sql/05_transacciones_f5.sql:112: NOTICE:  Atomicidad: no quedó fila en transacciones para oferta 1
+DO
+CREATE FUNCTION
+COMMENT
+ propiedad_id | cierres 
+--------------+---------
+(0 filas)
+
+ oferta_id | propiedad_id | estado_comercial 
+-----------+--------------+------------------
+(0 filas)
+
+ propiedad_id |              titulo               | estado_comercial | cierres 
+--------------+-----------------------------------+------------------+---------
+            1 | Apartamento en Chapinero 1        | vendida          |       1
+            2 | Casa en Usaquen 2                 | vendida          |       1
+            3 | Local comercial en Teusaquillo 3  | vendida          |       1
+            4 | Lote en Cedritos 4                | vendida          |       1
+            5 | Oficina en El Poblado 5           | vendida          |       1
+            6 | Apartamento en Laureles 6         | vendida          |       1
+            9 | Lote en Cabecera 9                | vendida          |       1
+           14 | Lote en Cedritos 14               | no_disponible    |       1
+           17 | Casa en Granada 17                | vendida          |       1
+           22 | Casa en Usaquen 22                | vendida          |       1
+           23 | Local comercial en Teusaquillo 23 | vendida          |       1
+           24 | Lote en Cedritos 24               | vendida          |       1
+           27 | Casa en Granada 27                | vendida          |       1
+           29 | Lote en Cabecera 29               | vendida          |       1
+           32 | Casa en Usaquen 32                | vendida          |       1
+           37 | Casa en Granada 37                | vendida          |       1
+           40 | Oficina en Ciudad Jardin 40       | vendida          |       1
+           45 | Oficina en El Poblado 45          | vendida          |       1
+           48 | Local comercial en Bocagrande 48  | vendida          |       1
+(19 filas)
+

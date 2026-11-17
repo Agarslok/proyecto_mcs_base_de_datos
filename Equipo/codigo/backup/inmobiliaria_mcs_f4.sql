@@ -2,10 +2,12 @@
 -- PostgreSQL database dump
 --
 
-\restrict VKeBQYf72PxEUgu3aWaAg4egsoHJyRSKpOB1pSrZuyTKSNzR8rYyhLO8cAHMObo
+\restrict qZiw7Bu6C0lGHbQqtfF06ts40lOAbA0mIeVfAhvpiCtJgvkRiEmcDICbZt9NsBg
 
 -- Dumped from database version 18.6
 -- Dumped by pg_dump version 18.6
+
+-- Started on 2026-11-17 15:11:21
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -20,6 +22,69 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
+-- TOC entry 286 (class 1255 OID 20013)
+-- Name: cerrar_venta_con_bloqueo(integer, integer, numeric, numeric, date, date, character varying); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.cerrar_venta_con_bloqueo(p_oferta_id integer, p_empleado_id integer, p_valor_final numeric, p_comision_porcentaje numeric, p_fecha_inicio date, p_fecha_fin date DEFAULT NULL::date, p_estado_contrato character varying DEFAULT 'cerrada'::character varying) RETURNS integer
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    v_propiedad_id integer;
+    v_tx_id        integer;
+BEGIN
+    SELECT s.propiedad_id
+      INTO v_propiedad_id
+      FROM ofertas o
+      JOIN solicitudes_propiedad s ON s.solicitud_id = o.solicitud_id
+     WHERE o.oferta_id = p_oferta_id
+     FOR UPDATE OF s;
+
+    IF v_propiedad_id IS NULL THEN
+        RAISE EXCEPTION 'Oferta % no existe', p_oferta_id;
+    END IF;
+
+    PERFORM 1 FROM propiedades WHERE propiedad_id = v_propiedad_id FOR UPDATE;
+
+    IF EXISTS (
+        SELECT 1 FROM propiedades
+        WHERE propiedad_id = v_propiedad_id
+          AND estado_comercial = 'vendida'
+    ) OR EXISTS (
+        SELECT 1
+        FROM transacciones t
+        JOIN ofertas o ON o.oferta_id = t.oferta_id
+        JOIN solicitudes_propiedad s ON s.solicitud_id = o.solicitud_id
+        WHERE s.propiedad_id = v_propiedad_id
+          AND t.estado <> 'anulada'
+    ) THEN
+        RAISE EXCEPTION
+            'R12: la propiedad % ya tiene un cierre vigente', v_propiedad_id;
+    END IF;
+
+    SELECT registrar_cierre(
+        p_oferta_id, p_empleado_id, p_valor_final, p_comision_porcentaje,
+        p_fecha_inicio, p_fecha_fin, p_estado_contrato
+    ) INTO v_tx_id;
+
+    RETURN v_tx_id;
+END;
+$$;
+
+
+ALTER FUNCTION public.cerrar_venta_con_bloqueo(p_oferta_id integer, p_empleado_id integer, p_valor_final numeric, p_comision_porcentaje numeric, p_fecha_inicio date, p_fecha_fin date, p_estado_contrato character varying) OWNER TO postgres;
+
+--
+-- TOC entry 5360 (class 0 OID 0)
+-- Dependencies: 286
+-- Name: FUNCTION cerrar_venta_con_bloqueo(p_oferta_id integer, p_empleado_id integer, p_valor_final numeric, p_comision_porcentaje numeric, p_fecha_inicio date, p_fecha_fin date, p_estado_contrato character varying); Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON FUNCTION public.cerrar_venta_con_bloqueo(p_oferta_id integer, p_empleado_id integer, p_valor_final numeric, p_comision_porcentaje numeric, p_fecha_inicio date, p_fecha_fin date, p_estado_contrato character varying) IS 'R12: serializa cierres sobre la misma propiedad con FOR UPDATE (fase 5).';
+
+
+--
+-- TOC entry 269 (class 1255 OID 19489)
 -- Name: fn_oferta_aceptada_en_negociacion(); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -54,6 +119,7 @@ $$;
 ALTER FUNCTION public.fn_oferta_aceptada_en_negociacion() OWNER TO postgres;
 
 --
+-- TOC entry 270 (class 1255 OID 19490)
 -- Name: fn_set_actualizado_en(); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -70,6 +136,7 @@ $$;
 ALTER FUNCTION public.fn_set_actualizado_en() OWNER TO postgres;
 
 --
+-- TOC entry 271 (class 1255 OID 19491)
 -- Name: fn_solicitud_motivo_descarte(); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -91,6 +158,7 @@ $$;
 ALTER FUNCTION public.fn_solicitud_motivo_descarte() OWNER TO postgres;
 
 --
+-- TOC entry 272 (class 1255 OID 19492)
 -- Name: fn_solicitud_no_es_dueno(); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -116,6 +184,7 @@ $$;
 ALTER FUNCTION public.fn_solicitud_no_es_dueno() OWNER TO postgres;
 
 --
+-- TOC entry 284 (class 1255 OID 19493)
 -- Name: fn_validar_y_aplicar_transaccion(); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -172,6 +241,7 @@ $$;
 ALTER FUNCTION public.fn_validar_y_aplicar_transaccion() OWNER TO postgres;
 
 --
+-- TOC entry 285 (class 1255 OID 19494)
 -- Name: registrar_cierre(integer, integer, numeric, numeric, date, date, character varying); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -202,6 +272,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- TOC entry 219 (class 1259 OID 19495)
 -- Name: acceso_via; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -214,6 +285,7 @@ CREATE TABLE public.acceso_via (
 ALTER TABLE public.acceso_via OWNER TO postgres;
 
 --
+-- TOC entry 220 (class 1259 OID 19500)
 -- Name: acceso_via_acceso_via_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -228,6 +300,7 @@ ALTER TABLE public.acceso_via ALTER COLUMN acceso_via_id ADD GENERATED BY DEFAUL
 
 
 --
+-- TOC entry 221 (class 1259 OID 19501)
 -- Name: campana_propiedades; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -241,6 +314,7 @@ CREATE TABLE public.campana_propiedades (
 ALTER TABLE public.campana_propiedades OWNER TO postgres;
 
 --
+-- TOC entry 222 (class 1259 OID 19507)
 -- Name: campana_propiedades_campana_propiedad_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -255,6 +329,7 @@ ALTER TABLE public.campana_propiedades ALTER COLUMN campana_propiedad_id ADD GEN
 
 
 --
+-- TOC entry 223 (class 1259 OID 19508)
 -- Name: campanas; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -267,7 +342,7 @@ CREATE TABLE public.campanas (
     fecha_inicio date NOT NULL,
     fecha_fin date NOT NULL,
     estado character varying(20) NOT NULL,
-    CONSTRAINT ck_campanas_estado CHECK (((estado)::text = ANY ((ARRAY['planificada'::character varying, 'activa'::character varying, 'cerrada'::character varying])::text[]))),
+    CONSTRAINT ck_campanas_estado CHECK (((estado)::text = ANY (ARRAY[('planificada'::character varying)::text, ('activa'::character varying)::text, ('cerrada'::character varying)::text]))),
     CONSTRAINT ck_campanas_fechas CHECK ((fecha_fin >= fecha_inicio)),
     CONSTRAINT ck_campanas_presup_inv CHECK (((presupuesto_invertido IS NULL) OR (presupuesto_invertido >= (0)::numeric))),
     CONSTRAINT ck_campanas_presup_plan CHECK ((presupuesto_planeado >= (0)::numeric))
@@ -277,6 +352,7 @@ CREATE TABLE public.campanas (
 ALTER TABLE public.campanas OWNER TO postgres;
 
 --
+-- TOC entry 224 (class 1259 OID 19522)
 -- Name: campanas_campana_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -291,6 +367,7 @@ ALTER TABLE public.campanas ALTER COLUMN campana_id ADD GENERATED BY DEFAULT AS 
 
 
 --
+-- TOC entry 225 (class 1259 OID 19523)
 -- Name: canales_marketing; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -304,6 +381,7 @@ CREATE TABLE public.canales_marketing (
 ALTER TABLE public.canales_marketing OWNER TO postgres;
 
 --
+-- TOC entry 226 (class 1259 OID 19530)
 -- Name: canales_marketing_canal_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -318,6 +396,7 @@ ALTER TABLE public.canales_marketing ALTER COLUMN canal_id ADD GENERATED BY DEFA
 
 
 --
+-- TOC entry 227 (class 1259 OID 19531)
 -- Name: ciudades; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -330,6 +409,7 @@ CREATE TABLE public.ciudades (
 ALTER TABLE public.ciudades OWNER TO postgres;
 
 --
+-- TOC entry 228 (class 1259 OID 19536)
 -- Name: ciudades_ciudad_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -344,6 +424,7 @@ ALTER TABLE public.ciudades ALTER COLUMN ciudad_id ADD GENERATED BY DEFAULT AS I
 
 
 --
+-- TOC entry 229 (class 1259 OID 19537)
 -- Name: detalle_construcciones; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -374,6 +455,7 @@ CREATE TABLE public.detalle_construcciones (
 ALTER TABLE public.detalle_construcciones OWNER TO postgres;
 
 --
+-- TOC entry 230 (class 1259 OID 19563)
 -- Name: detalle_construcciones_detalle_construccion_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -388,6 +470,7 @@ ALTER TABLE public.detalle_construcciones ALTER COLUMN detalle_construccion_id A
 
 
 --
+-- TOC entry 231 (class 1259 OID 19564)
 -- Name: detalle_terrenos; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -403,14 +486,15 @@ CREATE TABLE public.detalle_terrenos (
     es_esquinero boolean DEFAULT false NOT NULL,
     CONSTRAINT ck_dt_fondo CHECK ((fondo_m > (0)::numeric)),
     CONSTRAINT ck_dt_frente CHECK ((frente_m > (0)::numeric)),
-    CONSTRAINT ck_dt_topografia CHECK (((topografia)::text = ANY ((ARRAY['plana'::character varying, 'inclinada'::character varying])::text[]))),
-    CONSTRAINT ck_dt_zona CHECK (((zona)::text = ANY ((ARRAY['urbana'::character varying, 'rural'::character varying])::text[])))
+    CONSTRAINT ck_dt_topografia CHECK (((topografia)::text = ANY (ARRAY[('plana'::character varying)::text, ('inclinada'::character varying)::text]))),
+    CONSTRAINT ck_dt_zona CHECK (((zona)::text = ANY (ARRAY[('urbana'::character varying)::text, ('rural'::character varying)::text])))
 );
 
 
 ALTER TABLE public.detalle_terrenos OWNER TO postgres;
 
 --
+-- TOC entry 232 (class 1259 OID 19581)
 -- Name: detalle_terrenos_detalle_terreno_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -425,6 +509,7 @@ ALTER TABLE public.detalle_terrenos ALTER COLUMN detalle_terreno_id ADD GENERATE
 
 
 --
+-- TOC entry 233 (class 1259 OID 19582)
 -- Name: empleados; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -441,6 +526,7 @@ CREATE TABLE public.empleados (
 ALTER TABLE public.empleados OWNER TO postgres;
 
 --
+-- TOC entry 234 (class 1259 OID 19590)
 -- Name: empleados_empleado_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -455,6 +541,7 @@ ALTER TABLE public.empleados ALTER COLUMN empleado_id ADD GENERATED BY DEFAULT A
 
 
 --
+-- TOC entry 235 (class 1259 OID 19591)
 -- Name: estado_conservacion; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -467,6 +554,7 @@ CREATE TABLE public.estado_conservacion (
 ALTER TABLE public.estado_conservacion OWNER TO postgres;
 
 --
+-- TOC entry 236 (class 1259 OID 19596)
 -- Name: estado_conservacion_estado_conservacion_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -481,6 +569,7 @@ ALTER TABLE public.estado_conservacion ALTER COLUMN estado_conservacion_id ADD G
 
 
 --
+-- TOC entry 237 (class 1259 OID 19597)
 -- Name: ofertas; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -490,7 +579,7 @@ CREATE TABLE public.ofertas (
     estado_oferta character varying(20) DEFAULT 'pendiente'::character varying NOT NULL,
     valor_ofertado numeric(14,2) NOT NULL,
     fecha_oferta timestamp with time zone DEFAULT now() NOT NULL,
-    CONSTRAINT ck_ofertas_estado CHECK (((estado_oferta)::text = ANY ((ARRAY['pendiente'::character varying, 'aceptada'::character varying, 'rechazada'::character varying, 'caducada'::character varying])::text[]))),
+    CONSTRAINT ck_ofertas_estado CHECK (((estado_oferta)::text = ANY (ARRAY[('pendiente'::character varying)::text, ('aceptada'::character varying)::text, ('rechazada'::character varying)::text, ('caducada'::character varying)::text]))),
     CONSTRAINT ck_ofertas_valor CHECK ((valor_ofertado > (0)::numeric))
 );
 
@@ -498,6 +587,7 @@ CREATE TABLE public.ofertas (
 ALTER TABLE public.ofertas OWNER TO postgres;
 
 --
+-- TOC entry 238 (class 1259 OID 19609)
 -- Name: ofertas_oferta_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -512,6 +602,7 @@ ALTER TABLE public.ofertas ALTER COLUMN oferta_id ADD GENERATED BY DEFAULT AS ID
 
 
 --
+-- TOC entry 239 (class 1259 OID 19610)
 -- Name: persona_roles; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -524,6 +615,7 @@ CREATE TABLE public.persona_roles (
 ALTER TABLE public.persona_roles OWNER TO postgres;
 
 --
+-- TOC entry 240 (class 1259 OID 19615)
 -- Name: personas; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -540,6 +632,7 @@ CREATE TABLE public.personas (
 ALTER TABLE public.personas OWNER TO postgres;
 
 --
+-- TOC entry 241 (class 1259 OID 19623)
 -- Name: personas_persona_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -554,6 +647,7 @@ ALTER TABLE public.personas ALTER COLUMN persona_id ADD GENERATED BY DEFAULT AS 
 
 
 --
+-- TOC entry 242 (class 1259 OID 19624)
 -- Name: propiedad_propietarios; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -567,6 +661,7 @@ CREATE TABLE public.propiedad_propietarios (
 ALTER TABLE public.propiedad_propietarios OWNER TO postgres;
 
 --
+-- TOC entry 243 (class 1259 OID 19630)
 -- Name: propiedad_propietarios_propiedad_propietario_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -581,6 +676,7 @@ ALTER TABLE public.propiedad_propietarios ALTER COLUMN propiedad_propietario_id 
 
 
 --
+-- TOC entry 244 (class 1259 OID 19631)
 -- Name: propiedades; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -598,13 +694,14 @@ CREATE TABLE public.propiedades (
     creado_en timestamp with time zone DEFAULT now() NOT NULL,
     actualizado_en timestamp with time zone DEFAULT now() NOT NULL,
     CONSTRAINT ck_propiedades_area CHECK ((area_total_m2 > (0)::numeric)),
-    CONSTRAINT ck_propiedades_estado CHECK (((estado_comercial)::text = ANY ((ARRAY['disponible'::character varying, 'en_negociacion'::character varying, 'vendida'::character varying, 'no_disponible'::character varying])::text[])))
+    CONSTRAINT ck_propiedades_estado CHECK (((estado_comercial)::text = ANY (ARRAY[('disponible'::character varying)::text, ('en_negociacion'::character varying)::text, ('vendida'::character varying)::text, ('no_disponible'::character varying)::text])))
 );
 
 
 ALTER TABLE public.propiedades OWNER TO postgres;
 
 --
+-- TOC entry 245 (class 1259 OID 19652)
 -- Name: propiedades_propiedad_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -619,6 +716,7 @@ ALTER TABLE public.propiedades ALTER COLUMN propiedad_id ADD GENERATED BY DEFAUL
 
 
 --
+-- TOC entry 246 (class 1259 OID 19653)
 -- Name: publicacion_canales; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -632,6 +730,7 @@ CREATE TABLE public.publicacion_canales (
 ALTER TABLE public.publicacion_canales OWNER TO postgres;
 
 --
+-- TOC entry 247 (class 1259 OID 19659)
 -- Name: publicacion_canales_publicacion_canal_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -646,6 +745,7 @@ ALTER TABLE public.publicacion_canales ALTER COLUMN publicacion_canal_id ADD GEN
 
 
 --
+-- TOC entry 248 (class 1259 OID 19660)
 -- Name: publicaciones; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -669,6 +769,7 @@ CREATE TABLE public.publicaciones (
 ALTER TABLE public.publicaciones OWNER TO postgres;
 
 --
+-- TOC entry 249 (class 1259 OID 19677)
 -- Name: publicaciones_publicacion_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -683,6 +784,7 @@ ALTER TABLE public.publicaciones ALTER COLUMN publicacion_id ADD GENERATED BY DE
 
 
 --
+-- TOC entry 250 (class 1259 OID 19678)
 -- Name: rol_empleado; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -695,6 +797,7 @@ CREATE TABLE public.rol_empleado (
 ALTER TABLE public.rol_empleado OWNER TO postgres;
 
 --
+-- TOC entry 251 (class 1259 OID 19683)
 -- Name: rol_empleado_rol_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -709,6 +812,7 @@ ALTER TABLE public.rol_empleado ALTER COLUMN rol_id ADD GENERATED BY DEFAULT AS 
 
 
 --
+-- TOC entry 252 (class 1259 OID 19684)
 -- Name: solicitudes_propiedad; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -725,7 +829,7 @@ CREATE TABLE public.solicitudes_propiedad (
     fecha_cierre timestamp with time zone,
     creado_en timestamp with time zone DEFAULT now() NOT NULL,
     actualizado_en timestamp with time zone DEFAULT now() NOT NULL,
-    CONSTRAINT ck_solicitudes_estado CHECK (((estado)::text = ANY ((ARRAY['nueva'::character varying, 'en_seguimiento'::character varying, 'en_negociacion'::character varying, 'ganada'::character varying, 'perdida'::character varying, 'descartada'::character varying])::text[]))),
+    CONSTRAINT ck_solicitudes_estado CHECK (((estado)::text = ANY (ARRAY[('nueva'::character varying)::text, ('en_seguimiento'::character varying)::text, ('en_negociacion'::character varying)::text, ('ganada'::character varying)::text, ('perdida'::character varying)::text, ('descartada'::character varying)::text]))),
     CONSTRAINT ck_solicitudes_presupuesto CHECK ((presupuesto_cliente > (0)::numeric))
 );
 
@@ -733,6 +837,8 @@ CREATE TABLE public.solicitudes_propiedad (
 ALTER TABLE public.solicitudes_propiedad OWNER TO postgres;
 
 --
+-- TOC entry 5361 (class 0 OID 0)
+-- Dependencies: 252
 -- Name: TABLE solicitudes_propiedad; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -740,6 +846,8 @@ COMMENT ON TABLE public.solicitudes_propiedad IS 'Oportunidad comercial: prospec
 
 
 --
+-- TOC entry 5362 (class 0 OID 0)
+-- Dependencies: 252
 -- Name: COLUMN solicitudes_propiedad.campana_id; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -747,6 +855,7 @@ COMMENT ON COLUMN public.solicitudes_propiedad.campana_id IS 'R10: NULL si el or
 
 
 --
+-- TOC entry 253 (class 1259 OID 19701)
 -- Name: solicitudes_propiedad_solicitud_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -761,6 +870,7 @@ ALTER TABLE public.solicitudes_propiedad ALTER COLUMN solicitud_id ADD GENERATED
 
 
 --
+-- TOC entry 254 (class 1259 OID 19702)
 -- Name: tipos_inmueble; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -773,6 +883,7 @@ CREATE TABLE public.tipos_inmueble (
 ALTER TABLE public.tipos_inmueble OWNER TO postgres;
 
 --
+-- TOC entry 255 (class 1259 OID 19707)
 -- Name: tipos_inmueble_tipo_inmueble_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -787,6 +898,7 @@ ALTER TABLE public.tipos_inmueble ALTER COLUMN tipo_inmueble_id ADD GENERATED BY
 
 
 --
+-- TOC entry 256 (class 1259 OID 19708)
 -- Name: tipos_operacion; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -799,6 +911,7 @@ CREATE TABLE public.tipos_operacion (
 ALTER TABLE public.tipos_operacion OWNER TO postgres;
 
 --
+-- TOC entry 257 (class 1259 OID 19713)
 -- Name: tipos_operacion_tipo_operacion_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -813,6 +926,7 @@ ALTER TABLE public.tipos_operacion ALTER COLUMN tipo_operacion_id ADD GENERATED 
 
 
 --
+-- TOC entry 258 (class 1259 OID 19714)
 -- Name: tipos_persona; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -825,6 +939,7 @@ CREATE TABLE public.tipos_persona (
 ALTER TABLE public.tipos_persona OWNER TO postgres;
 
 --
+-- TOC entry 259 (class 1259 OID 19719)
 -- Name: tipos_persona_tipo_persona_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -839,6 +954,7 @@ ALTER TABLE public.tipos_persona ALTER COLUMN tipo_persona_id ADD GENERATED BY D
 
 
 --
+-- TOC entry 260 (class 1259 OID 19720)
 -- Name: transacciones; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -853,7 +969,7 @@ CREATE TABLE public.transacciones (
     fecha_fin_contrato date,
     estado character varying(15) NOT NULL,
     CONSTRAINT ck_transacciones_comision CHECK (((comision_porcentaje >= (0)::numeric) AND (comision_porcentaje <= (100)::numeric))),
-    CONSTRAINT ck_transacciones_estado CHECK (((estado)::text = ANY ((ARRAY['activa'::character varying, 'cerrada'::character varying, 'anulada'::character varying])::text[]))),
+    CONSTRAINT ck_transacciones_estado CHECK (((estado)::text = ANY (ARRAY[('activa'::character varying)::text, ('cerrada'::character varying)::text, ('anulada'::character varying)::text]))),
     CONSTRAINT ck_transacciones_fechas CHECK (((fecha_fin_contrato IS NULL) OR (fecha_fin_contrato >= fecha_inicio_contrato))),
     CONSTRAINT ck_transacciones_valor CHECK ((valor_final > (0)::numeric))
 );
@@ -862,6 +978,8 @@ CREATE TABLE public.transacciones (
 ALTER TABLE public.transacciones OWNER TO postgres;
 
 --
+-- TOC entry 5363 (class 0 OID 0)
+-- Dependencies: 260
 -- Name: COLUMN transacciones.comision_valor; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -869,6 +987,7 @@ COMMENT ON COLUMN public.transacciones.comision_valor IS 'R16: derivado GENERATE
 
 
 --
+-- TOC entry 261 (class 1259 OID 19735)
 -- Name: transacciones_transaccion_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -883,6 +1002,7 @@ ALTER TABLE public.transacciones ALTER COLUMN transaccion_id ADD GENERATED BY DE
 
 
 --
+-- TOC entry 262 (class 1259 OID 19736)
 -- Name: uso_suelo; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -895,6 +1015,7 @@ CREATE TABLE public.uso_suelo (
 ALTER TABLE public.uso_suelo OWNER TO postgres;
 
 --
+-- TOC entry 263 (class 1259 OID 19741)
 -- Name: uso_suelo_uso_suelo_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -909,6 +1030,7 @@ ALTER TABLE public.uso_suelo ALTER COLUMN uso_suelo_id ADD GENERATED BY DEFAULT 
 
 
 --
+-- TOC entry 264 (class 1259 OID 19742)
 -- Name: v_inventario_disponible; Type: VIEW; Schema: public; Owner: postgres
 --
 
@@ -937,6 +1059,7 @@ CREATE VIEW public.v_inventario_disponible AS
 ALTER VIEW public.v_inventario_disponible OWNER TO postgres;
 
 --
+-- TOC entry 265 (class 1259 OID 19747)
 -- Name: v_pipeline_activo; Type: VIEW; Schema: public; Owner: postgres
 --
 
@@ -956,12 +1079,13 @@ CREATE VIEW public.v_pipeline_activo AS
      JOIN public.propiedades p ON ((p.propiedad_id = s.propiedad_id)))
      LEFT JOIN public.campanas ca ON ((ca.campana_id = s.campana_id)))
      LEFT JOIN public.canales_marketing cm ON ((cm.canal_id = ca.canal_id)))
-  WHERE ((s.estado)::text = ANY ((ARRAY['nueva'::character varying, 'en_seguimiento'::character varying, 'en_negociacion'::character varying])::text[]));
+  WHERE ((s.estado)::text = ANY (ARRAY[('nueva'::character varying)::text, ('en_seguimiento'::character varying)::text, ('en_negociacion'::character varying)::text]));
 
 
 ALTER VIEW public.v_pipeline_activo OWNER TO postgres;
 
 --
+-- TOC entry 266 (class 1259 OID 19752)
 -- Name: v_resultado_cierres; Type: VIEW; Schema: public; Owner: postgres
 --
 
@@ -991,6 +1115,7 @@ CREATE VIEW public.v_resultado_cierres AS
 ALTER VIEW public.v_resultado_cierres OWNER TO postgres;
 
 --
+-- TOC entry 267 (class 1259 OID 19757)
 -- Name: visitas; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1013,6 +1138,7 @@ CREATE TABLE public.visitas (
 ALTER TABLE public.visitas OWNER TO postgres;
 
 --
+-- TOC entry 268 (class 1259 OID 19768)
 -- Name: visitas_visita_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1027,6 +1153,8 @@ ALTER TABLE public.visitas ALTER COLUMN visita_id ADD GENERATED BY DEFAULT AS ID
 
 
 --
+-- TOC entry 5308 (class 0 OID 19495)
+-- Dependencies: 219
 -- Data for Name: acceso_via; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1038,6 +1166,8 @@ COPY public.acceso_via (acceso_via_id, nombre) FROM stdin;
 
 
 --
+-- TOC entry 5310 (class 0 OID 19501)
+-- Dependencies: 221
 -- Data for Name: campana_propiedades; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1110,6 +1240,8 @@ COPY public.campana_propiedades (campana_propiedad_id, campana_id, propiedad_id)
 
 
 --
+-- TOC entry 5312 (class 0 OID 19508)
+-- Dependencies: 223
 -- Data for Name: campanas; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1130,6 +1262,8 @@ COPY public.campanas (campana_id, canal_id, nombre_campana, presupuesto_planeado
 
 
 --
+-- TOC entry 5314 (class 0 OID 19523)
+-- Dependencies: 225
 -- Data for Name: canales_marketing; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1143,6 +1277,8 @@ COPY public.canales_marketing (canal_id, nombre, activo) FROM stdin;
 
 
 --
+-- TOC entry 5316 (class 0 OID 19531)
+-- Dependencies: 227
 -- Data for Name: ciudades; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1161,6 +1297,8 @@ COPY public.ciudades (ciudad_id, nombre) FROM stdin;
 
 
 --
+-- TOC entry 5318 (class 0 OID 19537)
+-- Dependencies: 229
 -- Data for Name: detalle_construcciones; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1211,6 +1349,8 @@ COPY public.detalle_construcciones (detalle_construccion_id, propiedad_id, estad
 
 
 --
+-- TOC entry 5320 (class 0 OID 19564)
+-- Dependencies: 231
 -- Data for Name: detalle_terrenos; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1240,6 +1380,8 @@ COPY public.detalle_terrenos (detalle_terreno_id, propiedad_id, uso_suelo_id, ac
 
 
 --
+-- TOC entry 5322 (class 0 OID 19582)
+-- Dependencies: 233
 -- Data for Name: empleados; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1258,6 +1400,8 @@ COPY public.empleados (empleado_id, rol_id, nombre, email, telefono, fecha_ingre
 
 
 --
+-- TOC entry 5324 (class 0 OID 19591)
+-- Dependencies: 235
 -- Data for Name: estado_conservacion; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1270,6 +1414,8 @@ COPY public.estado_conservacion (estado_conservacion_id, nombre) FROM stdin;
 
 
 --
+-- TOC entry 5326 (class 0 OID 19597)
+-- Dependencies: 237
 -- Data for Name: ofertas; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1339,6 +1485,8 @@ COPY public.ofertas (oferta_id, solicitud_id, estado_oferta, valor_ofertado, fec
 
 
 --
+-- TOC entry 5328 (class 0 OID 19610)
+-- Dependencies: 239
 -- Data for Name: persona_roles; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1408,6 +1556,8 @@ COPY public.persona_roles (persona_id, tipo_persona_id) FROM stdin;
 
 
 --
+-- TOC entry 5329 (class 0 OID 19615)
+-- Dependencies: 240
 -- Data for Name: personas; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1471,6 +1621,8 @@ COPY public.personas (persona_id, nombres, apellidos, telefono, email, ciudad_id
 
 
 --
+-- TOC entry 5331 (class 0 OID 19624)
+-- Dependencies: 242
 -- Data for Name: propiedad_propietarios; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1544,6 +1696,8 @@ COPY public.propiedad_propietarios (propiedad_propietario_id, persona_id, propie
 
 
 --
+-- TOC entry 5333 (class 0 OID 19631)
+-- Dependencies: 244
 -- Data for Name: propiedades; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1604,6 +1758,8 @@ COPY public.propiedades (propiedad_id, tipo_inmueble_id, ciudad_id, responsable_
 
 
 --
+-- TOC entry 5335 (class 0 OID 19653)
+-- Dependencies: 246
 -- Data for Name: publicacion_canales; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1702,6 +1858,8 @@ COPY public.publicacion_canales (publicacion_canal_id, canal_id, publicacion_id)
 
 
 --
+-- TOC entry 5337 (class 0 OID 19660)
+-- Dependencies: 248
 -- Data for Name: publicaciones; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1770,6 +1928,8 @@ COPY public.publicaciones (publicacion_id, propiedad_id, tipo_operacion_id, prec
 
 
 --
+-- TOC entry 5339 (class 0 OID 19678)
+-- Dependencies: 250
 -- Data for Name: rol_empleado; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1781,6 +1941,8 @@ COPY public.rol_empleado (rol_id, nombre_rol) FROM stdin;
 
 
 --
+-- TOC entry 5341 (class 0 OID 19684)
+-- Dependencies: 252
 -- Data for Name: solicitudes_propiedad; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1854,6 +2016,8 @@ COPY public.solicitudes_propiedad (solicitud_id, persona_id, propiedad_id, emple
 
 
 --
+-- TOC entry 5343 (class 0 OID 19702)
+-- Dependencies: 254
 -- Data for Name: tipos_inmueble; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1867,6 +2031,8 @@ COPY public.tipos_inmueble (tipo_inmueble_id, nombre) FROM stdin;
 
 
 --
+-- TOC entry 5345 (class 0 OID 19708)
+-- Dependencies: 256
 -- Data for Name: tipos_operacion; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1877,6 +2043,8 @@ COPY public.tipos_operacion (tipo_operacion_id, nombre) FROM stdin;
 
 
 --
+-- TOC entry 5347 (class 0 OID 19714)
+-- Dependencies: 258
 -- Data for Name: tipos_persona; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1887,6 +2055,8 @@ COPY public.tipos_persona (tipo_persona_id, nombre) FROM stdin;
 
 
 --
+-- TOC entry 5349 (class 0 OID 19720)
+-- Dependencies: 260
 -- Data for Name: transacciones; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1913,6 +2083,8 @@ COPY public.transacciones (transaccion_id, oferta_id, empleado_id, valor_final, 
 
 
 --
+-- TOC entry 5351 (class 0 OID 19736)
+-- Dependencies: 262
 -- Data for Name: uso_suelo; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1925,6 +2097,8 @@ COPY public.uso_suelo (uso_suelo_id, nombre) FROM stdin;
 
 
 --
+-- TOC entry 5353 (class 0 OID 19757)
+-- Dependencies: 267
 -- Data for Name: visitas; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -2021,6 +2195,8 @@ COPY public.visitas (visita_id, solicitud_id, empleado_id, fecha_programada, fec
 
 
 --
+-- TOC entry 5364 (class 0 OID 0)
+-- Dependencies: 220
 -- Name: acceso_via_acceso_via_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2028,6 +2204,8 @@ SELECT pg_catalog.setval('public.acceso_via_acceso_via_id_seq', 3, true);
 
 
 --
+-- TOC entry 5365 (class 0 OID 0)
+-- Dependencies: 222
 -- Name: campana_propiedades_campana_propiedad_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2035,6 +2213,8 @@ SELECT pg_catalog.setval('public.campana_propiedades_campana_propiedad_id_seq', 
 
 
 --
+-- TOC entry 5366 (class 0 OID 0)
+-- Dependencies: 224
 -- Name: campanas_campana_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2042,6 +2222,8 @@ SELECT pg_catalog.setval('public.campanas_campana_id_seq', 12, true);
 
 
 --
+-- TOC entry 5367 (class 0 OID 0)
+-- Dependencies: 226
 -- Name: canales_marketing_canal_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2049,6 +2231,8 @@ SELECT pg_catalog.setval('public.canales_marketing_canal_id_seq', 5, true);
 
 
 --
+-- TOC entry 5368 (class 0 OID 0)
+-- Dependencies: 228
 -- Name: ciudades_ciudad_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2056,6 +2240,8 @@ SELECT pg_catalog.setval('public.ciudades_ciudad_id_seq', 10, true);
 
 
 --
+-- TOC entry 5369 (class 0 OID 0)
+-- Dependencies: 230
 -- Name: detalle_construcciones_detalle_construccion_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2063,6 +2249,8 @@ SELECT pg_catalog.setval('public.detalle_construcciones_detalle_construccion_id_
 
 
 --
+-- TOC entry 5370 (class 0 OID 0)
+-- Dependencies: 232
 -- Name: detalle_terrenos_detalle_terreno_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2070,6 +2258,8 @@ SELECT pg_catalog.setval('public.detalle_terrenos_detalle_terreno_id_seq', 21, t
 
 
 --
+-- TOC entry 5371 (class 0 OID 0)
+-- Dependencies: 234
 -- Name: empleados_empleado_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2077,6 +2267,8 @@ SELECT pg_catalog.setval('public.empleados_empleado_id_seq', 10, true);
 
 
 --
+-- TOC entry 5372 (class 0 OID 0)
+-- Dependencies: 236
 -- Name: estado_conservacion_estado_conservacion_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2084,6 +2276,8 @@ SELECT pg_catalog.setval('public.estado_conservacion_estado_conservacion_id_seq'
 
 
 --
+-- TOC entry 5373 (class 0 OID 0)
+-- Dependencies: 238
 -- Name: ofertas_oferta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2091,6 +2285,8 @@ SELECT pg_catalog.setval('public.ofertas_oferta_id_seq', 61, true);
 
 
 --
+-- TOC entry 5374 (class 0 OID 0)
+-- Dependencies: 241
 -- Name: personas_persona_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2098,6 +2294,8 @@ SELECT pg_catalog.setval('public.personas_persona_id_seq', 55, true);
 
 
 --
+-- TOC entry 5375 (class 0 OID 0)
+-- Dependencies: 243
 -- Name: propiedad_propietarios_propiedad_propietario_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2105,6 +2303,8 @@ SELECT pg_catalog.setval('public.propiedad_propietarios_propiedad_propietario_id
 
 
 --
+-- TOC entry 5376 (class 0 OID 0)
+-- Dependencies: 245
 -- Name: propiedades_propiedad_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2112,6 +2312,8 @@ SELECT pg_catalog.setval('public.propiedades_propiedad_id_seq', 52, true);
 
 
 --
+-- TOC entry 5377 (class 0 OID 0)
+-- Dependencies: 247
 -- Name: publicacion_canales_publicacion_canal_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2119,6 +2321,8 @@ SELECT pg_catalog.setval('public.publicacion_canales_publicacion_canal_id_seq', 
 
 
 --
+-- TOC entry 5378 (class 0 OID 0)
+-- Dependencies: 249
 -- Name: publicaciones_publicacion_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2126,6 +2330,8 @@ SELECT pg_catalog.setval('public.publicaciones_publicacion_id_seq', 60, true);
 
 
 --
+-- TOC entry 5379 (class 0 OID 0)
+-- Dependencies: 251
 -- Name: rol_empleado_rol_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2133,6 +2339,8 @@ SELECT pg_catalog.setval('public.rol_empleado_rol_id_seq', 3, true);
 
 
 --
+-- TOC entry 5380 (class 0 OID 0)
+-- Dependencies: 253
 -- Name: solicitudes_propiedad_solicitud_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2140,6 +2348,8 @@ SELECT pg_catalog.setval('public.solicitudes_propiedad_solicitud_id_seq', 65, tr
 
 
 --
+-- TOC entry 5381 (class 0 OID 0)
+-- Dependencies: 255
 -- Name: tipos_inmueble_tipo_inmueble_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2147,6 +2357,8 @@ SELECT pg_catalog.setval('public.tipos_inmueble_tipo_inmueble_id_seq', 5, true);
 
 
 --
+-- TOC entry 5382 (class 0 OID 0)
+-- Dependencies: 257
 -- Name: tipos_operacion_tipo_operacion_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2154,6 +2366,8 @@ SELECT pg_catalog.setval('public.tipos_operacion_tipo_operacion_id_seq', 2, true
 
 
 --
+-- TOC entry 5383 (class 0 OID 0)
+-- Dependencies: 259
 -- Name: tipos_persona_tipo_persona_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2161,13 +2375,17 @@ SELECT pg_catalog.setval('public.tipos_persona_tipo_persona_id_seq', 2, true);
 
 
 --
+-- TOC entry 5384 (class 0 OID 0)
+-- Dependencies: 261
 -- Name: transacciones_transaccion_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.transacciones_transaccion_id_seq', 18, true);
+SELECT pg_catalog.setval('public.transacciones_transaccion_id_seq', 19, true);
 
 
 --
+-- TOC entry 5385 (class 0 OID 0)
+-- Dependencies: 263
 -- Name: uso_suelo_uso_suelo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2175,6 +2393,8 @@ SELECT pg_catalog.setval('public.uso_suelo_uso_suelo_id_seq', 4, true);
 
 
 --
+-- TOC entry 5386 (class 0 OID 0)
+-- Dependencies: 268
 -- Name: visitas_visita_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2182,6 +2402,7 @@ SELECT pg_catalog.setval('public.visitas_visita_id_seq', 88, true);
 
 
 --
+-- TOC entry 5038 (class 2606 OID 19770)
 -- Name: acceso_via pk_acceso_via; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2190,6 +2411,7 @@ ALTER TABLE ONLY public.acceso_via
 
 
 --
+-- TOC entry 5042 (class 2606 OID 19772)
 -- Name: campana_propiedades pk_campana_propiedades; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2198,6 +2420,7 @@ ALTER TABLE ONLY public.campana_propiedades
 
 
 --
+-- TOC entry 5046 (class 2606 OID 19774)
 -- Name: campanas pk_campanas; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2206,6 +2429,7 @@ ALTER TABLE ONLY public.campanas
 
 
 --
+-- TOC entry 5048 (class 2606 OID 19776)
 -- Name: canales_marketing pk_canales_marketing; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2214,6 +2438,7 @@ ALTER TABLE ONLY public.canales_marketing
 
 
 --
+-- TOC entry 5052 (class 2606 OID 19778)
 -- Name: ciudades pk_ciudades; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2222,6 +2447,7 @@ ALTER TABLE ONLY public.ciudades
 
 
 --
+-- TOC entry 5056 (class 2606 OID 19780)
 -- Name: detalle_construcciones pk_detalle_construcciones; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2230,6 +2456,7 @@ ALTER TABLE ONLY public.detalle_construcciones
 
 
 --
+-- TOC entry 5060 (class 2606 OID 19782)
 -- Name: detalle_terrenos pk_detalle_terrenos; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2238,6 +2465,7 @@ ALTER TABLE ONLY public.detalle_terrenos
 
 
 --
+-- TOC entry 5064 (class 2606 OID 19784)
 -- Name: empleados pk_empleados; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2246,6 +2474,7 @@ ALTER TABLE ONLY public.empleados
 
 
 --
+-- TOC entry 5068 (class 2606 OID 19786)
 -- Name: estado_conservacion pk_estado_conservacion; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2254,6 +2483,7 @@ ALTER TABLE ONLY public.estado_conservacion
 
 
 --
+-- TOC entry 5072 (class 2606 OID 19788)
 -- Name: ofertas pk_ofertas; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2262,6 +2492,7 @@ ALTER TABLE ONLY public.ofertas
 
 
 --
+-- TOC entry 5074 (class 2606 OID 19790)
 -- Name: persona_roles pk_persona_roles; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2270,6 +2501,7 @@ ALTER TABLE ONLY public.persona_roles
 
 
 --
+-- TOC entry 5076 (class 2606 OID 19792)
 -- Name: personas pk_personas; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2278,6 +2510,7 @@ ALTER TABLE ONLY public.personas
 
 
 --
+-- TOC entry 5080 (class 2606 OID 19794)
 -- Name: propiedad_propietarios pk_propiedad_propietarios; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2286,6 +2519,7 @@ ALTER TABLE ONLY public.propiedad_propietarios
 
 
 --
+-- TOC entry 5084 (class 2606 OID 19796)
 -- Name: propiedades pk_propiedades; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2294,6 +2528,7 @@ ALTER TABLE ONLY public.propiedades
 
 
 --
+-- TOC entry 5088 (class 2606 OID 19798)
 -- Name: publicacion_canales pk_publicacion_canales; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2302,6 +2537,7 @@ ALTER TABLE ONLY public.publicacion_canales
 
 
 --
+-- TOC entry 5092 (class 2606 OID 19800)
 -- Name: publicaciones pk_publicaciones; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2310,6 +2546,7 @@ ALTER TABLE ONLY public.publicaciones
 
 
 --
+-- TOC entry 5094 (class 2606 OID 19802)
 -- Name: rol_empleado pk_rol_empleado; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2318,6 +2555,7 @@ ALTER TABLE ONLY public.rol_empleado
 
 
 --
+-- TOC entry 5098 (class 2606 OID 19804)
 -- Name: solicitudes_propiedad pk_solicitudes_propiedad; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2326,6 +2564,7 @@ ALTER TABLE ONLY public.solicitudes_propiedad
 
 
 --
+-- TOC entry 5100 (class 2606 OID 19806)
 -- Name: tipos_inmueble pk_tipos_inmueble; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2334,6 +2573,7 @@ ALTER TABLE ONLY public.tipos_inmueble
 
 
 --
+-- TOC entry 5104 (class 2606 OID 19808)
 -- Name: tipos_operacion pk_tipos_operacion; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2342,6 +2582,7 @@ ALTER TABLE ONLY public.tipos_operacion
 
 
 --
+-- TOC entry 5108 (class 2606 OID 19810)
 -- Name: tipos_persona pk_tipos_persona; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2350,6 +2591,7 @@ ALTER TABLE ONLY public.tipos_persona
 
 
 --
+-- TOC entry 5112 (class 2606 OID 19812)
 -- Name: transacciones pk_transacciones; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2358,6 +2600,7 @@ ALTER TABLE ONLY public.transacciones
 
 
 --
+-- TOC entry 5116 (class 2606 OID 19814)
 -- Name: uso_suelo pk_uso_suelo; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2366,6 +2609,7 @@ ALTER TABLE ONLY public.uso_suelo
 
 
 --
+-- TOC entry 5120 (class 2606 OID 19816)
 -- Name: visitas pk_visitas; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2374,6 +2618,7 @@ ALTER TABLE ONLY public.visitas
 
 
 --
+-- TOC entry 5040 (class 2606 OID 19818)
 -- Name: acceso_via uq_acceso_via_nombre; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2382,6 +2627,7 @@ ALTER TABLE ONLY public.acceso_via
 
 
 --
+-- TOC entry 5044 (class 2606 OID 19820)
 -- Name: campana_propiedades uq_campana_propiedades_par; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2390,6 +2636,7 @@ ALTER TABLE ONLY public.campana_propiedades
 
 
 --
+-- TOC entry 5050 (class 2606 OID 19822)
 -- Name: canales_marketing uq_canales_marketing_nombre; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2398,6 +2645,7 @@ ALTER TABLE ONLY public.canales_marketing
 
 
 --
+-- TOC entry 5054 (class 2606 OID 19824)
 -- Name: ciudades uq_ciudades_nombre; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2406,6 +2654,7 @@ ALTER TABLE ONLY public.ciudades
 
 
 --
+-- TOC entry 5058 (class 2606 OID 19826)
 -- Name: detalle_construcciones uq_detalle_construcciones_propiedad; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2414,6 +2663,7 @@ ALTER TABLE ONLY public.detalle_construcciones
 
 
 --
+-- TOC entry 5062 (class 2606 OID 19828)
 -- Name: detalle_terrenos uq_detalle_terrenos_propiedad; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2422,6 +2672,7 @@ ALTER TABLE ONLY public.detalle_terrenos
 
 
 --
+-- TOC entry 5066 (class 2606 OID 19830)
 -- Name: empleados uq_empleados_email; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2430,6 +2681,7 @@ ALTER TABLE ONLY public.empleados
 
 
 --
+-- TOC entry 5070 (class 2606 OID 19832)
 -- Name: estado_conservacion uq_estado_conservacion_nombre; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2438,6 +2690,7 @@ ALTER TABLE ONLY public.estado_conservacion
 
 
 --
+-- TOC entry 5078 (class 2606 OID 19834)
 -- Name: personas uq_personas_email; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2446,6 +2699,7 @@ ALTER TABLE ONLY public.personas
 
 
 --
+-- TOC entry 5082 (class 2606 OID 19836)
 -- Name: propiedad_propietarios uq_propiedad_propietarios_par; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2454,6 +2708,7 @@ ALTER TABLE ONLY public.propiedad_propietarios
 
 
 --
+-- TOC entry 5086 (class 2606 OID 19838)
 -- Name: propiedades uq_propiedades_matricula; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2462,6 +2717,7 @@ ALTER TABLE ONLY public.propiedades
 
 
 --
+-- TOC entry 5090 (class 2606 OID 19840)
 -- Name: publicacion_canales uq_publicacion_canales_par; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2470,6 +2726,7 @@ ALTER TABLE ONLY public.publicacion_canales
 
 
 --
+-- TOC entry 5096 (class 2606 OID 19842)
 -- Name: rol_empleado uq_rol_empleado_nombre; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2478,6 +2735,7 @@ ALTER TABLE ONLY public.rol_empleado
 
 
 --
+-- TOC entry 5102 (class 2606 OID 19844)
 -- Name: tipos_inmueble uq_tipos_inmueble_nombre; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2486,6 +2744,7 @@ ALTER TABLE ONLY public.tipos_inmueble
 
 
 --
+-- TOC entry 5106 (class 2606 OID 19846)
 -- Name: tipos_operacion uq_tipos_operacion_nombre; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2494,6 +2753,7 @@ ALTER TABLE ONLY public.tipos_operacion
 
 
 --
+-- TOC entry 5110 (class 2606 OID 19848)
 -- Name: tipos_persona uq_tipos_persona_nombre; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2502,6 +2762,7 @@ ALTER TABLE ONLY public.tipos_persona
 
 
 --
+-- TOC entry 5114 (class 2606 OID 19850)
 -- Name: transacciones uq_transacciones_oferta; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2510,6 +2771,7 @@ ALTER TABLE ONLY public.transacciones
 
 
 --
+-- TOC entry 5118 (class 2606 OID 19852)
 -- Name: uso_suelo uq_uso_suelo_nombre; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2518,6 +2780,7 @@ ALTER TABLE ONLY public.uso_suelo
 
 
 --
+-- TOC entry 5151 (class 2620 OID 19853)
 -- Name: ofertas trg_oferta_aceptada_en_negociacion; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
@@ -2525,6 +2788,7 @@ CREATE TRIGGER trg_oferta_aceptada_en_negociacion AFTER INSERT OR UPDATE OF esta
 
 
 --
+-- TOC entry 5152 (class 2620 OID 19854)
 -- Name: propiedades trg_propiedades_actualizado; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
@@ -2532,6 +2796,7 @@ CREATE TRIGGER trg_propiedades_actualizado BEFORE UPDATE ON public.propiedades F
 
 
 --
+-- TOC entry 5153 (class 2620 OID 19855)
 -- Name: publicaciones trg_publicaciones_actualizado; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
@@ -2539,6 +2804,7 @@ CREATE TRIGGER trg_publicaciones_actualizado BEFORE UPDATE ON public.publicacion
 
 
 --
+-- TOC entry 5154 (class 2620 OID 19856)
 -- Name: solicitudes_propiedad trg_solicitud_motivo_descarte; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
@@ -2546,6 +2812,7 @@ CREATE TRIGGER trg_solicitud_motivo_descarte BEFORE INSERT OR UPDATE ON public.s
 
 
 --
+-- TOC entry 5155 (class 2620 OID 19857)
 -- Name: solicitudes_propiedad trg_solicitud_no_es_dueno; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
@@ -2553,6 +2820,7 @@ CREATE TRIGGER trg_solicitud_no_es_dueno BEFORE INSERT OR UPDATE OF persona_id, 
 
 
 --
+-- TOC entry 5156 (class 2620 OID 19858)
 -- Name: solicitudes_propiedad trg_solicitudes_actualizado; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
@@ -2560,6 +2828,7 @@ CREATE TRIGGER trg_solicitudes_actualizado BEFORE UPDATE ON public.solicitudes_p
 
 
 --
+-- TOC entry 5157 (class 2620 OID 19859)
 -- Name: transacciones trg_validar_y_aplicar_transaccion; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
@@ -2567,6 +2836,7 @@ CREATE TRIGGER trg_validar_y_aplicar_transaccion BEFORE INSERT ON public.transac
 
 
 --
+-- TOC entry 5123 (class 2606 OID 19860)
 -- Name: campanas fk_campanas_canal; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2575,6 +2845,7 @@ ALTER TABLE ONLY public.campanas
 
 
 --
+-- TOC entry 5121 (class 2606 OID 19865)
 -- Name: campana_propiedades fk_cp_campana; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2583,6 +2854,7 @@ ALTER TABLE ONLY public.campana_propiedades
 
 
 --
+-- TOC entry 5122 (class 2606 OID 19870)
 -- Name: campana_propiedades fk_cp_propiedad; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2591,6 +2863,7 @@ ALTER TABLE ONLY public.campana_propiedades
 
 
 --
+-- TOC entry 5124 (class 2606 OID 19875)
 -- Name: detalle_construcciones fk_dc_estado; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2599,6 +2872,7 @@ ALTER TABLE ONLY public.detalle_construcciones
 
 
 --
+-- TOC entry 5125 (class 2606 OID 19880)
 -- Name: detalle_construcciones fk_dc_propiedad; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2607,6 +2881,7 @@ ALTER TABLE ONLY public.detalle_construcciones
 
 
 --
+-- TOC entry 5126 (class 2606 OID 19885)
 -- Name: detalle_terrenos fk_dt_acceso; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2615,6 +2890,7 @@ ALTER TABLE ONLY public.detalle_terrenos
 
 
 --
+-- TOC entry 5127 (class 2606 OID 19890)
 -- Name: detalle_terrenos fk_dt_propiedad; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2623,6 +2899,7 @@ ALTER TABLE ONLY public.detalle_terrenos
 
 
 --
+-- TOC entry 5128 (class 2606 OID 19895)
 -- Name: detalle_terrenos fk_dt_uso; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2631,6 +2908,7 @@ ALTER TABLE ONLY public.detalle_terrenos
 
 
 --
+-- TOC entry 5129 (class 2606 OID 19900)
 -- Name: empleados fk_empleados_rol; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2639,6 +2917,7 @@ ALTER TABLE ONLY public.empleados
 
 
 --
+-- TOC entry 5130 (class 2606 OID 19905)
 -- Name: ofertas fk_ofertas_solicitud; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2647,6 +2926,7 @@ ALTER TABLE ONLY public.ofertas
 
 
 --
+-- TOC entry 5139 (class 2606 OID 19910)
 -- Name: publicacion_canales fk_pc_canal; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2655,6 +2935,7 @@ ALTER TABLE ONLY public.publicacion_canales
 
 
 --
+-- TOC entry 5140 (class 2606 OID 19915)
 -- Name: publicacion_canales fk_pc_publicacion; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2663,6 +2944,7 @@ ALTER TABLE ONLY public.publicacion_canales
 
 
 --
+-- TOC entry 5131 (class 2606 OID 19920)
 -- Name: persona_roles fk_persona_roles_persona; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2671,6 +2953,7 @@ ALTER TABLE ONLY public.persona_roles
 
 
 --
+-- TOC entry 5132 (class 2606 OID 19925)
 -- Name: persona_roles fk_persona_roles_tipo; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2679,6 +2962,7 @@ ALTER TABLE ONLY public.persona_roles
 
 
 --
+-- TOC entry 5133 (class 2606 OID 19930)
 -- Name: personas fk_personas_ciudad; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2687,6 +2971,7 @@ ALTER TABLE ONLY public.personas
 
 
 --
+-- TOC entry 5134 (class 2606 OID 19935)
 -- Name: propiedad_propietarios fk_pp_persona; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2695,6 +2980,7 @@ ALTER TABLE ONLY public.propiedad_propietarios
 
 
 --
+-- TOC entry 5135 (class 2606 OID 19940)
 -- Name: propiedad_propietarios fk_pp_propiedad; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2703,6 +2989,7 @@ ALTER TABLE ONLY public.propiedad_propietarios
 
 
 --
+-- TOC entry 5136 (class 2606 OID 19945)
 -- Name: propiedades fk_propiedades_ciudad; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2711,6 +2998,7 @@ ALTER TABLE ONLY public.propiedades
 
 
 --
+-- TOC entry 5137 (class 2606 OID 19950)
 -- Name: propiedades fk_propiedades_responsable; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2719,6 +3007,7 @@ ALTER TABLE ONLY public.propiedades
 
 
 --
+-- TOC entry 5138 (class 2606 OID 19955)
 -- Name: propiedades fk_propiedades_tipo; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2727,6 +3016,7 @@ ALTER TABLE ONLY public.propiedades
 
 
 --
+-- TOC entry 5141 (class 2606 OID 19960)
 -- Name: publicaciones fk_publicaciones_propiedad; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2735,6 +3025,7 @@ ALTER TABLE ONLY public.publicaciones
 
 
 --
+-- TOC entry 5142 (class 2606 OID 19965)
 -- Name: publicaciones fk_publicaciones_tipo; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2743,6 +3034,7 @@ ALTER TABLE ONLY public.publicaciones
 
 
 --
+-- TOC entry 5143 (class 2606 OID 19970)
 -- Name: solicitudes_propiedad fk_sol_campana; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2751,6 +3043,7 @@ ALTER TABLE ONLY public.solicitudes_propiedad
 
 
 --
+-- TOC entry 5144 (class 2606 OID 19975)
 -- Name: solicitudes_propiedad fk_sol_empleado; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2759,6 +3052,7 @@ ALTER TABLE ONLY public.solicitudes_propiedad
 
 
 --
+-- TOC entry 5145 (class 2606 OID 19980)
 -- Name: solicitudes_propiedad fk_sol_persona; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2767,6 +3061,7 @@ ALTER TABLE ONLY public.solicitudes_propiedad
 
 
 --
+-- TOC entry 5146 (class 2606 OID 19985)
 -- Name: solicitudes_propiedad fk_sol_propiedad; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2775,6 +3070,7 @@ ALTER TABLE ONLY public.solicitudes_propiedad
 
 
 --
+-- TOC entry 5147 (class 2606 OID 19990)
 -- Name: transacciones fk_transacciones_empleado; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2783,6 +3079,7 @@ ALTER TABLE ONLY public.transacciones
 
 
 --
+-- TOC entry 5148 (class 2606 OID 19995)
 -- Name: transacciones fk_transacciones_oferta; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2791,6 +3088,7 @@ ALTER TABLE ONLY public.transacciones
 
 
 --
+-- TOC entry 5149 (class 2606 OID 20000)
 -- Name: visitas fk_visitas_empleado; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2799,6 +3097,7 @@ ALTER TABLE ONLY public.visitas
 
 
 --
+-- TOC entry 5150 (class 2606 OID 20005)
 -- Name: visitas fk_visitas_solicitud; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2806,9 +3105,11 @@ ALTER TABLE ONLY public.visitas
     ADD CONSTRAINT fk_visitas_solicitud FOREIGN KEY (solicitud_id) REFERENCES public.solicitudes_propiedad(solicitud_id) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
+-- Completed on 2026-11-17 15:11:22
+
 --
 -- PostgreSQL database dump complete
 --
 
-\unrestrict VKeBQYf72PxEUgu3aWaAg4egsoHJyRSKpOB1pSrZuyTKSNzR8rYyhLO8cAHMObo
+\unrestrict qZiw7Bu6C0lGHbQqtfF06ts40lOAbA0mIeVfAhvpiCtJgvkRiEmcDICbZt9NsBg
 

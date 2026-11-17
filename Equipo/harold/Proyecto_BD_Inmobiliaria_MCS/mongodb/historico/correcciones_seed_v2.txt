@@ -1,0 +1,39 @@
+Correcciones del seed v1 -> v2 (validado contra PostgreSQL inmobiliaria_mcs)
+Referencias persona/propiedad corregidas: 29
+Fechas ajustadas (anteriores a la solicitud): 6
+
+solicitud 4: persona/propiedad 26/2 -> 26/1
+solicitud 4: persona/propiedad 26/2 -> 26/1
+solicitud 5: persona/propiedad 27/2 -> 26/2
+solicitud 5: persona/propiedad 27/2 -> 26/2
+solicitud 6: persona/propiedad 28/6 -> 27/2
+solicitud 6: persona/propiedad 28/6 -> 27/2
+solicitud 7: persona/propiedad 29/6 -> 28/2
+solicitud 8: persona/propiedad 30/7 -> 29/2
+solicitud 8: persona/propiedad 30/7 -> 29/2
+solicitud 9: persona/propiedad 31/7 -> 29/3
+solicitud 10: persona/propiedad 32/8 -> 30/3
+solicitud 10: persona/propiedad 32/8 -> 30/3
+solicitud 11: persona/propiedad 33/11 -> 31/3
+solicitud 11: persona/propiedad 33/11 -> 31/3
+solicitud 12: persona/propiedad 34/11 -> 32/4
+solicitud 13: persona/propiedad 35/12 -> 33/4
+solicitud 14: persona/propiedad 36/12 -> 34/4
+solicitud 15: persona/propiedad 37/13 -> 35/5
+solicitud 16: persona/propiedad 38/13 -> 36/5
+solicitud 17: persona/propiedad 39/14 -> 37/5
+solicitud 18: persona/propiedad 40/15 -> 35/23
+solicitud 18: persona/propiedad 40/15 -> 35/23
+solicitud 19: persona/propiedad 41/16 -> 39/24
+solicitud 20: persona/propiedad 42/17 -> 43/25
+solicitud 20: fecha 2026-03-27T14:00:00Z -> 2026-03-27T17:00:00Z
+solicitud 21: persona/propiedad 43/18 -> 47/26
+solicitud 21: fecha 2026-03-28T18:00:00Z -> 2026-03-29T17:00:00Z
+solicitud 22: persona/propiedad 44/19 -> 51/27
+solicitud 22: fecha 2026-03-29T12:00:00Z -> 2026-03-31T17:00:00Z
+solicitud 23: persona/propiedad 45/20 -> 55/28
+solicitud 23: fecha 2026-03-30T10:00:00Z -> 2026-04-02T17:00:00Z
+solicitud 24: persona/propiedad 46/21 -> 23/29
+solicitud 24: fecha 2026-04-01T09:00:00Z -> 2026-04-04T17:00:00Z
+solicitud 25: persona/propiedad 47/22 -> 27/30
+solicitud 25: fecha 2026-04-02T11:30:00Z -> 2026-04-06T17:00:00Z
