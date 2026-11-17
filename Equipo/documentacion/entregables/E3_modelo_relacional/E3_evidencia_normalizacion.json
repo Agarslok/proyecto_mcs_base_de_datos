@@ -1,0 +1,72 @@
+{
+  "proyecto": "Sistema MCS Inmobiliaria",
+  "esquema_version": "BD_MCS v1.3",
+  "base_datos": "inmobiliaria_mcs",
+  "total_tablas": 24,
+  "fecha_documento": "2026-11",
+  "verificacion_formas_normales": [
+    {
+      "forma": "1FN",
+      "nombre_largo": "Primera forma normal",
+      "criterio": "Cada intersección fila-columna contiene un valor atómico; sin grupos repetidos en una celda.",
+      "resultado": "CUMPLE",
+      "tablas_verificadas": 24,
+      "accion_diseno": "Relaciones N:M y multivaluadas en tablas puente; atributos compuestos de nombre en columnas separadas (nombres, apellidos).",
+      "contraejemplo_evitado": "Columnas propietarios o canales como listas de texto en propiedades.",
+      "tablas_clave_ejemplo": [
+        "propiedad_propietarios",
+        "publicacion_canales",
+        "campana_propiedades",
+        "persona_roles"
+      ]
+    },
+    {
+      "forma": "2FN",
+      "nombre_largo": "Segunda forma normal",
+      "criterio": "1FN y ningún atributo no primo depende de una parte de la clave primaria.",
+      "resultado": "CUMPLE",
+      "tablas_verificadas": 24,
+      "accion_diseno": "Única PK compuesta (persona_roles) sin atributos descriptivos; puentes solo con FKs; nombres en personas no en puentes.",
+      "contraejemplo_evitado": "nombres del dueño en propiedad_propietarios (dependencia parcial de persona_id)."
+    },
+    {
+      "forma": "3FN",
+      "nombre_largo": "Tercera forma normal",
+      "criterio": "2FN y para toda DF no trivial X→A, X es superclave o A es primo.",
+      "resultado": "CUMPLE",
+      "tablas_verificadas": 24,
+      "accion_diseno": "No redundar ciudad, canal, rol, matrícula ni título en tablas hijas; obtener por JOIN.",
+      "excepcion_documentada": {
+        "tabla": "transacciones",
+        "columna": "comision_valor",
+        "regla": "R16",
+        "implementacion": "GENERATED ALWAYS en PostgreSQL; no es hecho editable."
+      }
+    },
+    {
+      "forma": "BCNF",
+      "nombre_largo": "Forma normal de Boyce-Codd",
+      "criterio": "Todo determinante de una DF no trivial es superclave.",
+      "resultado": "CUMPLE",
+      "tablas_verificadas": 24,
+      "accion_diseno": "Sin descomponer tablas que ya cumplen; campana_id nullable (R10) en solicitudes, no tablas extra.",
+      "decision_no_descomponer": [
+        "solicitudes_propiedad",
+        "propiedades"
+      ]
+    }
+  ],
+  "recorrido_compacto": [
+    "Diseño ingenuo (listas en celdas) → viola 1FN",
+    "Atomicidad + puentes N:M → 1FN",
+    "Sin descriptores en PK parcial → 2FN",
+    "Ciudad, canal, rol, matrícula por JOIN; visita sin copiar propiedad → 3FN",
+    "Determinantes = superclaves; comision_valor generada → BCNF"
+  ],
+  "referencias": {
+    "documento_completo": "E3_modelo_relacional_normalizacion.md",
+    "dependencias_funcionales": "E3_dependencias_funcionales.json",
+    "claves": "E3_claves_pk_fk.json",
+    "ddl_implementacion": "../E4_postgresql/sql/01_ddl_f4.sql"
+  }
+}

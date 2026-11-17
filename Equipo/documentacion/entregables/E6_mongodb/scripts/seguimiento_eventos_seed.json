@@ -1,0 +1,527 @@
+[
+  {
+    "solicitud_id": 1,
+    "persona_id": 23,
+    "propiedad_id": 1,
+    "canal": "whatsapp",
+    "direccion": "entrante",
+    "empleado_id": 4,
+    "ocurrio_en": "2026-03-02T15:00:00Z",
+    "contenido": {
+      "resumen": "Primer contacto",
+      "mensaje": "Vi el aviso en Meta, ¿sigue disponible?"
+    },
+    "metadata": {
+      "sentimiento": "neutral",
+      "adjuntos": []
+    }
+  },
+  {
+    "solicitud_id": 1,
+    "persona_id": 23,
+    "propiedad_id": 1,
+    "canal": "nota_interna",
+    "direccion": "interno",
+    "empleado_id": 4,
+    "ocurrio_en": "2026-03-02T15:15:00Z",
+    "contenido": {
+      "texto": "Lead frío, requiere nurturing"
+    },
+    "metadata": {}
+  },
+  {
+    "solicitud_id": 2,
+    "persona_id": 24,
+    "propiedad_id": 1,
+    "canal": "whatsapp",
+    "direccion": "saliente",
+    "empleado_id": 5,
+    "ocurrio_en": "2026-03-04T16:30:00Z",
+    "contenido": {
+      "resumen": "Envío ficha",
+      "mensaje": "Adjunto planos y valor de administración."
+    },
+    "metadata": {
+      "adjuntos": [
+        "ficha_propiedad_1.pdf"
+      ]
+    }
+  },
+  {
+    "solicitud_id": 2,
+    "persona_id": 24,
+    "propiedad_id": 1,
+    "canal": "llamada",
+    "direccion": "saliente",
+    "empleado_id": 5,
+    "ocurrio_en": "2026-03-05T20:00:00Z",
+    "contenido": {
+      "resumen": "Llamada de calificación"
+    },
+    "metadata": {
+      "duracion_seg": 420,
+      "sentimiento": "positivo"
+    }
+  },
+  {
+    "solicitud_id": 3,
+    "persona_id": 25,
+    "propiedad_id": 1,
+    "canal": "email",
+    "direccion": "entrante",
+    "empleado_id": 6,
+    "ocurrio_en": "2026-03-06T13:00:00Z",
+    "contenido": {
+      "asunto": "Interés formal",
+      "cuerpo": "Solicito carta de tradición y último recibo de administración."
+    },
+    "metadata": {}
+  },
+  {
+    "solicitud_id": 4,
+    "persona_id": 26,
+    "propiedad_id": 1,
+    "canal": "feria",
+    "direccion": "entrante",
+    "empleado_id": 7,
+    "ocurrio_en": "2026-03-08T18:00:00Z",
+    "contenido": {
+      "evento": "Corferias",
+      "nota": "Registro en stand campaña 5"
+    },
+    "metadata": {
+      "stand_id": "B12"
+    }
+  },
+  {
+    "solicitud_id": 4,
+    "persona_id": 26,
+    "propiedad_id": 1,
+    "canal": "whatsapp",
+    "direccion": "entrante",
+    "empleado_id": 7,
+    "ocurrio_en": "2026-03-09T10:00:00Z",
+    "contenido": {
+      "mensaje": "Quiero agendar visita para el jueves."
+    },
+    "metadata": {
+      "sentimiento": "positivo"
+    }
+  },
+  {
+    "solicitud_id": 5,
+    "persona_id": 26,
+    "propiedad_id": 2,
+    "canal": "llamada",
+    "direccion": "entrante",
+    "empleado_id": 8,
+    "ocurrio_en": "2026-03-10T21:30:00Z",
+    "contenido": {
+      "resumen": "Dudas sobre financiación"
+    },
+    "metadata": {
+      "duracion_seg": 900
+    }
+  },
+  {
+    "solicitud_id": 6,
+    "persona_id": 27,
+    "propiedad_id": 2,
+    "canal": "whatsapp",
+    "direccion": "saliente",
+    "empleado_id": 4,
+    "ocurrio_en": "2026-03-12T14:00:00Z",
+    "contenido": {
+      "mensaje": "Recordatorio visita programada mañana 10am."
+    },
+    "metadata": {}
+  },
+  {
+    "solicitud_id": 7,
+    "persona_id": 28,
+    "propiedad_id": 2,
+    "canal": "nota_interna",
+    "direccion": "interno",
+    "empleado_id": 4,
+    "ocurrio_en": "2026-03-13T09:00:00Z",
+    "contenido": {
+      "texto": "Cliente exige descuento 8%, derivar a coordinador."
+    },
+    "metadata": {
+      "prioridad": "alta"
+    }
+  },
+  {
+    "solicitud_id": 8,
+    "persona_id": 29,
+    "propiedad_id": 2,
+    "canal": "email",
+    "direccion": "saliente",
+    "empleado_id": 9,
+    "ocurrio_en": "2026-03-14T11:00:00Z",
+    "contenido": {
+      "asunto": "Comparativo de zona",
+      "cuerpo": "Enviamos tres opciones similares en Granada."
+    },
+    "metadata": {}
+  },
+  {
+    "solicitud_id": 9,
+    "persona_id": 29,
+    "propiedad_id": 3,
+    "canal": "whatsapp",
+    "direccion": "entrante",
+    "empleado_id": 9,
+    "ocurrio_en": "2026-03-15T16:45:00Z",
+    "contenido": {
+      "mensaje": "¿Aceptan mascotas?"
+    },
+    "metadata": {
+      "sentimiento": "neutral"
+    }
+  },
+  {
+    "solicitud_id": 10,
+    "persona_id": 30,
+    "propiedad_id": 3,
+    "canal": "llamada",
+    "direccion": "saliente",
+    "empleado_id": 5,
+    "ocurrio_en": "2026-03-16T17:00:00Z",
+    "contenido": {
+      "resumen": "Confirmación visita"
+    },
+    "metadata": {
+      "duracion_seg": 180
+    }
+  },
+  {
+    "solicitud_id": 11,
+    "persona_id": 31,
+    "propiedad_id": 3,
+    "canal": "whatsapp",
+    "direccion": "entrante",
+    "empleado_id": 6,
+    "ocurrio_en": "2026-03-18T08:30:00Z",
+    "contenido": {
+      "mensaje": "Llegué por referido de un vecino."
+    },
+    "metadata": {
+      "campana_ref": "referidos"
+    }
+  },
+  {
+    "solicitud_id": 12,
+    "persona_id": 32,
+    "propiedad_id": 4,
+    "canal": "nota_interna",
+    "direccion": "interno",
+    "empleado_id": 6,
+    "ocurrio_en": "2026-03-19T12:00:00Z",
+    "contenido": {
+      "texto": "Prospecto califica 4/5, presupuesto acorde."
+    },
+    "metadata": {}
+  },
+  {
+    "solicitud_id": 13,
+    "persona_id": 33,
+    "propiedad_id": 4,
+    "canal": "email",
+    "direccion": "entrante",
+    "empleado_id": 7,
+    "ocurrio_en": "2026-03-20T10:00:00Z",
+    "contenido": {
+      "asunto": "Solicitud visita virtual",
+      "cuerpo": "¿Tienen tour 360?"
+    },
+    "metadata": {}
+  },
+  {
+    "solicitud_id": 14,
+    "persona_id": 34,
+    "propiedad_id": 4,
+    "canal": "whatsapp",
+    "direccion": "saliente",
+    "empleado_id": 7,
+    "ocurrio_en": "2026-03-21T15:00:00Z",
+    "contenido": {
+      "mensaje": "Enlace Meet enviado para tour."
+    },
+    "metadata": {
+      "adjuntos": [
+        "meet_link"
+      ]
+    }
+  },
+  {
+    "solicitud_id": 15,
+    "persona_id": 35,
+    "propiedad_id": 5,
+    "canal": "llamada",
+    "direccion": "entrante",
+    "empleado_id": 8,
+    "ocurrio_en": "2026-03-22T19:00:00Z",
+    "contenido": {
+      "resumen": "Cliente cancela por viaje"
+    },
+    "metadata": {
+      "duracion_seg": 240,
+      "motivo": "posterga_compra"
+    }
+  },
+  {
+    "solicitud_id": 16,
+    "persona_id": 36,
+    "propiedad_id": 5,
+    "canal": "whatsapp",
+    "direccion": "entrante",
+    "empleado_id": 8,
+    "ocurrio_en": "2026-03-23T11:00:00Z",
+    "contenido": {
+      "mensaje": "Retomo búsqueda en abril."
+    },
+    "metadata": {}
+  },
+  {
+    "solicitud_id": 17,
+    "persona_id": 37,
+    "propiedad_id": 5,
+    "canal": "feria",
+    "direccion": "entrante",
+    "empleado_id": 9,
+    "ocurrio_en": "2026-03-24T16:00:00Z",
+    "contenido": {
+      "evento": "Open house Usaquen"
+    },
+    "metadata": {}
+  },
+  {
+    "solicitud_id": 18,
+    "persona_id": 35,
+    "propiedad_id": 23,
+    "canal": "whatsapp",
+    "direccion": "entrante",
+    "empleado_id": 4,
+    "ocurrio_en": "2026-03-25T09:30:00Z",
+    "contenido": {
+      "mensaje": "Oferta verbal 5% bajo precio."
+    },
+    "metadata": {
+      "sentimiento": "positivo"
+    }
+  },
+  {
+    "solicitud_id": 19,
+    "persona_id": 39,
+    "propiedad_id": 24,
+    "canal": "nota_interna",
+    "direccion": "interno",
+    "empleado_id": 5,
+    "ocurrio_en": "2026-03-26T08:00:00Z",
+    "contenido": {
+      "texto": "Coordinar visita con propietario."
+    },
+    "metadata": {}
+  },
+  {
+    "solicitud_id": 20,
+    "persona_id": 43,
+    "propiedad_id": 25,
+    "canal": "email",
+    "direccion": "saliente",
+    "empleado_id": 6,
+    "ocurrio_en": "2026-03-27T16:00:00Z",
+    "contenido": {
+      "asunto": "Documentos preaprobación crédito",
+      "cuerpo": "Lista de requisitos banco aliado."
+    },
+    "metadata": {}
+  },
+  {
+    "solicitud_id": 21,
+    "persona_id": 47,
+    "propiedad_id": 26,
+    "canal": "llamada",
+    "direccion": "saliente",
+    "empleado_id": 7,
+    "ocurrio_en": "2026-03-29T16:00:00Z",
+    "contenido": {
+      "resumen": "Seguimiento post-visita"
+    },
+    "metadata": {
+      "duracion_seg": 600
+    }
+  },
+  {
+    "solicitud_id": 22,
+    "persona_id": 51,
+    "propiedad_id": 27,
+    "canal": "whatsapp",
+    "direccion": "entrante",
+    "empleado_id": 8,
+    "ocurrio_en": "2026-03-31T16:00:00Z",
+    "contenido": {
+      "mensaje": "¿Cuánto es el impuesto predial?"
+    },
+    "metadata": {}
+  },
+  {
+    "solicitud_id": 23,
+    "persona_id": 55,
+    "propiedad_id": 28,
+    "canal": "whatsapp",
+    "direccion": "saliente",
+    "empleado_id": 9,
+    "ocurrio_en": "2026-04-02T16:00:00Z",
+    "contenido": {
+      "mensaje": "Precio actualizado tras revisión avalúo."
+    },
+    "metadata": {}
+  },
+  {
+    "solicitud_id": 24,
+    "persona_id": 23,
+    "propiedad_id": 29,
+    "canal": "email",
+    "direccion": "entrante",
+    "empleado_id": 4,
+    "ocurrio_en": "2026-04-04T16:00:00Z",
+    "contenido": {
+      "asunto": "Desistimiento",
+      "cuerpo": "Por ahora no continúo el proceso."
+    },
+    "metadata": {
+      "sentimiento": "negativo"
+    }
+  },
+  {
+    "solicitud_id": 25,
+    "persona_id": 27,
+    "propiedad_id": 30,
+    "canal": "nota_interna",
+    "direccion": "interno",
+    "empleado_id": 5,
+    "ocurrio_en": "2026-04-06T16:00:00Z",
+    "contenido": {
+      "texto": "Marcar como descartada: presupuesto insuficiente",
+      "motivo_descarte_ref": "presupuesto"
+    },
+    "metadata": {}
+  },
+  {
+    "solicitud_id": 2,
+    "persona_id": 24,
+    "propiedad_id": 1,
+    "canal": "whatsapp",
+    "direccion": "entrante",
+    "empleado_id": 5,
+    "ocurrio_en": "2026-04-03T13:00:00Z",
+    "contenido": {
+      "mensaje": "Confirmo asistencia visita sábado."
+    },
+    "metadata": {
+      "sentimiento": "positivo"
+    }
+  },
+  {
+    "solicitud_id": 3,
+    "persona_id": 25,
+    "propiedad_id": 1,
+    "canal": "llamada",
+    "direccion": "entrante",
+    "empleado_id": 6,
+    "ocurrio_en": "2026-04-04T17:00:00Z",
+    "contenido": {
+      "resumen": "Negociación avanzada"
+    },
+    "metadata": {
+      "duracion_seg": 1200
+    }
+  },
+  {
+    "solicitud_id": 5,
+    "persona_id": 26,
+    "propiedad_id": 2,
+    "canal": "whatsapp",
+    "direccion": "saliente",
+    "empleado_id": 8,
+    "ocurrio_en": "2026-04-05T08:00:00Z",
+    "contenido": {
+      "mensaje": "Recordatorio documentos banco."
+    },
+    "metadata": {}
+  },
+  {
+    "solicitud_id": 8,
+    "persona_id": 29,
+    "propiedad_id": 2,
+    "canal": "nota_interna",
+    "direccion": "interno",
+    "empleado_id": 9,
+    "ocurrio_en": "2026-04-06T16:00:00Z",
+    "contenido": {
+      "texto": "Cliente VIP, priorizar respuesta < 2h."
+    },
+    "metadata": {
+      "prioridad": "alta"
+    }
+  },
+  {
+    "solicitud_id": 11,
+    "persona_id": 31,
+    "propiedad_id": 3,
+    "canal": "llamada",
+    "direccion": "saliente",
+    "empleado_id": 6,
+    "ocurrio_en": "2026-04-07T10:30:00Z",
+    "contenido": {
+      "resumen": "Post-oferta aceptada"
+    },
+    "metadata": {
+      "duracion_seg": 300
+    }
+  },
+  {
+    "solicitud_id": 18,
+    "persona_id": 35,
+    "propiedad_id": 23,
+    "canal": "email",
+    "direccion": "saliente",
+    "empleado_id": 4,
+    "ocurrio_en": "2026-04-08T14:00:00Z",
+    "contenido": {
+      "asunto": "Contraoferta propietario",
+      "cuerpo": "Propietario acepta 3% de descuento máximo."
+    },
+    "metadata": {}
+  },
+  {
+    "solicitud_id": 6,
+    "persona_id": 27,
+    "propiedad_id": 2,
+    "canal": "whatsapp",
+    "direccion": "entrante",
+    "empleado_id": 4,
+    "ocurrio_en": "2026-04-09T11:00:00Z",
+    "contenido": {
+      "mensaje": "¿Incluye parqueadero visitantes?"
+    },
+    "metadata": {}
+  },
+  {
+    "solicitud_id": 10,
+    "persona_id": 30,
+    "propiedad_id": 3,
+    "canal": "nota_interna",
+    "direccion": "interno",
+    "empleado_id": 5,
+    "ocurrio_en": "2026-04-10T09:00:00Z",
+    "contenido": {
+      "texto": "Visita realizada, feedback en tabla visitas SQL."
+    },
+    "metadata": {
+      "sync_pg": true
+    }
+  }
+]

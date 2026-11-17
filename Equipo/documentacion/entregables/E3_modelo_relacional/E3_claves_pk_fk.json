@@ -1,0 +1,181 @@
+{
+  "esquema_version": "BD_MCS v1.3",
+  "total_tablas": 24,
+  "tablas": [
+    {
+      "tabla": "ciudades",
+      "pk": ["ciudad_id"],
+      "fk": []
+    },
+    {
+      "tabla": "tipos_persona",
+      "pk": ["tipo_persona_id"],
+      "fk": []
+    },
+    {
+      "tabla": "tipos_inmueble",
+      "pk": ["tipo_inmueble_id"],
+      "fk": []
+    },
+    {
+      "tabla": "tipos_operacion",
+      "pk": ["tipo_operacion_id"],
+      "fk": []
+    },
+    {
+      "tabla": "estado_conservacion",
+      "pk": ["estado_conservacion_id"],
+      "fk": []
+    },
+    {
+      "tabla": "uso_suelo",
+      "pk": ["uso_suelo_id"],
+      "fk": []
+    },
+    {
+      "tabla": "acceso_via",
+      "pk": ["acceso_via_id"],
+      "fk": []
+    },
+    {
+      "tabla": "rol_empleado",
+      "pk": ["rol_id"],
+      "fk": []
+    },
+    {
+      "tabla": "canales_marketing",
+      "pk": ["canal_id"],
+      "fk": []
+    },
+    {
+      "tabla": "personas",
+      "pk": ["persona_id"],
+      "fk": [
+        { "columna": "ciudad_id", "referencia": "ciudades(ciudad_id)" }
+      ]
+    },
+    {
+      "tabla": "persona_roles",
+      "pk": ["persona_id", "tipo_persona_id"],
+      "fk": [
+        { "columna": "persona_id", "referencia": "personas(persona_id)" },
+        { "columna": "tipo_persona_id", "referencia": "tipos_persona(tipo_persona_id)" }
+      ]
+    },
+    {
+      "tabla": "empleados",
+      "pk": ["empleado_id"],
+      "fk": [
+        { "columna": "rol_id", "referencia": "rol_empleado(rol_id)" }
+      ]
+    },
+    {
+      "tabla": "propiedades",
+      "pk": ["propiedad_id"],
+      "fk": [
+        { "columna": "tipo_inmueble_id", "referencia": "tipos_inmueble(tipo_inmueble_id)" },
+        { "columna": "ciudad_id", "referencia": "ciudades(ciudad_id)" },
+        { "columna": "responsable_id", "referencia": "empleados(empleado_id)" }
+      ],
+      "unicas_negocio": ["matricula_inmobiliaria"]
+    },
+    {
+      "tabla": "propiedad_propietarios",
+      "pk": ["propiedad_propietario_id"],
+      "fk": [
+        { "columna": "persona_id", "referencia": "personas(persona_id)" },
+        { "columna": "propiedad_id", "referencia": "propiedades(propiedad_id)" }
+      ]
+    },
+    {
+      "tabla": "detalle_construcciones",
+      "pk": ["detalle_construccion_id"],
+      "fk": [
+        { "columna": "propiedad_id", "referencia": "propiedades(propiedad_id)" },
+        { "columna": "estado_conservacion_id", "referencia": "estado_conservacion(estado_conservacion_id)" }
+      ],
+      "cardinalidad_notas": "0..1 por propiedad (especialización)"
+    },
+    {
+      "tabla": "detalle_terrenos",
+      "pk": ["detalle_terreno_id"],
+      "fk": [
+        { "columna": "propiedad_id", "referencia": "propiedades(propiedad_id)" },
+        { "columna": "uso_suelo_id", "referencia": "uso_suelo(uso_suelo_id)" },
+        { "columna": "acceso_via_id", "referencia": "acceso_via(acceso_via_id)" }
+      ],
+      "cardinalidad_notas": "0..1 por propiedad (especialización)"
+    },
+    {
+      "tabla": "publicaciones",
+      "pk": ["publicacion_id"],
+      "fk": [
+        { "columna": "propiedad_id", "referencia": "propiedades(propiedad_id)" },
+        { "columna": "tipo_operacion_id", "referencia": "tipos_operacion(tipo_operacion_id)" }
+      ]
+    },
+    {
+      "tabla": "publicacion_canales",
+      "pk": ["publicacion_canal_id"],
+      "fk": [
+        { "columna": "canal_id", "referencia": "canales_marketing(canal_id)" },
+        { "columna": "publicacion_id", "referencia": "publicaciones(publicacion_id)" }
+      ]
+    },
+    {
+      "tabla": "campanas",
+      "pk": ["campana_id"],
+      "fk": [
+        { "columna": "canal_id", "referencia": "canales_marketing(canal_id)" }
+      ]
+    },
+    {
+      "tabla": "campana_propiedades",
+      "pk": ["campana_propiedad_id"],
+      "fk": [
+        { "columna": "campana_id", "referencia": "campanas(campana_id)" },
+        { "columna": "propiedad_id", "referencia": "propiedades(propiedad_id)" }
+      ]
+    },
+    {
+      "tabla": "solicitudes_propiedad",
+      "pk": ["solicitud_id"],
+      "fk": [
+        { "columna": "persona_id", "referencia": "personas(persona_id)" },
+        { "columna": "propiedad_id", "referencia": "propiedades(propiedad_id)" },
+        { "columna": "empleado_id", "referencia": "empleados(empleado_id)" },
+        { "columna": "campana_id", "referencia": "campanas(campana_id)", "opcional": true }
+      ],
+      "regla_negocio": "R6 prospecto + propiedad; R10 campana nullable"
+    },
+    {
+      "tabla": "visitas",
+      "pk": ["visita_id"],
+      "fk": [
+        { "columna": "solicitud_id", "referencia": "solicitudes_propiedad(solicitud_id)" },
+        { "columna": "empleado_id", "referencia": "empleados(empleado_id)" }
+      ],
+      "regla_negocio": "R8 sin propiedad_id redundante"
+    },
+    {
+      "tabla": "ofertas",
+      "pk": ["oferta_id"],
+      "fk": [
+        { "columna": "solicitud_id", "referencia": "solicitudes_propiedad(solicitud_id)" }
+      ]
+    },
+    {
+      "tabla": "transacciones",
+      "pk": ["transaccion_id"],
+      "fk": [
+        { "columna": "oferta_id", "referencia": "ofertas(oferta_id)" },
+        { "columna": "empleado_id", "referencia": "empleados(empleado_id)" }
+      ],
+      "columna_generada": {
+        "nombre": "comision_valor",
+        "expresion": "valor_final * comision_porcentaje / 100",
+        "regla": "R16"
+      }
+    }
+  ]
+}
