@@ -19,9 +19,9 @@ En la raíz del proyecto hay **dos carpetas** con distinto propósito:
 
 Si recibe un **ZIP**, conviene que la carpeta principal sea **`Profe`** (o que el ZIP incluya `Profe/` en la raíz junto con una copia de `Link Repositorio.txt`).
 
-Repositorio público (mismo contenido de entregables): ver `Link Repositorio.txt` en esta carpeta.
+Repositorio público (mismo contenido de entregables): ver `Profe/Link Repositorio.txt`.
 
-**Grupo de tres:** el enunciado indica máximo dos integrantes. La docente autorizó este grupo de tres; constancia en `Grupo.txt`.
+**Grupo de tres:** el enunciado indica máximo dos integrantes. La docente autorizó este grupo de tres; constancia en `Profe/Grupo.txt`.
 
 ---
 
