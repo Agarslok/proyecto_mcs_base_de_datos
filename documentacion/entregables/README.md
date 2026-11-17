@@ -1,23 +1,18 @@
-# Carpetas de entregables — MCS Bases de datos 2026-2
+# Entregables del proyecto MCS
 
-Requisitos del curso: [`entregables.txt`](entregables.txt).
+**Equipo:** Harold Burgos, Sofía Camelo, Juan Triana  
+**Bases:** PostgreSQL `inmobiliaria_mcs` y MongoDB `inmobiliaria_mcs_mongo`
 
-Cada carpeta **`E1` … `E7`** contiene **copias listas para entregar** (Markdown, SQL, JSON, PNG, PDF anexo). El trabajo maestro en el repo sigue en `documentacion/`, `codigo/` y `documentacion/evidencia/`; aquí está el paquete por fase.
+Armamos una carpeta por etapa. En cada una está el documento en PDF y, cuando aplica, los scripts, el diagrama y las capturas con las que comprobamos el trabajo.
 
-| Carpeta | Estado del empaquetado |
-|---------|-------------------------|
-| [E1_formulacion](E1_formulacion/LEEME.md) | ✅ Documento + PDF propuesta |
-| [E2_modelo_conceptual](E2_modelo_conceptual/LEEME.md) | ✅ Texto + diagrama + draw.io |
-| [E3_modelo_relacional](E3_modelo_relacional/LEEME.md) | ✅ Diagrama + texto + **evidencia 1FN–BCNF (MD + JSON)** + PK/FK JSON |
-| [E4_postgresql](E4_postgresql/LEEME.md) | ✅ SQL 00–03 + backup + mapa consultas + evidencia |
-| [E5_optimizacion_transacciones](E5_optimizacion_transacciones/LEEME.md) | ✅ SQL 04–05 + informe f5 + time.txt + evidencia |
-| [E6_mongodb](E6_mongodb/LEEME.md) | ✅ Scripts, seed, justificación, evidencia |
-| [E7_informe_final](E7_informe_final/LEEME.md) | ✅ Borrador integrado; falta **PDF final** |
+El enunciado pide grupos de máximo dos estudiantes. Este equipo es de tres: Harold Burgos, Sofía Camelo y Juan Triana. La docente Martha Quevedo autorizó el grupo de tres. La constancia está en `Grupo.txt`.
 
-## E3 — normalización (cómo presentarlo)
-
-- **Prosa para el informe:** `E3_modelo_relacional/E3_evidencia_normalizacion_resumida.md`
-- **Anexo estructurado:** `E3_evidencia_normalizacion.json`, `E3_claves_pk_fk.json`, `E3_dependencias_funcionales.json`
-- **Detalle completo:** `E3_modelo_relacional_normalizacion.md`
-
-No hace falta otra herramienta: los JSON son legibles y demuestran trazabilidad; el sustento semántico está en el `.md` resumido y en el DDL de E4.
+| Carpeta | Qué hay |
+|---------|---------|
+| [E1_formulacion](E1_formulacion/) | Problema, alcance, reglas y preguntas |
+| [E2_modelo_conceptual](E2_modelo_conceptual/) | Modelo ER/EER |
+| [E3_modelo_relacional](E3_modelo_relacional/) | Modelo relacional y normalización |
+| [E4_postgresql](E4_postgresql/) | Base en PostgreSQL, consultas y respaldo |
+| [E5_optimizacion_transacciones](E5_optimizacion_transacciones/) | Planes de ejecución, índices y cierre transaccional |
+| [E6_mongodb](E6_mongodb/) | Seguimiento omnicanal en MongoDB |
+| [E7_informe_final](E7_informe_final/) | Informe técnico que junta todas las etapas |
